@@ -1,0 +1,347 @@
+{
+  "modalities": [
+    {
+      "key": "stt",
+      "title": "Voice \u2192 Text",
+      "icon": "mic",
+      "blurb": "Dictate & transcribe locally (Whisper)."
+    },
+    {
+      "key": "tts",
+      "title": "Text \u2192 Voice",
+      "icon": "speaker",
+      "blurb": "Read text aloud locally (Kokoro)."
+    },
+    {
+      "key": "image",
+      "title": "Image generation",
+      "icon": "image",
+      "blurb": "Make images from a prompt (MLX)."
+    },
+    {
+      "key": "ocr",
+      "title": "Document / OCR",
+      "icon": "doc",
+      "blurb": "Read scanned PDFs & documents (Docling)."
+    },
+    {
+      "key": "llm",
+      "title": "Chat models (LLM)",
+      "icon": "chip",
+      "blurb": "Local language models via Ollama."
+    },
+    {
+      "key": "video",
+      "title": "Video generation",
+      "icon": "video",
+      "blurb": "Text \u2192 video via a served model."
+    }
+  ],
+  "models": [
+    {
+      "id": "stt-whisper-tiny",
+      "modality": "stt",
+      "name": "Whisper Tiny",
+      "size_gb": 0.08,
+      "badges": [
+        "Fastest",
+        "99 languages"
+      ],
+      "requires_ram_gb": 1,
+      "install_method": "whisper",
+      "params": {
+        "stt_model": "tiny"
+      }
+    },
+    {
+      "id": "stt-whisper-base",
+      "modality": "stt",
+      "name": "Whisper Base",
+      "size_gb": 0.15,
+      "badges": [
+        "Balanced",
+        "99 languages"
+      ],
+      "requires_ram_gb": 2,
+      "default": true,
+      "install_method": "whisper",
+      "params": {
+        "stt_model": "base"
+      }
+    },
+    {
+      "id": "stt-whisper-small",
+      "modality": "stt",
+      "name": "Whisper Small",
+      "size_gb": 0.49,
+      "badges": [
+        "More accurate",
+        "99 languages"
+      ],
+      "requires_ram_gb": 3,
+      "install_method": "whisper",
+      "params": {
+        "stt_model": "small"
+      }
+    },
+    {
+      "id": "stt-whisper-large",
+      "modality": "stt",
+      "name": "Whisper Large v3",
+      "size_gb": 3.1,
+      "badges": [
+        "Most accurate",
+        "Slower",
+        "99 languages"
+      ],
+      "requires_ram_gb": 6,
+      "install_method": "whisper",
+      "params": {
+        "stt_model": "large-v3"
+      }
+    },
+    {
+      "id": "tts-kokoro",
+      "modality": "tts",
+      "name": "Kokoro-82M",
+      "size_gb": 0.35,
+      "badges": [
+        "Natural",
+        "Fast"
+      ],
+      "requires_ram_gb": 2,
+      "default": true,
+      "install_method": "kokoro",
+      "params": {
+        "voice": "af_heart"
+      }
+    },
+    {
+      "id": "img-z-image-turbo",
+      "modality": "image",
+      "name": "Z-Image Turbo",
+      "size_gb": 9.0,
+      "badges": [
+        "Recommended",
+        "Fast",
+        "No token"
+      ],
+      "requires_ram_gb": 12,
+      "default": true,
+      "install_method": "flux_launchd",
+      "params": {
+        "FLUX_FAMILY": "z_image",
+        "FLUX_MODEL_ID": "z-image-turbo",
+        "FLUX_QUANTIZE": "4"
+      }
+    },
+    {
+      "id": "img-flux-schnell",
+      "modality": "image",
+      "name": "FLUX.1-schnell",
+      "size_gb": 24.0,
+      "badges": [
+        "Advanced",
+        "Needs HF login"
+      ],
+      "requires_ram_gb": 24,
+      "install_method": "flux_launchd",
+      "params": {
+        "FLUX_FAMILY": "flux",
+        "FLUX_MODEL_ID": "flux.1-schnell",
+        "FLUX_QUANTIZE": "4"
+      }
+    },
+    {
+      "id": "ocr-docling",
+      "modality": "ocr",
+      "name": "Docling OCR",
+      "size_gb": 0.5,
+      "badges": [
+        "Recommended",
+        "Tables & layout"
+      ],
+      "requires_ram_gb": 2,
+      "default": true,
+      "install_method": "docling",
+      "params": {}
+    },
+    {
+      "id": "llm-llama32-3b",
+      "modality": "llm",
+      "name": "Llama 3.2 3B",
+      "size_gb": 2.0,
+      "badges": [
+        "Fast",
+        "Light"
+      ],
+      "requires_ram_gb": 6,
+      "install_method": "ollama",
+      "params": {
+        "ollama_name": "llama3.2:3b"
+      }
+    },
+    {
+      "id": "llm-qwen25-7b",
+      "modality": "llm",
+      "name": "Qwen2.5 7B",
+      "size_gb": 4.7,
+      "badges": [
+        "Balanced"
+      ],
+      "requires_ram_gb": 10,
+      "install_method": "ollama",
+      "params": {
+        "ollama_name": "qwen2.5:7b"
+      }
+    },
+    {
+      "id": "llm-gpt-oss-20b",
+      "modality": "llm",
+      "name": "gpt-oss 20B",
+      "size_gb": 13.0,
+      "badges": [
+        "Most capable",
+        "Slower"
+      ],
+      "requires_ram_gb": 24,
+      "default": true,
+      "install_method": "ollama",
+      "params": {
+        "ollama_name": "gpt-oss:20b"
+      }
+    },
+    {
+      "id": "llm-hermes3-8b",
+      "modality": "llm",
+      "name": "Hermes 3 (8B)",
+      "size_gb": 4.7,
+      "badges": [
+        "Agentic",
+        "Tool-calling",
+        "Fast"
+      ],
+      "requires_ram_gb": 8,
+      "install_method": "ollama",
+      "params": {
+        "ollama_name": "hermes3:8b"
+      }
+    },
+    {
+      "id": "llm-qwen25vl-7b",
+      "modality": "llm",
+      "name": "Qwen2.5-VL 7B (vision)",
+      "size_gb": 6.0,
+      "badges": [
+        "Vision",
+        "Images",
+        "Fast"
+      ],
+      "requires_ram_gb": 10,
+      "install_method": "ollama",
+      "params": {
+        "ollama_name": "qwen2.5vl:7b"
+      }
+    },
+    {
+      "id": "llm-deepseek-r1-32b",
+      "modality": "llm",
+      "name": "DeepSeek-R1 32B (thinking)",
+      "size_gb": 19.0,
+      "badges": [
+        "Reasoning",
+        "Thinking",
+        "Slower"
+      ],
+      "requires_ram_gb": 28,
+      "install_method": "ollama",
+      "params": {
+        "ollama_name": "deepseek-r1:32b"
+      }
+    },
+    {
+      "id": "llm-qwen-coder-7b",
+      "modality": "llm",
+      "name": "Qwen2.5-Coder 7B",
+      "size_gb": 4.7,
+      "badges": [
+        "Coding",
+        "Fast"
+      ],
+      "requires_ram_gb": 8,
+      "code": true,
+      "install_method": "ollama",
+      "params": {
+        "ollama_name": "qwen2.5-coder:7b"
+      }
+    },
+    {
+      "id": "llm-qwen-coder-14b",
+      "modality": "llm",
+      "name": "Qwen2.5-Coder 14B",
+      "size_gb": 9.0,
+      "badges": [
+        "Coding",
+        "Balanced",
+        "Verified"
+      ],
+      "requires_ram_gb": 12,
+      "code": true,
+      "install_method": "ollama",
+      "params": {
+        "ollama_name": "qwen2.5-coder:14b"
+      }
+    },
+    {
+      "id": "llm-qwen3-coder-next",
+      "modality": "llm",
+      "name": "Qwen3-Coder-Next (80B-A3B)",
+      "size_gb": 51.0,
+      "badges": [
+        "Coding",
+        "Agentic",
+        "Native tools",
+        "Verified"
+      ],
+      "requires_ram_gb": 64,
+      "code": true,
+      "code_default": true,
+      "install_method": "ollama",
+      "params": {
+        "ollama_name": "qwen3-coder-next:q4_K_M"
+      }
+    },
+    {
+      "id": "llm-qwen3-coder-30b",
+      "modality": "llm",
+      "name": "Qwen3-Coder 30B",
+      "size_gb": 19.0,
+      "badges": [
+        "Coding",
+        "Agentic",
+        "Most capable"
+      ],
+      "requires_ram_gb": 28,
+      "code": true,
+      "install_method": "ollama",
+      "params": {
+        "ollama_name": "qwen3-coder:30b"
+      }
+    },
+    {
+      "id": "vid-ltx",
+      "modality": "video",
+      "name": "LTX-Video (served)",
+      "size_gb": 0,
+      "badges": [
+        "Served / remote",
+        "Heavy"
+      ],
+      "requires_ram_gb": 0,
+      "install_method": "endpoint",
+      "params": {
+        "hint": "Register a text-to-video server (ComfyUI/LTX or a cloud endpoint) in Settings \u2192 Models as type 'video'."
+      }
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  MyPaiOS launchd template (macOS user agent).
+
+  1. Replace every /path/to/mypaios below with your clone's absolute path.
+  2. Copy to:   ~/Library/LaunchAgents/com.piaos.paios.plist
+  3. Load:      launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.piaos.paios.plist
+     (unload:   launchctl bootout gui/$(id -u)/com.piaos.paios)
+
+  Notes:
+  - The label stays "com.piaos.paios" — it is a stable internal identifier
+    (see CONTRIBUTING.md); renaming it orphans an already-loaded agent.
+  - Run ./start-macos.sh once first: it creates ./venv and swaps the thin
+    chromadb-client for the full chromadb package that embedded mode needs.
+  - The app reads ./.env from WorkingDirectory at startup, so configuration
+    lives there — no EnvironmentVariables block needed for app settings.
+  - Binds to 127.0.0.1 (this machine only). See deploy/README.md before
+    exposing it any wider.
+-->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.piaos.paios</string>
+
+    <key>WorkingDirectory</key>
+    <string>/path/to/mypaios</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/path/to/mypaios/venv/bin/python</string>
+        <string>-m</string>
+        <string>uvicorn</string>
+        <string>app:app</string>
+        <string>--host</string>
+        <string>127.0.0.1</string>
+        <string>--port</string>
+        <string>7860</string>
+    </array>
+
+    <key>RunAtLoad</key>
+    <true/>
+
+    <!-- Restart on crash, but not after a clean exit (launchctl bootout). -->
+    <key>KeepAlive</key>
+    <dict>
+        <key>SuccessfulExit</key>
+        <false/>
+    </dict>
+
+    <!-- Throttle restarts so a boot-loop doesn't spin the CPU. -->
+    <key>ThrottleInterval</key>
+    <integer>10</integer>
+
+    <key>StandardOutPath</key>
+    <string>/path/to/mypaios/logs/paios-launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/path/to/mypaios/logs/paios-launchd.log</string>
+
+    <!-- launchd agents get a minimal PATH; include Homebrew for tools the
+         Cookbook and helper scripts shell out to. -->
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    </dict>
+</dict>
+</plist>

@@ -1,0 +1,34 @@
+LobeHub Icons — https://github.com/lobehub/lobe-icons
+Used as: two provider logo paths in static/js/providers.js — the DeepSeek
+whale mark and the Qwen mark.
+
+Verified byte-exact: both `d` attributes in this repository are byte-identical
+to @lobehub/icons-static-svg icons/deepseek.svg and icons/qwen.svg. (The Qwen
+path is NOT the Simple Icons qwen.svg — it is specifically LobeHub's.)
+
+The MIT grant below covers LobeHub's SVG renderings only. The underlying
+DeepSeek and Alibaba/Qwen marks remain the trademarks of their owners; see the
+Trademarks section of ACKNOWLEDGMENTS.md.
+
+--------------------------------------------------------------------------
+MIT License
+
+Copyright (c) 2023 LobeHub
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

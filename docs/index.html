@@ -1,0 +1,2738 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22b%22%20x1%3D%2216%22%20y1%3D%2221%22%20x2%3D%2244%22%20y2%3D%2221%22%20gradientUnits%3D%22userSpaceOnUse%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%2314D4BE%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2338BAF5%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Cellipse%20cx%3D%2232%22%20cy%3D%2234%22%20rx%3D%2226%22%20ry%3D%2210.5%22%20transform%3D%22rotate%28-24%2032%2034%29%22%20fill%3D%22none%22%20stroke%3D%22%2338BAF5%22%20stroke-width%3D%222.2%22%20opacity%3D%220.5%22/%3E%3Cellipse%20cx%3D%2232%22%20cy%3D%2234%22%20rx%3D%2226%22%20ry%3D%2210.5%22%20transform%3D%22rotate%2824%2032%2034%29%22%20fill%3D%22none%22%20stroke%3D%22%23F040B5%22%20stroke-width%3D%222.2%22%20opacity%3D%220.5%22/%3E%3Cpath%20d%3D%22M16%2021%20H44%22%20fill%3D%22none%22%20stroke%3D%22url%28%23b%29%22%20stroke-width%3D%228%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M24%2021%20V45%22%20fill%3D%22none%22%20stroke%3D%22%239066F5%22%20stroke-width%3D%228%22%20stroke-linecap%3D%22round%22/%3E%3Cpath%20d%3D%22M38%2021%20V40%20Q38%2046%2043.5%2046%22%20fill%3D%22none%22%20stroke%3D%22%23F040B5%22%20stroke-width%3D%228%22%20stroke-linecap%3D%22round%22/%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%229%22%20r%3D%224%22%20fill%3D%22%23F5A623%22/%3E%3C/svg%3E">
+<title>MyPaiOS — Your AI OS. Every Model. Zero Cloud.</title>
+<meta name="description" content="MyPaiOS is a local-first personal AI OS. Chat, research, code, create — with 35+ open-source LLMs running entirely on your own machine. No subscription. No data leakage. Open source.">
+<style>
+/* ── TOKENS ─────────────────────────── */
+:root {
+  --bg:      #07090F;
+  --surf:    #0E1420;
+  --panel:   #131C2E;
+  --border:  #1A2540;
+  --text:    #C8D6EE;
+  --muted:   #5E789A;
+  --head:    #EBF2FF;
+  --accent:  #14D4BE;
+  --a2:      #0DBBA8;
+  --glow:    rgba(20,212,190,0.15);
+  --good:    #2DC87A;
+  --warn:    #F5A623;
+  --code-bg: #050810;
+  --r:       10px;
+}
+@media(prefers-color-scheme:light){:root{
+  --bg:#EFF2F8;--surf:#FFFFFF;--panel:#E8EDF7;--border:#CAD3E4;
+  --text:#1E2C42;--muted:#5A7090;--head:#0D1830;--accent:#0A9E86;
+  --a2:#0B8A75;--glow:rgba(10,158,134,0.09);--good:#0B9A54;--warn:#C87E10;--code-bg:#E2E8F4;
+}}
+:root[data-theme="dark"]{--bg:#07090F;--surf:#0E1420;--panel:#131C2E;--border:#1A2540;--text:#C8D6EE;--muted:#5E789A;--head:#EBF2FF;--accent:#14D4BE;--a2:#0DBBA8;--glow:rgba(20,212,190,0.15);--good:#2DC87A;--warn:#F5A623;--code-bg:#050810;}
+:root[data-theme="light"]{--bg:#EFF2F8;--surf:#FFFFFF;--panel:#E8EDF7;--border:#CAD3E4;--text:#1E2C42;--muted:#5A7090;--head:#0D1830;--accent:#0A9E86;--a2:#0B8A75;--glow:rgba(10,158,134,0.09);--good:#0B9A54;--warn:#C87E10;--code-bg:#E2E8F4;}
+
+/* ── RESET ─────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:17px}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,'Segoe UI',system-ui,sans-serif;line-height:1.65;overflow-x:hidden}
+a{color:inherit;text-decoration:none}button{font-family:inherit;cursor:pointer;border:none;background:none}
+img,svg,canvas{display:block}::selection{background:var(--accent);color:#fff}
+
+/* ── NAV ───────────────────────────── */
+#nav{position:fixed;top:0;left:0;right:0;z-index:200;height:62px;display:flex;align-items:center;padding:0 1.75rem;background:rgba(7,9,15,0.88);backdrop-filter:blur(18px);border-bottom:1px solid transparent;transition:border-color .3s}
+#nav.scrolled{border-bottom-color:var(--border)}
+.ni{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:1200px;margin:0 auto}
+.nlogo{display:flex;align-items:center;gap:9px}
+.npi{font-size:1.4rem;font-weight:900;color:var(--accent);line-height:1}
+.nword{font-size:1.05rem;font-weight:700;color:var(--head);letter-spacing:-.02em}
+.nlinks{display:flex;gap:1.6rem}
+.nlinks a{font-size:.88rem;color:var(--muted);transition:color .15s}.nlinks a:hover{color:var(--text)}
+.nacts{display:flex;align-items:center;gap:.65rem}
+.btnstar{display:inline-flex;align-items:center;gap:.4rem;background:var(--accent);color:#fff;font-size:.83rem;font-weight:600;padding:.42rem 1rem;border-radius:7px;transition:opacity .15s,transform .15s}
+.btnstar:hover{opacity:.85;transform:translateY(-1px)}
+.tgbtn{width:36px;height:36px;border-radius:7px;border:1px solid var(--border);background:var(--panel);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:1rem;transition:color .15s,border-color .15s}
+.tgbtn:hover{color:var(--text);border-color:var(--muted)}
+
+/* ── HERO ──────────────────────────── */
+.hero{position:relative;overflow:hidden;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 1.5rem 3rem;text-align:center}
+#cnv{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:.6}
+.hglow{position:absolute;top:35%;left:50%;transform:translate(-50%,-50%);width:800px;height:500px;background:radial-gradient(ellipse,var(--glow) 0%,transparent 68%);pointer-events:none}
+.hcontent{position:relative;z-index:2;max-width:900px}
+.hbadge{display:inline-flex;align-items:center;gap:.45rem;background:var(--panel);border:1px solid var(--border);border-radius:100px;padding:.32rem .9rem;font-size:.78rem;font-weight:500;color:var(--muted);margin-bottom:2rem}
+.hbadge .dot{width:7px;height:7px;border-radius:50%;background:var(--good)}
+h1.ht{font-size:clamp(2.8rem,7.5vw,5.5rem);font-weight:900;line-height:1.06;letter-spacing:-.04em;color:var(--head);text-wrap:balance;margin-bottom:1.5rem}
+h1.ht .ga{background:linear-gradient(110deg,#14D4BE 0%,#38BAF5 34%,#9066F5 67%,#F040B5 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hlede{font-size:clamp(1.05rem,2.2vw,1.3rem);color:var(--muted);max-width:640px;margin:0 auto 2.5rem;line-height:1.72}
+.hcta{display:flex;gap:.85rem;justify-content:center;flex-wrap:wrap;margin-bottom:3.5rem}
+.btnp{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(90deg,#14D4BE,#38BAF5);color:#07090F;font-weight:700;font-size:1rem;padding:.72rem 1.55rem;border-radius:8px;transition:opacity .15s,transform .15s}
+.btnp:hover{opacity:.86;transform:translateY(-1px)}
+.btno{display:inline-flex;align-items:center;gap:.5rem;color:var(--text);font-weight:500;font-size:1rem;padding:.72rem 1.4rem;border-radius:8px;border:1px solid var(--border);transition:border-color .15s,background .15s}
+.btno:hover{border-color:var(--muted);background:var(--panel)}
+
+/* ── FAKE APP WINDOW ────────────────── */
+.appwin{position:relative;z-index:2;width:100%;max-width:860px;margin:0 auto}
+.aw{background:var(--surf);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 50px 120px rgba(0,0,0,.6),0 0 0 1px rgba(20,212,190,.07)}
+.awchrome{display:flex;align-items:center;gap:.5rem;padding:.7rem 1rem;border-bottom:1px solid var(--border);background:var(--panel)}
+.awd{width:10px;height:10px;border-radius:50%}.awd.r{background:#FF5F56}.awd.y{background:#FFBD2E}.awd.g{background:#27C93F}
+.awtitle{flex:1;text-align:center;font-size:.73rem;color:var(--muted)}
+.awbody{display:flex;height:340px}
+.awsidebar{width:195px;border-right:1px solid var(--border);background:var(--code-bg);flex-shrink:0;display:flex;flex-direction:column}
+.awsh{padding:.8rem;display:flex;align-items:center;gap:.55rem;border-bottom:1px solid var(--border)}
+.awspi{font-size:1rem;font-weight:900;color:var(--accent)}
+.awsname{font-size:.82rem;font-weight:700;color:var(--head)}
+.awsi{display:flex;align-items:center;gap:.55rem;padding:.42rem .8rem;font-size:.79rem;color:var(--muted);cursor:pointer;transition:background .15s,color .15s}
+.awsi:hover{background:var(--panel);color:var(--text)}
+.awsi.on{background:var(--panel);color:var(--text);border-left:2px solid var(--accent)}
+.awsi .ico{font-size:.85rem;width:16px;text-align:center}
+.awchat{flex:1;display:flex;flex-direction:column;min-width:0}
+.awmsgs{flex:1;padding:1rem;display:flex;flex-direction:column;gap:.75rem;overflow:hidden}
+.awmsg{max-width:74%;font-size:.8rem;line-height:1.55;padding:.55rem .82rem;border-radius:10px}
+.awmsg.u{background:var(--accent);color:#fff;align-self:flex-end;border-radius:10px 10px 3px 10px}
+.awmsg.a{background:var(--panel);color:var(--text);align-self:flex-start;border-radius:10px 10px 10px 3px}
+.awmeta{font-size:.68rem;color:var(--muted);margin-top:.22rem;display:flex;align-items:center;gap:.35rem}
+.mbadge{display:inline-flex;align-items:center;background:var(--code-bg);border:1px solid var(--border);border-radius:4px;padding:.04rem .38rem;font-size:.66rem;font-family:monospace;color:var(--accent);transition:opacity .3s}
+.awbar{border-top:1px solid var(--border);padding:.6rem .85rem;display:flex;align-items:center;gap:.5rem}
+.awfield{flex:1;background:var(--panel);border:1px solid var(--border);border-radius:7px;padding:.42rem .7rem;font-size:.77rem;color:var(--muted)}
+.awsend{background:var(--accent);border-radius:6px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* ── MARQUEE ────────────────────────── */
+.mwrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surf);padding:.85rem 0}
+.mtrack{display:flex;gap:2rem;white-space:nowrap;animation:mq 40s linear infinite}
+.mwrap:hover .mtrack{animation-play-state:paused}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.mi{display:inline-flex;align-items:center;gap:.45rem;font-size:.81rem;color:var(--muted);font-weight:500}
+.mifam{font-size:.66rem;background:var(--panel);border:1px solid var(--border);border-radius:3px;padding:.03rem .32rem;color:var(--muted)}
+
+/* ── STATS ──────────────────────────── */
+.stats{display:flex;flex-wrap:wrap;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surf)}
+.stat{flex:1;min-width:140px;padding:2rem 1.25rem;text-align:center;border-right:1px solid var(--border)}
+.stat:last-child{border-right:none}
+.snum{font-size:2.6rem;font-weight:900;color:var(--head);letter-spacing:-.05em;line-height:1;margin-bottom:.3rem;font-variant-numeric:tabular-nums}
+.snum span{color:var(--accent)}
+.slbl{font-size:.82rem;color:var(--muted)}
+
+/* ── GENERIC SECTION ───────────────── */
+section{padding:5.5rem 1.5rem}
+.w{max-width:1160px;margin:0 auto}
+.ey{font-size:.73rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.65rem;transition:color 1.2s ease}
+.st{font-size:clamp(1.7rem,3.8vw,2.6rem);font-weight:900;color:var(--head);letter-spacing:-.03em;line-height:1.16;text-wrap:balance;margin-bottom:1rem}
+.ss{font-size:1.02rem;color:var(--muted);max-width:600px;line-height:1.72}
+.sh{margin-bottom:3rem}
+.altbg{background:var(--surf)}
+
+/* ── SCROLLABLE DEMO ─────────────────── */
+.demo-scroller{display:flex;gap:3.5rem;align-items:flex-start}
+.demo-sticky-col{
+  position:sticky;top:80px;
+  width:210px;flex-shrink:0;
+  background:var(--bg);   /* blocks content showing through */
+  z-index:10;
+  padding-right:1rem;
+  border-right:1px solid var(--border);
+}
+.demo-nav-list{display:flex;flex-direction:column;gap:.15rem;margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--border)}
+.dnav-item{display:flex;align-items:center;gap:.55rem;padding:.48rem .75rem;border-radius:7px;border-left:2px solid transparent;font-size:.85rem;color:var(--muted);cursor:pointer;transition:all .18s;text-decoration:none;white-space:nowrap}
+.dnav-item:hover{color:var(--text);background:var(--panel)}
+.dnav-item.on{color:var(--text);background:var(--panel);border-left-color:var(--accent);font-weight:600}
+.demo-blocks-col{flex:1;min-width:0;display:flex;flex-direction:column}
+.demo-block{padding-bottom:4.5rem;border-bottom:1px solid var(--border);margin-bottom:4.5rem}
+.demo-block:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.demo-blabel{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem}
+.demo-btitle{font-size:1.15rem;font-weight:700;color:var(--head);margin-bottom:.45rem;letter-spacing:-.01em}
+.demo-bdesc{font-size:.88rem;color:var(--muted);margin-bottom:1.25rem;line-height:1.65}
+.demo-viewport-block{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+/* mobile: collapse to horizontal pill strip */
+@media(max-width:800px){
+  .demo-scroller{flex-direction:column;gap:1.5rem}
+  .demo-sticky-col{position:sticky;top:62px;width:100%;border-right:none;border-bottom:1px solid var(--border);padding-right:0;padding-bottom:.5rem;background:var(--bg)}
+  .demo-nav-list{flex-direction:row;flex-wrap:nowrap;overflow-x:auto;gap:.4rem;margin-top:.5rem;padding-top:.5rem;border-top:none;scrollbar-width:none}
+  .demo-nav-list::-webkit-scrollbar{display:none}
+  .dnav-item{border-left:none;border-bottom:2px solid transparent;border-radius:0;padding:.35rem .65rem;font-size:.8rem}
+  .dnav-item.on{border-bottom-color:var(--accent);background:transparent}
+}
+
+/* chat demo */
+.dchat-win{display:flex;height:100%;flex-direction:column}
+.dchat-msgs{flex:1;padding:1.25rem;display:flex;flex-direction:column;gap:1rem;overflow:hidden}
+.dchat-msg{max-width:76%;font-size:.88rem;line-height:1.6;padding:.65rem .95rem;border-radius:10px}
+.dchat-msg.u{background:var(--accent);color:#fff;align-self:flex-end;border-radius:10px 10px 3px 10px}
+.dchat-msg.a{background:var(--panel);color:var(--text);align-self:flex-start;border-radius:10px 10px 10px 3px}
+.dchat-meta{font-size:.72rem;color:var(--muted);margin-top:.25rem;display:flex;align-items:center;gap:.35rem}
+.dchat-bar{border-top:1px solid var(--border);padding:.85rem 1.25rem;display:flex;align-items:center;gap:.75rem}
+.dchat-inp{flex:1;background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:.55rem .9rem;font-size:.88rem;color:var(--muted)}
+.dchat-send{padding:.55rem 1rem;background:var(--accent);color:#fff;border-radius:7px;font-size:.82rem;font-weight:600;cursor:pointer;white-space:nowrap}
+
+/* research demo */
+.dres{padding:1.5rem;display:flex;flex-direction:column;gap:1rem}
+.dres-query{background:var(--panel);border:1px solid var(--accent);border-radius:8px;padding:.75rem 1rem;font-size:.88rem;color:var(--text)}
+.dres-sources{display:flex;flex-direction:column;gap:.5rem}
+.dsrc{display:flex;align-items:center;gap:.6rem;background:var(--panel);border:1px solid var(--border);border-radius:7px;padding:.55rem .85rem;font-size:.8rem;color:var(--text);opacity:0;transform:translateX(-10px);transition:opacity .4s,transform .4s}
+.dsrc.show{opacity:1;transform:none}
+.dsrc-ico{font-size:.9rem;flex-shrink:0}
+.dsrc-url{font-size:.7rem;color:var(--muted)}
+.dres-synth{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:.85rem 1rem;font-size:.84rem;line-height:1.65;color:var(--text);min-height:80px}
+.dres-label{font-size:.7rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:.35rem}
+
+/* code demo */
+.dcode{padding:0;font-family:monospace}
+.dcode-header{display:flex;align-items:center;gap:.5rem;padding:.65rem 1rem;border-bottom:1px solid var(--border);background:var(--panel);font-size:.78rem;color:var(--muted)}
+.dcode-file{display:flex;align-items:center;gap:.4rem;color:var(--text);font-size:.8rem}
+.dcode-body{padding:1.1rem 1.25rem;font-size:.82rem;line-height:1.8;color:var(--text);font-family:'SF Mono','Cascadia Code',monospace;white-space:pre;overflow-x:auto}
+.ck{color:#7EC8E3}.cv{color:#A8D8A0}.cs{color:#F2B378}.cm{color:var(--muted);font-style:italic}.cn{color:var(--accent)}
+
+/* video demo */
+.dvid{padding:1.5rem}
+.dvid-title{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.6rem}
+.dvid-timeline{background:var(--panel);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:1rem}
+.dvid-progress{height:4px;background:var(--border)}
+.dvid-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--a2));width:0%;transition:width 3s linear;border-radius:2px}
+.dvid-frames{display:flex;gap:.5rem;padding:.75rem;overflow-x:auto}
+.dvframe{width:80px;height:52px;background:var(--code-bg);border:1px solid var(--border);border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.2rem;opacity:0;transition:opacity .4s}
+.dvframe.show{opacity:1}
+.dvid-events{display:flex;flex-direction:column;gap:.45rem}
+.dvev{display:flex;gap:.75rem;align-items:flex-start;opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s}
+.dvev.show{opacity:1;transform:none}
+.dvev-ts{font-size:.75rem;font-weight:600;color:var(--accent);font-family:monospace;min-width:42px;padding-top:.05rem}
+.dvev-text{font-size:.82rem;color:var(--text)}
+
+/* email demo */
+.demail{display:flex;height:100%}
+.demail-list{width:260px;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.demail-head{padding:.75rem 1rem;border-bottom:1px solid var(--border);font-size:.78rem;font-weight:700;color:var(--head);display:flex;align-items:center;justify-content:space-between}
+.demail-badge{background:var(--accent);color:#fff;border-radius:4px;padding:.05rem .4rem;font-size:.65rem;font-weight:700}
+.dem{padding:.65rem 1rem;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
+.dem:hover,.dem.on{background:var(--panel)}
+.dem-from{font-size:.8rem;font-weight:600;color:var(--head);margin-bottom:.1rem}
+.dem-sub{font-size:.75rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dem-pri{font-size:.62rem;font-weight:700;border-radius:3px;padding:.04rem .35rem;display:inline-block;margin-bottom:.15rem}
+.dem-pri.hi{background:rgba(20,212,190,.15);color:var(--accent)}
+.dem-pri.med{background:rgba(245,166,35,.12);color:var(--warn)}
+.dem-pri.lo{background:rgba(45,200,122,.1);color:var(--good)}
+.demail-detail{flex:1;padding:1.1rem 1.25rem;display:flex;flex-direction:column;gap:.85rem;overflow:hidden}
+.ded-from{font-size:.82rem;color:var(--muted)}
+.ded-sub{font-size:1rem;font-weight:700;color:var(--head)}
+.ded-body{font-size:.83rem;color:var(--text);line-height:1.65;flex:1}
+.ded-pi{background:var(--panel);border:1px solid rgba(20,212,190,.25);border-radius:8px;padding:.75rem 1rem}
+.ded-pi-lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--accent);margin-bottom:.35rem;display:flex;align-items:center;gap:.35rem}
+.ded-pi-text{font-size:.82rem;color:var(--text);line-height:1.6}
+.ded-actions{display:flex;gap:.5rem}
+.da{padding:.4rem .85rem;border-radius:6px;border:1px solid var(--border);font-size:.78rem;font-weight:500;color:var(--text);background:var(--panel);cursor:pointer;transition:all .15s}
+.da.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* image gen demo */
+.dimg{padding:1.5rem;display:flex;flex-direction:column;gap:1rem}
+.dimg-prompt{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:.75rem 1rem;font-size:.88rem;color:var(--text);display:flex;align-items:center;gap:.65rem}
+.dimg-gen-btn{margin-left:auto;padding:.45rem 1rem;background:var(--accent);color:#fff;border-radius:6px;font-size:.8rem;font-weight:600;cursor:pointer;flex-shrink:0}
+.dimg-canvas{height:180px;background:var(--code-bg);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.dimg-spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.dimg-result{display:none;width:100%;height:100%;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a0a20,#0a1030,#120820);flex-direction:column;gap:.5rem}
+.dimg-placeholder{font-size:2.5rem;filter:drop-shadow(0 0 20px rgba(20,212,190,.5))}
+.dimg-caption{font-size:.75rem;color:var(--muted)}
+.dimg-meta{display:flex;gap:.75rem;flex-wrap:wrap}
+.dimg-pill{background:var(--panel);border:1px solid var(--border);border-radius:5px;padding:.3rem .65rem;font-size:.76rem;color:var(--muted)}
+.dimg-pill span{color:var(--text);font-weight:500}
+
+/* agent/crew demo */
+.dagent{padding:1.5rem;display:flex;flex-direction:column;gap:1rem}
+.dag-goal{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:.75rem 1rem;font-size:.85rem;color:var(--text)}
+.dag-goal strong{color:var(--head)}
+.dag-crew{display:flex;gap:.75rem;flex-wrap:wrap}
+.dag-agent{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:.65rem .9rem;min-width:140px;transition:border-color .3s,background .3s}
+.dag-agent.active{border-color:var(--accent);background:var(--glow)}
+.dag-agent.done{border-color:var(--good);opacity:.7}
+.dag-name{font-size:.8rem;font-weight:600;color:var(--head);margin-bottom:.15rem}
+.dag-role{font-size:.7rem;color:var(--muted)}
+.dag-status{font-size:.68rem;margin-top:.3rem;display:flex;align-items:center;gap:.25rem}
+.dag-dot{width:6px;height:6px;border-radius:50%;background:var(--border)}
+.dag-agent.active .dag-dot{background:var(--accent);animation:pulse 1s ease-in-out infinite}
+.dag-agent.done .dag-dot{background:var(--good)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.dag-log{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:.75rem 1rem;font-size:.78rem;font-family:monospace;color:var(--muted);max-height:100px;overflow-y:auto;display:flex;flex-direction:column;gap:.3rem}
+.dag-logline{transition:opacity .4s}
+.dag-logline span{color:var(--accent)}
+
+/* ── MODEL BROWSER ──────────────────── */
+.mbwrap{background:var(--surf)}
+.mbfilters{display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.mbf{padding:.4rem .9rem;border-radius:100px;border:1px solid var(--border);background:var(--panel);font-size:.8rem;font-weight:500;color:var(--muted);cursor:pointer;transition:all .2s}
+.mbf:hover{color:var(--text);border-color:var(--muted)}
+.mbf.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.mbgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:.65rem}
+.mcard{background:var(--panel);border:1px solid var(--border);border-radius:9px;padding:.85rem 1rem;cursor:default;transition:border-color .2s,transform .2s,background .2s;display:flex;flex-direction:column;gap:.3rem}
+.mcard:hover{border-color:var(--accent);background:rgba(20,212,190,.05);transform:translateY(-2px)}
+.mcard.hidden{display:none}
+.mcname{font-size:.88rem;font-weight:700;color:var(--head);font-family:'SF Mono','Cascadia Code',monospace}
+.mcprov{font-size:.71rem;color:var(--muted)}
+.mctags{display:flex;gap:.3rem;flex-wrap:wrap;margin-top:.15rem}
+.mctag{font-size:.62rem;font-weight:600;border-radius:3px;padding:.06rem .32rem}
+.mctag.reasoning{background:rgba(20,212,190,.12);color:var(--accent)}
+.mctag.code{background:rgba(126,200,227,.1);color:#7EC8E3}
+.mctag.vision{background:rgba(168,216,160,.1);color:#A8D8A0}
+.mctag.general{background:rgba(94,120,154,.15);color:var(--muted)}
+.mctag.image{background:rgba(245,166,35,.1);color:var(--warn)}
+.mctag.cli{background:rgba(45,200,122,.1);color:var(--good)}
+
+/* ── WORKFLOW ───────────────────────── */
+.wfsteps{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;background:var(--border);border-radius:var(--r);overflow:hidden;border:1px solid var(--border)}
+.wfstep{background:var(--surf);padding:2rem 1.75rem;position:relative}
+.wfnum{font-size:.7rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:.75rem}
+.wfstep h3{font-size:1.05rem;font-weight:700;color:var(--head);margin-bottom:.5rem}
+.wfstep p{font-size:.87rem;color:var(--muted);line-height:1.65}
+.wfcode{margin-top:.85rem;background:var(--code-bg);border:1px solid var(--border);border-radius:7px;padding:.65rem .9rem;font-family:'SF Mono','Cascadia Code',monospace;font-size:.79rem;color:var(--text)}
+.wfc{color:var(--muted)}
+
+/* ── PRIVACY ────────────────────────── */
+.pviz{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:2rem;text-align:center}
+.pvflow{display:flex;align-items:center;justify-content:center;gap:.85rem;flex-wrap:wrap;margin:1.25rem 0}
+.pvnode{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:.5rem .9rem;font-size:.83rem;color:var(--text);font-weight:500}
+.pvnode.you{border-color:var(--accent);color:var(--accent);background:var(--glow)}
+.pvnode.no{text-decoration:line-through;color:var(--muted);opacity:.5}
+.pvarr{color:var(--muted);font-size:.9rem}
+.pvblock{display:inline-flex;align-items:center;gap:.4rem;background:rgba(20,212,190,.08);border:1px solid rgba(20,212,190,.2);border-radius:6px;padding:.32rem .75rem;font-size:.78rem;color:var(--accent);font-weight:600;margin-top:.75rem}
+.pvpts{display:flex;flex-direction:column;gap:1.1rem}
+.pvpt{display:flex;gap:1rem;align-items:flex-start}
+.pvpt-ico{width:38px;height:38px;flex-shrink:0;border-radius:9px;background:var(--glow);border:1px solid rgba(20,212,190,.2);display:flex;align-items:center;justify-content:center;font-size:1rem}
+.pvpt h4{font-size:.95rem;font-weight:700;color:var(--head);margin-bottom:.18rem}
+.pvpt p{font-size:.85rem;color:var(--muted);line-height:1.62}
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+@media(max-width:720px){.pgrid{grid-template-columns:1fr}}
+
+/* ── OSS CTA ────────────────────────── */
+.osscards{display:flex;justify-content:center;flex-wrap:wrap;gap:.85rem;margin:2.5rem 0}
+.osscard{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem 1.5rem;min-width:170px}
+.osscard h4{font-size:.85rem;font-weight:700;color:var(--head);margin-bottom:.2rem}
+.osscard p{font-size:.8rem;color:var(--muted)}
+.osscta{display:flex;gap:.85rem;justify-content:center;flex-wrap:wrap}
+
+/* ── FOOTER ─────────────────────────── */
+footer{border-top:1px solid var(--border);padding:2rem 1.5rem;background:var(--surf)}
+.fi{max-width:1160px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:1.25rem}
+.fcp{font-size:.79rem;color:var(--muted);line-height:1.6}
+.flinks{display:flex;gap:1.25rem;flex-wrap:wrap}
+.flinks a{font-size:.79rem;color:var(--muted);transition:color .15s}.flinks a:hover{color:var(--text)}
+
+/* ── PALETTE PICKER ──────────────────── */
+.palette-wrap{position:relative}
+.palette-btn{width:36px;height:36px;border-radius:7px;border:1px solid var(--border);background:var(--panel);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .15s;padding:0;overflow:hidden}
+.palette-btn:hover{border-color:var(--muted)}
+.palette-ring{width:20px;height:20px;border-radius:50%;border:2.5px solid var(--panel);background:conic-gradient(#14D4BE 0deg 72deg,#38BAF5 72deg 144deg,#9066F5 144deg 216deg,#F040B5 216deg 288deg,#F5A623 288deg 360deg)}
+.palette-popup{position:absolute;top:calc(100% + 8px);right:0;background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:.6rem .8rem;display:flex;gap:.5rem;align-items:center;box-shadow:0 12px 40px rgba(0,0,0,.4);opacity:0;pointer-events:none;transform:translateY(-6px);transition:opacity .18s,transform .18s;z-index:300}
+.palette-popup.open{opacity:1;pointer-events:auto;transform:none}
+.pswatch{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:transform .15s,border-color .15s;flex-shrink:0}
+.pswatch:hover{transform:scale(1.2)}
+.pswatch.active{border-color:var(--head);box-shadow:0 0 0 1.5px var(--head)}
+.palette-divider{width:1px;height:18px;background:var(--border);margin:0 .1rem}
+.pswatch-reset{background:var(--panel);border:1.5px dashed var(--border);font-size:.6rem;color:var(--muted);display:flex;align-items:center;justify-content:center}
+.pswatch-reset:hover{border-color:var(--muted);color:var(--text)}
+
+/* ── HELP SECTION ───────────────────── */
+.help-win{background:var(--surf);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.35);transition:border-radius .2s}
+.help-win.fs{position:fixed;inset:14px;z-index:600;border-radius:12px;box-shadow:0 0 0 1px var(--border),0 40px 120px rgba(0,0,0,.85)}
+.help-win.fs .help-body{height:calc(100vh - 28px - 44px) !important}
+.help-backdrop{display:none;position:fixed;inset:0;background:rgba(4,6,12,.65);backdrop-filter:blur(6px);z-index:599}
+.help-backdrop.show{display:block}
+.help-chrome{display:flex;align-items:center;gap:.5rem;padding:.65rem 1rem;border-bottom:1px solid var(--border);background:var(--panel)}
+.help-url{flex:1;text-align:center;background:var(--code-bg);border:1px solid var(--border);border-radius:5px;padding:.22rem .75rem;font-size:.72rem;color:var(--muted);font-family:monospace}
+.help-body{display:flex;height:clamp(520px,72vh,700px)}
+.help-nav{width:226px;flex-shrink:0;border-right:1px solid var(--border);background:var(--code-bg);overflow-y:auto;overflow-x:hidden;scrollbar-width:thin}
+.hgrp{border-bottom:1px solid var(--border)}
+.hgrp-head{display:flex;align-items:center;gap:.38rem;padding:.5rem .78rem;font-size:.74rem;font-weight:600;color:var(--head);cursor:pointer;transition:background .13s;user-select:none;min-width:0}
+.hgrp-head:hover{background:var(--panel)}
+.hgrp-head .grpico{font-size:.8rem;flex-shrink:0;width:16px;text-align:center}
+.hgrp-head .grptitle{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hgrp-head .grarrow{flex-shrink:0;font-size:.58rem;color:var(--muted);transition:transform .18s}
+.hgrp.open .grarrow{transform:rotate(90deg)}
+.hgrp-items{display:none;flex-direction:column}
+.hgrp.open .hgrp-items{display:flex}
+.hgi{padding:.28rem .78rem .28rem 1.9rem;font-size:.72rem;color:var(--muted);cursor:pointer;transition:all .12s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hgi:hover{color:var(--text);background:var(--panel)}
+.hgi.on{color:var(--accent);background:rgba(20,212,190,.06)}
+.help-content{flex:1;overflow-y:auto;padding:1.4rem 1.65rem;display:flex;flex-direction:column;gap:.9rem}
+.hc-crumb{font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:.25rem}
+.hc-title{font-size:1.1rem;font-weight:700;color:var(--head);letter-spacing:-.02em}
+.hc-body{font-size:.86rem;color:var(--text);line-height:1.75}
+.hc-body code{background:var(--code-bg);border:1px solid var(--border);border-radius:4px;padding:.08rem .36rem;font-size:.79rem;font-family:monospace;color:var(--accent)}
+.hc-code{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:.8rem 1.05rem;font-family:'SF Mono','Cascadia Code',monospace;font-size:.79rem;color:var(--text);white-space:pre;overflow-x:auto;line-height:1.65}
+.hc-tip{background:var(--panel);border-left:3px solid var(--good);border-radius:0 7px 7px 0;padding:.6rem .95rem;font-size:.82rem;color:var(--text);line-height:1.6}
+.help-stats-row{display:flex;gap:2.5rem;flex-wrap:wrap;margin-top:2rem}
+.help-stat-block{display:flex;align-items:baseline;gap:.45rem}
+.help-stat-n{font-size:2rem;font-weight:900;color:var(--head);letter-spacing:-.05em}
+.help-stat-n span{color:var(--accent)}
+.help-stat-l{font-size:.82rem;color:var(--muted)}
+/* help section sits above demo's sticky col (z-index:10) */
+section.altbg#help{position:relative;z-index:12}
+@media(max-width:640px){.help-nav{display:none}.help-body{height:340px}}
+
+/* ── ARCHITECTURE GRAPH ── */
+.arch-tabs{display:flex;gap:.4rem;margin-bottom:1.1rem}
+.arch-tab{padding:.42rem .9rem;border-radius:7px;border:1px solid var(--border);background:var(--panel);color:var(--muted);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .15s;font-family:inherit}
+.arch-tab:hover{border-color:var(--accent);color:var(--text)}
+.arch-tab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.arch-win{background:var(--surf);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.35);transition:border-radius .2s}
+.arch-chrome{display:flex;align-items:center;gap:.5rem;padding:.65rem 1rem;border-bottom:1px solid var(--border);background:var(--panel)}
+.arch-url{flex:1;text-align:center;background:var(--code-bg);border:1px solid var(--border);border-radius:5px;padding:.22rem .75rem;font-size:.72rem;color:var(--muted);font-family:monospace}
+.arch-body{height:clamp(480px,68vh,660px);background:#07090F}
+.arch-body iframe{width:100%;height:100%;border:0;display:block}
+.arch-credit{margin-top:1.1rem;font-size:.82rem;color:var(--muted)}
+.arch-credit a{color:var(--accent);text-decoration:none;font-weight:600}
+.arch-credit a:hover{text-decoration:underline}
+@media(max-width:640px){.arch-body{height:420px}}
+
+
+
+/* ── NEW SECTIONS (10) ── */
+/* arena */
+.arena-stage{margin-top:2.8rem}
+.arena-prompt{display:flex;align-items:baseline;gap:.75rem;background:var(--code-bg);border:1px solid var(--border);border-radius:var(--r);padding:.7rem 1rem;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.82rem}
+.arena-prompt-tag{flex:none;color:var(--muted);font-size:.66rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.arena-prompt-txt{color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.arena-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:14px}
+.arena-pane{display:flex;flex-direction:column;gap:.9rem;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:1rem;min-height:230px}
+.arena-pane--won{border-color:var(--a2);border-color:color-mix(in srgb,var(--accent) 45%,var(--border))}
+.arena-head{display:flex;align-items:center;justify-content:space-between;gap:.5rem;flex-wrap:wrap}
+.arena-chip{display:inline-flex;align-items:center;gap:.45rem;font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:.72rem;color:var(--head);background:var(--surf);border:1px solid var(--border);border-radius:999px;padding:.28rem .7rem;white-space:nowrap}
+.arena-dot{flex:none;width:7px;height:7px;border-radius:50%}
+.arena-dot--ds{background:var(--accent)}
+.arena-dot--qw{background:#38BAF5}
+.arena-dot--ll{background:#9066F5}
+.arena-state{display:inline-flex;align-items:center;gap:.4rem;font-size:.66rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.arena-state--done{color:var(--good)}
+.arena-state--live::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--good);animation:arena-pulse 1.2s ease-in-out infinite}
+.arena-lines{display:flex;flex-direction:column;gap:8px;flex:1}
+.arena-ln{height:8px;border-radius:4px;background:var(--border)}
+.arena-ln--sh{background:linear-gradient(100deg,var(--border) 25%,color-mix(in srgb,var(--text) 28%,var(--border)) 50%,var(--border) 75%);background-size:200% 100%;animation:arena-shimmer 1.5s linear infinite}
+.arena-ln--sh:nth-child(2n){animation-delay:.35s}
+.arena-ln--sh:nth-child(3n){animation-delay:.7s}
+.arena-pick{margin-top:auto;text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.04em;color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:.45rem .6rem}
+.arena-pick--sel{color:var(--accent);border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.arena-board{display:flex;align-items:center;flex-wrap:wrap;gap:.6rem 1rem;margin-top:14px;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:.8rem 1.1rem}
+.arena-board-lab{font-size:.66rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.arena-pill{display:inline-flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--text);font-variant-numeric:tabular-nums;background:var(--surf);border:1px solid var(--border);border-radius:999px;padding:.3rem .85rem}
+.arena-pill b{color:var(--head);font-weight:700}
+.arena-board-note{margin-left:auto;font-size:.75rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.arena-feats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:2.2rem}
+.arena-feat h3{margin:0 0 .35rem;font-size:.95rem;color:var(--head)}
+.arena-feat p{margin:0;font-size:.88rem;line-height:1.55;color:var(--muted)}
+@keyframes arena-shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@keyframes arena-pulse{0%,100%{opacity:.35}50%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.arena-ln--sh,.arena-state--live::before{animation:none}}
+@media (max-width:860px){.arena-grid{grid-template-columns:1fr}.arena-feats{grid-template-columns:1fr}.arena-pane{min-height:0}.arena-board-note{margin-left:0;width:100%}}
+@media (max-width:640px){.arena-prompt{flex-direction:column;gap:.35rem}.arena-prompt-txt{white-space:normal}.arena-board{padding:.7rem .9rem}.arena-pill{font-size:.74rem}}
+
+/* bento */
+#everything .bento-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:2.6rem}
+#everything .bento-card{position:relative;overflow:hidden;background:var(--surf);border:1px solid var(--border);border-radius:14px;padding:1.35rem 1.4rem;--bento-c:var(--accent);transition:border-color .25s ease,transform .25s ease}
+#everything .bento-card:hover{border-color:color-mix(in srgb,var(--bento-c) 45%,var(--border));transform:translateY(-2px)}
+#everything .bento-sky{--bento-c:#38BAF5}
+#everything .bento-violet{--bento-c:#9066F5}
+#everything .bento-lg{grid-column:span 2;background:var(--panel);padding:1.6rem 1.7rem}
+#everything .bento-lg::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(240px circle at var(--bento-x,50%) var(--bento-y,-20%),color-mix(in srgb,var(--bento-c) 9%,transparent),transparent 70%);opacity:0;transition:opacity .3s ease}
+#everything .bento-lg:hover::after{opacity:1}
+#everything .bento-glyph{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--bento-c);background:color-mix(in srgb,var(--bento-c) 12%,transparent);border:1px solid color-mix(in srgb,var(--bento-c) 28%,transparent);margin-bottom:.85rem}
+#everything .bento-glyph svg{width:18px;height:18px;display:block}
+#everything .bento-name{color:var(--head);font-weight:700;font-size:1rem;line-height:1.3;margin:0 0 .35rem}
+#everything .bento-lg .bento-name{font-size:1.25rem}
+#everything .bento-line{color:var(--muted);font-size:.88rem;line-height:1.5;margin:0}
+#everything .bento-lg .bento-line{color:var(--text);font-size:.95rem;max-width:44ch}
+#everything .bento-list{list-style:none;margin:1rem 0 0;padding:0;display:flex;flex-direction:column;gap:.5rem}
+#everything .bento-list li{position:relative;padding-left:1.1rem;color:var(--muted);font-size:.88rem;line-height:1.45}
+#everything .bento-list li::before{content:"";position:absolute;left:0;top:.5em;width:6px;height:6px;border-radius:2px;background:var(--bento-c);opacity:.8}
+#everything .bento-more{margin-top:1.15rem;color:var(--muted);font-size:.85rem;line-height:1.6}
+#everything .bento-more strong{color:var(--text);font-weight:600}
+@media(max-width:960px){#everything .bento-grid{grid-template-columns:repeat(2,1fr)}#everything .bento-lg{grid-column:span 2}}
+@media(max-width:640px){#everything .bento-grid{grid-template-columns:1fr;gap:12px;margin-top:2rem}#everything .bento-lg{grid-column:span 1;padding:1.3rem 1.35rem}#everything .bento-lg .bento-name{font-size:1.15rem}#everything .bento-card{padding:1.2rem 1.25rem}}
+
+/* day */
+#daywithpi .day-tl{max-width:720px;margin:3.2rem auto 0}
+#daywithpi .day-item{display:grid;grid-template-areas:"time dot body";grid-template-columns:84px 36px 1fr;column-gap:.4rem;padding-bottom:2.4rem;position:relative}
+#daywithpi .day-item:last-child{padding-bottom:.4rem}
+#daywithpi .day-time{grid-area:time;font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;font-size:.82rem;font-weight:600;letter-spacing:.04em;color:var(--day-c);font-variant-numeric:tabular-nums;text-align:right;padding:.24rem .55rem 0 0}
+#daywithpi .day-dot{grid-area:dot;position:relative}
+#daywithpi .day-dot::after{content:"";position:absolute;left:50%;top:.34rem;width:12px;height:12px;border-radius:50%;transform:translateX(-50%);background:var(--day-c);box-shadow:0 0 0 3px var(--bg),0 0 14px 0 var(--day-c)}
+#daywithpi .day-dot::before{content:"";position:absolute;left:50%;top:1.5rem;bottom:-.5rem;width:2px;border-radius:2px;transform:translateX(-50%);background:linear-gradient(180deg,var(--day-c),var(--day-cn,var(--day-c)));opacity:.5}
+#daywithpi .day-item:last-child .day-dot::before{display:none}
+#daywithpi .day-body{grid-area:body;padding-left:.6rem;min-width:0}
+#daywithpi .day-title{margin:0 0 .3rem;font-size:1.04rem;font-weight:700;letter-spacing:-.01em;color:var(--head)}
+#daywithpi .day-desc{margin:0;font-size:.93rem;line-height:1.6;color:var(--text)}
+#daywithpi .day-tag{display:inline-block;margin-top:.6rem;padding:.28rem .65rem;border:1px solid var(--border);background:var(--panel);border-radius:999px;font-size:.66rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+#daywithpi .day-tag::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--day-c);margin-right:.45rem;vertical-align:1px}
+#daywithpi .day-foot{max-width:720px;margin:2.4rem auto 0;text-align:center;font-size:.9rem;color:var(--muted)}
+#daywithpi .day-foot-k{color:var(--head);font-weight:700;font-variant-numeric:tabular-nums}
+@media(max-width:640px){
+#daywithpi .day-tl{margin-top:2.2rem}
+#daywithpi .day-item{grid-template-areas:"dot time" "dot body";grid-template-columns:30px 1fr;padding-bottom:1.9rem}
+#daywithpi .day-time{text-align:left;padding:0 0 .3rem 0;font-size:.78rem}
+#daywithpi .day-dot::after{top:.18rem;width:10px;height:10px}
+#daywithpi .day-dot::before{top:1.15rem}
+#daywithpi .day-body{padding-left:.2rem}
+#daywithpi .day-title{font-size:.98rem}
+#daywithpi .day-desc{font-size:.9rem}
+#daywithpi .day-foot{font-size:.84rem}
+}
+
+/* hwfit */
+#willitrun .hwfit-grid{display:grid;grid-template-columns:.85fr 1.35fr;gap:3.2rem;align-items:center;margin-top:1.2rem}
+#willitrun .hwfit-steps{display:flex;flex-direction:column}
+#willitrun .hwfit-step{display:flex;gap:1.1rem;padding:1.15rem 0;border-bottom:1px solid var(--border)}
+#willitrun .hwfit-step:last-child{border-bottom:none}
+#willitrun .hwfit-step-n{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.78rem;font-weight:700;color:var(--accent);padding-top:.2rem;font-variant-numeric:tabular-nums}
+#willitrun .hwfit-step h3{margin:0 0 .3rem;font-size:1rem;color:var(--head)}
+#willitrun .hwfit-step p{margin:0;font-size:.88rem;line-height:1.6;color:var(--muted)}
+#willitrun .hwfit-card{background:var(--panel);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+#willitrun .hwfit-card-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;padding:.9rem 1.25rem;border-bottom:1px solid var(--border);background:var(--surf)}
+#willitrun .hwfit-card-label{font-size:.66rem;font-weight:700;letter-spacing:.16em;color:var(--accent)}
+#willitrun .hwfit-machine{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.8rem;color:var(--text)}
+#willitrun .hwfit-row{display:grid;grid-template-columns:minmax(0,14.5rem) minmax(0,1fr) 2.4rem 6.8rem;gap:1rem;align-items:center;padding:.85rem 1.25rem;border-bottom:1px solid var(--border)}
+#willitrun .hwfit-row:last-child{border-bottom:none}
+#willitrun .hwfit-model{display:flex;align-items:center;gap:.6rem;min-width:0}
+#willitrun .hwfit-name{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.82rem;color:var(--head);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#willitrun .hwfit-size{flex:none;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.64rem;color:var(--muted);border:1px solid var(--border);border-radius:99px;padding:.13rem .45rem;white-space:nowrap;font-variant-numeric:tabular-nums}
+#willitrun .hwfit-bar{height:6px;background:var(--border);border-radius:99px;overflow:hidden}
+#willitrun .hwfit-fill{display:block;height:100%;width:0;border-radius:99px;transition:width .9s cubic-bezier(.22,1,.36,1)}
+#willitrun .hwfit-score{font-size:.9rem;font-weight:700;text-align:right;font-variant-numeric:tabular-nums}
+#willitrun .hwfit-verdict{font-size:.78rem;font-weight:600;text-align:right;white-space:nowrap}
+#willitrun .hwfit-good .hwfit-fill{background:var(--accent)}
+#willitrun .hwfit-mid .hwfit-fill{background:var(--warn)}
+#willitrun .hwfit-low .hwfit-fill{background:var(--muted)}
+#willitrun .hwfit-good .hwfit-score,#willitrun .hwfit-good .hwfit-verdict{color:var(--accent)}
+#willitrun .hwfit-mid .hwfit-score,#willitrun .hwfit-mid .hwfit-verdict{color:var(--warn)}
+#willitrun .hwfit-low .hwfit-score,#willitrun .hwfit-low .hwfit-verdict{color:var(--muted)}
+#willitrun .hwfit-legend{display:flex;gap:1.4rem;flex-wrap:wrap;padding:.8rem 1.25rem;border-top:1px solid var(--border);background:var(--surf)}
+#willitrun .hwfit-key{display:flex;align-items:center;gap:.45rem;font-size:.7rem;color:var(--muted)}
+#willitrun .hwfit-dot{width:8px;height:8px;border-radius:50%;flex:none}
+#willitrun .hwfit-dot-good{background:var(--accent)}
+#willitrun .hwfit-dot-mid{background:var(--warn)}
+#willitrun .hwfit-dot-low{background:var(--muted)}
+#willitrun .hwfit-note{margin:1.7rem auto 0;max-width:44rem;text-align:center;font-size:.88rem;line-height:1.6;color:var(--muted)}
+@media(max-width:960px){
+#willitrun .hwfit-grid{grid-template-columns:1fr;gap:2.2rem}
+}
+@media(max-width:640px){
+#willitrun .hwfit-row{grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"model verdict" "bar score";row-gap:.55rem;padding:.85rem 1rem}
+#willitrun .hwfit-model{grid-area:model}
+#willitrun .hwfit-verdict{grid-area:verdict}
+#willitrun .hwfit-bar{grid-area:bar;align-self:center}
+#willitrun .hwfit-score{grid-area:score;font-size:.8rem}
+#willitrun .hwfit-card-head{flex-direction:column;align-items:flex-start;gap:.35rem;padding:.9rem 1rem}
+#willitrun .hwfit-legend{gap:.9rem;padding:.8rem 1rem}
+#willitrun .hwfit-step p{font-size:.85rem}
+}
+
+/* cost */
+#cost .cost-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:1.75rem;align-items:stretch;margin-top:2.5rem}
+#cost .cost-left{display:flex;flex-direction:column}
+#cost .cost-sub{display:flex;justify-content:space-between;align-items:center;gap:1rem;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:1rem 1.35rem}
+#cost .cost-sub-name{color:var(--head);font-weight:600;font-size:1rem}
+#cost .cost-sub-yr{color:var(--muted);font-size:.8rem;margin-top:.2rem;font-variant-numeric:tabular-nums}
+#cost .cost-sub-price{color:var(--text);font-weight:700;font-size:1.15rem;font-variant-numeric:tabular-nums;white-space:nowrap}
+#cost .cost-sub-price span{color:var(--muted);font-weight:500;font-size:.8rem}
+#cost .cost-op{color:var(--muted);text-align:center;font-size:1.05rem;line-height:1;padding:.45rem 0;user-select:none}
+#cost .cost-total{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:1.3rem 1.35rem;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+#cost .cost-total-label{color:var(--muted);font-size:.85rem;line-height:1.4}
+#cost .cost-total-num{color:var(--head);font-weight:800;font-size:2.3rem;letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
+#cost .cost-zero-card{height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:var(--panel);border:1px solid var(--a2);border-radius:14px;padding:2.5rem 1.5rem;box-shadow:0 10px 60px -18px var(--glow)}
+#cost .cost-zero-brand{color:var(--muted);font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+#cost .cost-zero{color:var(--accent);font-weight:800;font-size:clamp(4.5rem,9vw,6.5rem);line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums;margin:.8rem 0 .9rem}
+#cost .cost-zero-sub{color:var(--text);font-size:.95rem}
+#cost .cost-zero-note{color:var(--muted);font-size:.85rem;margin-top:.55rem}
+#cost .cost-ticker{margin-top:1.75rem;background:var(--code-bg);border:1px solid var(--border);border-radius:var(--r);padding:.85rem 1.15rem;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.82rem;line-height:1.6;color:var(--muted);font-variant-numeric:tabular-nums}
+#cost .cost-ticker-num{color:var(--accent);font-weight:700;white-space:nowrap}
+@media(max-width:640px){
+#cost .cost-grid{grid-template-columns:1fr;gap:1.25rem;margin-top:1.75rem}
+#cost .cost-total-num{font-size:1.85rem}
+#cost .cost-zero{font-size:4rem}
+#cost .cost-zero-card{padding:2rem 1.25rem}
+#cost .cost-sub{padding:.85rem 1.1rem}
+#cost .cost-ticker{font-size:.72rem}
+}
+
+/* table */
+#whyswitch .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px}
+#whyswitch .table-cmp{width:100%;min-width:700px;border-collapse:separate;border-spacing:0;background:var(--surf);border:1px solid var(--border);border-radius:14px;font-variant-numeric:tabular-nums}
+#whyswitch .table-cmp th,#whyswitch .table-cmp td{padding:.85rem 1rem;text-align:center;font-size:.9rem;color:var(--text);vertical-align:middle}
+#whyswitch .table-cmp thead th{padding:1rem;font-size:.92rem;font-weight:700;color:var(--head)}
+#whyswitch .table-cmp tbody th,#whyswitch .table-cmp tbody td{border-top:1px solid var(--border)}
+#whyswitch .table-feat{text-align:left;font-weight:500;color:var(--text);width:30%;position:sticky;left:0;z-index:1;background:var(--surf);border-right:1px solid var(--border)}
+#whyswitch .table-cmp thead .table-feat{border-top-left-radius:13px}
+#whyswitch .table-cmp tbody tr:last-child .table-feat{border-bottom-left-radius:13px}
+#whyswitch .table-pi{background:color-mix(in srgb,var(--accent) 7%,transparent);border-left:1px solid var(--accent);border-right:1px solid var(--accent);box-shadow:-10px 0 18px -12px var(--glow),10px 0 18px -12px var(--glow);color:var(--head);font-weight:600}
+#whyswitch .table-cmp thead th.table-pi{border-top:1px solid var(--accent);color:var(--accent);font-weight:800;letter-spacing:.01em}
+#whyswitch .table-cmp tbody tr:last-child td.table-pi{border-bottom:1px solid var(--accent)}
+#whyswitch .table-cmp tbody tr:hover td{background:color-mix(in srgb,var(--head) 4%,transparent)}
+#whyswitch .table-cmp tbody tr:hover td.table-pi{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+#whyswitch .table-cmp tbody tr:hover .table-feat{background:color-mix(in srgb,var(--head) 4%,var(--surf))}
+#whyswitch .table-y{color:var(--good);font-weight:800;display:inline-block;margin-right:.4rem}
+#whyswitch .table-n{color:var(--muted);font-weight:700;display:inline-block;margin-right:.4rem}
+#whyswitch .table-v{color:var(--warn);font-weight:800;display:inline-block;margin-right:.4rem}
+#whyswitch .table-cost{font-weight:800;font-size:1rem}
+#whyswitch .table-note{margin-top:.9rem;font-size:.78rem;color:var(--muted)}
+@media(max-width:640px){
+#whyswitch .table-cmp th,#whyswitch .table-cmp td{padding:.7rem .7rem;font-size:.82rem}
+#whyswitch .table-cmp thead th{padding:.8rem .7rem;font-size:.82rem}
+#whyswitch .table-feat{width:auto;min-width:150px;max-width:170px}
+#whyswitch .table-cost{font-size:.9rem}
+}
+
+/* integrations */
+.integrations-grid{display:grid;grid-template-columns:1fr 1.12fr 1fr;grid-template-areas:"c1 hub c4" "c2 hub c5" "c3 hub c6";gap:14px;align-items:stretch;margin-top:2.6rem}
+
+.integrations-hub{grid-area:hub;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;text-align:center;padding:2.2rem 1.4rem;background:var(--panel);border:1px solid var(--border);border-radius:14px}
+.integrations-hub::before{content:"";position:absolute;inset:-35%;background:radial-gradient(circle at 50% 50%,var(--glow),transparent 62%);pointer-events:none}
+.integrations-hub>*{position:relative;z-index:1}
+
+.integrations-mark{position:relative;width:60px;height:60px;border-radius:50%;border:2px solid var(--accent);background:var(--bg);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.3rem;margin-bottom:.3rem}
+.integrations-mark::after{content:"";position:absolute;inset:-2px;border-radius:50%;border:2px solid var(--accent);opacity:0;animation:integrations-pulse 3.2s ease-out infinite}
+@keyframes integrations-pulse{0%{transform:scale(1);opacity:.5}70%,100%{transform:scale(1.55);opacity:0}}
+@media (prefers-reduced-motion:reduce){.integrations-mark::after{animation:none}}
+
+.integrations-hubname{font-size:1.25rem;font-weight:800;color:var(--head);letter-spacing:-.01em}
+.integrations-hubsub{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;font-size:.75rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.integrations-hubstatus{display:inline-flex;align-items:center;gap:.45rem;margin-top:.4rem;font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;font-size:.72rem;color:var(--muted)}
+.integrations-live{width:7px;height:7px;border-radius:50%;background:var(--good);box-shadow:0 0 6px var(--good)}
+
+.integrations-card{position:relative;display:flex;flex-direction:column;padding:1.15rem 1.2rem 1.05rem;background:var(--panel);border:1px solid var(--border);border-radius:12px;transition:border-color .2s ease,transform .2s ease}
+.integrations-card:hover{border-color:var(--a2);transform:translateY(-2px)}
+.integrations-c1{grid-area:c1}.integrations-c2{grid-area:c2}.integrations-c3{grid-area:c3}.integrations-c4{grid-area:c4}.integrations-c5{grid-area:c5}.integrations-c6{grid-area:c6}
+
+.integrations-card--l::after,.integrations-card--r::after{content:"";position:absolute;top:50%;width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--glow);transform:translateY(-50%)}
+.integrations-card--l::after{right:-4px}
+.integrations-card--r::after{left:-4px}
+
+.integrations-name{margin:0 0 .35rem;font-size:.98rem;font-weight:700;color:var(--head)}
+.integrations-desc{margin:0 0 .9rem;font-size:.86rem;line-height:1.55;color:var(--muted)}
+.integrations-tag{margin-top:auto;align-self:flex-start;font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;font-size:.72rem;letter-spacing:.02em;color:var(--accent);background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:.28rem .55rem;white-space:nowrap}
+
+.integrations-kickerwrap{display:flex;justify-content:center;margin-top:1.6rem}
+.integrations-kicker{display:inline-flex;align-items:center;gap:.6rem;margin:0;padding:.7rem 1.3rem;border:1px solid var(--border);background:var(--panel);border-radius:999px;font-size:.88rem;color:var(--text)}
+.integrations-kicker svg{flex:none;color:var(--accent)}
+.integrations-kicker strong{color:var(--head)}
+.integrations-kicker code{font-family:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;font-size:.8em;color:var(--accent);background:var(--code-bg);border:1px solid var(--border);border-radius:5px;padding:.08rem .4rem}
+
+@media (max-width:960px){
+  .integrations-grid{grid-template-columns:1fr 1fr;grid-template-areas:"hub hub" "c1 c4" "c2 c5" "c3 c6"}
+  .integrations-hub{padding:1.7rem 1.2rem}
+  .integrations-card--l::after,.integrations-card--r::after{display:none}
+}
+@media (max-width:640px){
+  .integrations-grid{grid-template-columns:1fr;grid-template-areas:"hub" "c1" "c2" "c3" "c4" "c5" "c6";gap:12px;margin-top:2rem}
+  .integrations-hubname{font-size:1.15rem}
+  .integrations-card{padding:1rem 1.05rem .95rem}
+  .integrations-kicker{border-radius:14px;padding:.7rem 1rem;font-size:.84rem;align-items:flex-start}
+  .integrations-kicker svg{margin-top:.15rem}
+}
+
+/* numbers */
+#numbers .numbers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:2.4rem}
+#numbers .numbers-tile{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:1.5rem 1.4rem 1.35rem;transition:border-color .25s ease,transform .25s ease}
+#numbers .numbers-tile:hover{border-color:var(--accent);transform:translateY(-2px)}
+#numbers .numbers-tick{width:22px;height:3px;border-radius:2px;background:var(--accent);margin-bottom:1rem}
+#numbers .numbers-num{font-size:2.7rem;font-weight:800;line-height:1.05;color:var(--head);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+#numbers .numbers-lbl{margin-top:.45rem;font-size:.85rem;color:var(--muted);line-height:1.45}
+#numbers .numbers-wide{margin-top:14px;display:flex;align-items:center;gap:1.8rem;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:1.7rem 1.8rem}
+#numbers .numbers-wide-svg{flex:0 0 auto;width:118px;height:82px}
+#numbers .numbers-wide-body{min-width:0}
+#numbers .numbers-wide-title{color:var(--head);font-size:1.08rem;font-weight:700;margin:0 0 .4rem}
+#numbers .numbers-wide-text{color:var(--text);font-size:.92rem;line-height:1.6;margin:0}
+#numbers .numbers-wide-text strong{color:var(--head);font-weight:600;font-variant-numeric:tabular-nums}
+#numbers .numbers-chip{display:inline-block;margin-top:.8rem;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.78rem;color:var(--accent);background:var(--code-bg);border:1px solid var(--border);border-radius:6px;padding:.35rem .7rem;white-space:nowrap}
+#numbers .numbers-strip{margin-top:14px;display:flex;flex-wrap:wrap;gap:10px}
+#numbers .numbers-pill{display:inline-flex;align-items:center;gap:.55rem;background:var(--panel);border:1px solid var(--border);border-radius:999px;padding:.5rem 1.05rem;font-size:.82rem;font-weight:600;color:var(--text)}
+#numbers .numbers-pill-dot{width:7px;height:7px;border-radius:50%;background:var(--good);flex:0 0 auto}
+@media(max-width:900px){
+  #numbers .numbers-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:640px){
+  #numbers .numbers-grid{grid-template-columns:1fr;gap:12px}
+  #numbers .numbers-num{font-size:2.1rem}
+  #numbers .numbers-wide{flex-direction:column;align-items:flex-start;gap:1.1rem;padding:1.4rem 1.3rem}
+  #numbers .numbers-chip{white-space:normal}
+}
+
+/* faq */
+#faq .faq-list{max-width:840px;margin:0 auto}
+#faq .faq-item{background:var(--panel);border:1px solid var(--border);border-radius:12px;margin-bottom:.75rem;overflow:hidden;transition:border-color .25s ease}
+#faq .faq-item.faq-open{border-color:var(--accent)}
+#faq .faq-q{width:100%;display:flex;align-items:center;justify-content:space-between;gap:1rem;background:transparent;border:0;text-align:left;cursor:pointer;padding:1.05rem 1.25rem;color:var(--head);font-size:1rem;font-weight:600;line-height:1.4;font-family:inherit}
+#faq .faq-x{flex:0 0 auto;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);border-radius:50%;color:var(--accent);font-size:1.1rem;font-weight:400;line-height:1;transition:transform .3s ease,border-color .3s ease}
+#faq .faq-item.faq-open .faq-x{transform:rotate(45deg);border-color:var(--accent)}
+#faq .faq-a{max-height:0;overflow:hidden;transition:max-height .35s ease}
+#faq .faq-ain{padding:0 1.25rem 1.15rem;color:var(--text);font-size:.95rem;line-height:1.65;font-variant-numeric:tabular-nums}
+#faq .faq-ain code{background:var(--code-bg);border:1px solid var(--border);border-radius:5px;padding:.1em .4em;font-size:.82rem;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--text)}
+@media(max-width:640px){
+#faq .faq-q{padding:.9rem 1rem;font-size:.92rem}
+#faq .faq-ain{padding:0 1rem .95rem;font-size:.9rem}
+#faq .faq-x{width:23px;height:23px;font-size:1rem}
+}
+
+/* star */
+#community{position:relative;overflow:hidden}
+#community::before{content:"";position:absolute;left:50%;top:-160px;width:1000px;height:640px;transform:translateX(-50%);background:radial-gradient(closest-side,color-mix(in srgb,var(--accent) 8%,transparent),transparent 72%);pointer-events:none}
+#community .w{position:relative}
+.star-hd{text-align:center}
+.star-hd .ss{margin-left:auto;margin-right:auto}
+.star-cta{display:flex;justify-content:center;align-items:center;gap:.85rem;flex-wrap:wrap;margin:2.4rem 0 3.2rem}
+.star-btn{display:inline-flex;align-items:center;gap:.55rem;border-radius:9px;font-weight:700;text-decoration:none;font-size:.95rem;padding:.75rem 1.5rem;transition:transform .18s ease,background .18s ease,border-color .18s ease}
+.star-btn-p{background:var(--accent);color:#07090F}
+.star-btn-p:hover{background:var(--a2);transform:translateY(-1px)}
+.star-btn-s{border:1px solid var(--border);color:var(--head);background:transparent}
+.star-btn-s:hover{border-color:color-mix(in srgb,var(--accent) 45%,var(--border))}
+.star-glyph{font-size:1.05em;line-height:1}
+.star-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.star-card{display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--border);border-radius:13px;padding:1.45rem 1.4rem;text-decoration:none;transition:border-color .18s ease,transform .18s ease}
+.star-card:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--accent) 35%,var(--border))}
+.star-ic{width:38px;height:38px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center}
+.star-ic svg{width:20px;height:20px}
+.star-c1 .star-ic{color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.star-c2 .star-ic{color:#38BAF5;background:color-mix(in srgb,#38BAF5 12%,transparent)}
+.star-c3 .star-ic{color:#9066F5;background:color-mix(in srgb,#9066F5 12%,transparent)}
+.star-card h3{color:var(--head);font-size:1rem;font-weight:700;margin:.95rem 0 .4rem}
+.star-card p{color:var(--muted);font-size:.88rem;line-height:1.6;margin:0 0 1rem;font-variant-numeric:tabular-nums}
+.star-card-go{margin-top:auto;display:inline-flex;align-items:center;gap:.4rem;font-size:.85rem;font-weight:600}
+.star-c1 .star-card-go{color:var(--accent)}
+.star-c2 .star-card-go{color:#38BAF5}
+.star-c3 .star-card-go{color:#9066F5}
+.star-arr{display:inline-block;transition:transform .18s ease}
+.star-card:hover .star-arr{transform:translateX(3px)}
+@media(max-width:640px){
+.star-grid{grid-template-columns:1fr}
+.star-cta{flex-direction:column;margin:1.8rem 0 2.2rem}
+.star-btn{width:100%;justify-content:center}
+}
+
+
+/* ── FIVE-COLOR SECTION ROTATION ── */
+#demo .ey{color:#14D4BE}
+#models .ey{color:#38BAF5}
+#arena .ey{color:#9066F5}
+#everything .ey{color:#F040B5}
+#daywithpi .ey{color:#F5A623}
+#willitrun .ey{color:#14D4BE}
+#start .ey{color:#38BAF5}
+#cost .ey{color:#9066F5}
+#privacy .ey{color:#F040B5}
+#whyswitch .ey{color:#F5A623}
+#connect .ey{color:#14D4BE}
+#help .ey{color:#38BAF5}
+#architecture .ey{color:#9066F5}
+#numbers .ey{color:#F040B5}
+#faq .ey{color:#F5A623}
+#opensource .ey{color:#14D4BE}
+#community .ey{color:#38BAF5}
+#start .wfnum{color:#38BAF5}
+#help .help-url{color:#38BAF5}
+
+
+/* ── STORY INTRO (attention-span opener) ── */
+#intro{position:relative;height:clamp(500px,74vh,720px);background:#07090F;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;user-select:none;overflow:hidden}
+.st-skip{position:absolute;top:26px;right:18px;font-size:.78rem;color:#5E789A;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:.32rem .85rem;border-radius:99px;cursor:pointer;transition:color .15s;z-index:2}
+.st-skip:hover{color:#fff}
+.st-slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.85rem;padding:1.5rem 2rem 3rem;text-align:center;opacity:0;transform:scale(.96);transition:opacity .38s ease,transform .38s ease;pointer-events:none}
+.st-slide.on{opacity:1;transform:none}
+.st-kick{font-size:clamp(.75rem,1.6vw,.85rem);font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--st-c,#14D4BE)}
+.st-big{font-size:clamp(2.2rem,7.5vw,4.6rem);font-weight:900;letter-spacing:-.03em;line-height:1.06;color:#EBF2FF;max-width:900px;text-wrap:balance}
+.st-big em{font-style:normal;color:var(--st-c,#14D4BE)}
+.st-sub{font-size:clamp(.95rem,2.2vw,1.15rem);color:#5E789A;max-width:560px;line-height:1.55}
+.st-logo{width:clamp(90px,16vw,150px);height:auto}
+.st-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;max-width:760px;margin-top:.8rem}
+.st-chip{font-size:.76rem;font-weight:600;color:#C8D6EE;padding:.38rem .85rem;border-radius:99px;border:1px solid color-mix(in srgb,var(--st-c) 35%,transparent);background:color-mix(in srgb,var(--st-c) 10%,transparent);white-space:nowrap}
+.st-chip.hot{background:var(--st-c);color:#07090F;border-color:var(--st-c);font-weight:800}
+.st-chip s{opacity:.6}
+.st-hint{position:absolute;bottom:22px;left:0;right:0;text-align:center;font-size:.74rem;color:#5E789A;letter-spacing:.06em;z-index:2}
+.st-hint b{color:#C8D6EE;font-weight:600}
+.st-down{display:inline-block;margin-left:.45rem;animation:stBob 1.6s ease-in-out infinite}
+@keyframes stBob{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+@media(max-width:640px){.st-skip{top:22px}}
+
+/* ── REVEAL ─────────────────────────── */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.2,.8,.2,1),transform .6s cubic-bezier(.2,.8,.2,1)}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+
+/* ── RESPONSIVE ─────────────────────── */
+@media(max-width:640px){
+  .nlinks{display:none}
+  h1.ht{font-size:2.4rem}
+  .awsidebar{display:none}
+  .snum{font-size:2rem}
+  .demail-list{display:none}
+  .pgrid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="intro" aria-label="Quick intro — click to advance, Esc to skip">
+  <div class="st-slide" style="--st-c:#14D4BE">
+    <svg class="st-logo" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="st-r1" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#14D4BE"/><stop offset="1" stop-color="#38BAF5"/></linearGradient><linearGradient id="st-r2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9066F5"/><stop offset="1" stop-color="#F040B5"/></linearGradient><linearGradient id="st-bar" x1="16" y1="21" x2="44" y2="21" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#14D4BE"/><stop offset="1" stop-color="#38BAF5"/></linearGradient></defs><ellipse cx="32" cy="34" rx="26" ry="10.5" transform="rotate(-24 32 34)" fill="none" stroke="url(#st-r1)" stroke-width="2.2" opacity="0.45"/><ellipse cx="32" cy="34" rx="26" ry="10.5" transform="rotate(24 32 34)" fill="none" stroke="url(#st-r2)" stroke-width="2.2" opacity="0.45"/><path d="M16 21 H44" fill="none" stroke="url(#st-bar)" stroke-width="8" stroke-linecap="round"/><path d="M24 21 V45" fill="none" stroke="#9066F5" stroke-width="8" stroke-linecap="round"/><path d="M38 21 V40 Q38 46 43.5 46" fill="none" stroke="#F040B5" stroke-width="8" stroke-linecap="round"/><circle cx="32" cy="9" r="4" fill="#F5A623"/></svg>
+    <div class="st-big">MyP<em style="color:#14D4BE">a</em><em style="color:#38BAF5">i</em><em style="color:#9066F5">O</em><em style="color:#F040B5">S</em></div>
+    <div class="st-sub">Your personal AI operating system — by Vishal Pawar</div>
+    <div class="st-chips"><span class="st-chip">MIT licensed</span><span class="st-chip">v1.13.51</span><span class="st-chip">Open source</span><span class="st-chip">One Python process</span></div>
+  </div>
+  <div class="st-slide" style="--st-c:#38BAF5">
+    <div class="st-kick">Zero cloud</div>
+    <div class="st-big">Runs <em>100%</em> on your machine.</div>
+    <div class="st-sub">Every token generated on your own hardware. Works in airplane mode.</div>
+    <div class="st-chips"><span class="st-chip">0 API calls</span><span class="st-chip">Works offline</span><span class="st-chip">Your GPU does the work</span><span class="st-chip">Data stays on disk</span></div>
+  </div>
+  <div class="st-slide" style="--st-c:#9066F5">
+    <div class="st-kick">Every model</div>
+    <div class="st-big"><em>35+</em> open-source models. One click.</div>
+    <div class="st-sub">DeepSeek, Qwen, Llama, Mistral — switch mid-conversation.</div>
+    <div class="st-chips"><span class="st-chip">deepseek-r1</span><span class="st-chip">qwen3-vl</span><span class="st-chip">llama3.3</span><span class="st-chip">mistral</span><span class="st-chip">gemma2</span><span class="st-chip">phi4</span><span class="st-chip">+29 more</span></div>
+  </div>
+  <div class="st-slide" style="--st-c:#F040B5">
+    <div class="st-kick">A full OS, not a chat window</div>
+    <div class="st-big">Chat · Research · Code · Video · Email · Images · Voice</div>
+    <div class="st-chips"><span class="st-chip">Cited research reports</span><span class="st-chip">Agent in your codebase</span><span class="st-chip">Video → searchable transcript</span><span class="st-chip">Local spam scoring</span></div>
+  </div>
+  <div class="st-slide" style="--st-c:#F5A623">
+    <div class="st-kick">Agents that keep working</div>
+    <div class="st-big">Close the tab. The job <em>keeps running.</em></div>
+    <div class="st-sub">Coding agent, multi-agent crews, deep research — all server-side on your box.</div>
+    <div class="st-chips"><span class="st-chip">Detached jobs</span><span class="st-chip">Reattach anytime</span><span class="st-chip">Multi-agent crews</span><span class="st-chip">Runs while you sleep</span></div>
+  </div>
+  <div class="st-slide" style="--st-c:#14D4BE">
+    <div class="st-kick">The math</div>
+    <div class="st-big"><em>$0.</em> Forever. MIT.</div>
+    <div class="st-sub">Cloud AI subscriptions: $3,600 over five years. This: free on hardware you already own.</div>
+    <div class="st-chips"><span class="st-chip"><s>ChatGPT Plus $240/yr</s></span><span class="st-chip"><s>Claude Pro $240/yr</s></span><span class="st-chip"><s>Gemini $240/yr</s></span><span class="st-chip hot">MyPaiOS $0 forever</span></div>
+  </div>
+  <div class="st-slide" style="--st-c:#38BAF5">
+    <div class="st-kick">Private by construction</div>
+    <div class="st-big">No account. No telemetry. <em>No data leaving.</em></div>
+    <div class="st-chips"><span class="st-chip">No sign-up</span><span class="st-chip">No analytics</span><span class="st-chip">No crash reporting</span><span class="st-chip">Airplane-mode OK</span></div>
+  </div>
+  <div class="st-slide" style="--st-c:#F040B5">
+    <div class="st-kick">Open source</div>
+    <div class="st-big">See it in <em>18 seconds</em>?<br>Star it in one click.</div>
+    <div class="st-sub">github.com/mypaios/mypaios — full tour below ↓</div>
+    <div class="st-chips"><span class="st-chip">Star the repo</span><span class="st-chip">Open an issue</span><span class="st-chip">Read all 1,041 files</span><span class="st-chip hot">★ github.com/mypaios</span></div>
+  </div>
+  <div class="st-hint">click to advance · <b>scroll for the full tour</b><span class="st-down">↓</span></div>
+</div>
+
+
+<!-- ── NAV ── -->
+<nav id="nav">
+  <div class="ni">
+    <a href="#" class="nlogo"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" style="width:27px;height:27px"><defs><linearGradient id="nl-r1" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#14D4BE"/><stop offset="1" stop-color="#38BAF5"/></linearGradient><linearGradient id="nl-r2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9066F5"/><stop offset="1" stop-color="#F040B5"/></linearGradient><linearGradient id="nl-bar" x1="16" y1="21" x2="44" y2="21" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#14D4BE"/><stop offset="1" stop-color="#38BAF5"/></linearGradient></defs><ellipse cx="32" cy="34" rx="26" ry="10.5" transform="rotate(-24 32 34)" fill="none" stroke="url(#nl-r1)" stroke-width="2.2" opacity="0.45"/><ellipse cx="32" cy="34" rx="26" ry="10.5" transform="rotate(24 32 34)" fill="none" stroke="url(#nl-r2)" stroke-width="2.2" opacity="0.45"/><path d="M16 21 H44" fill="none" stroke="url(#nl-bar)" stroke-width="8" stroke-linecap="round"/><path d="M24 21 V45" fill="none" stroke="#9066F5" stroke-width="8" stroke-linecap="round"/><path d="M38 21 V40 Q38 46 43.5 46" fill="none" stroke="#F040B5" stroke-width="8" stroke-linecap="round"/><circle cx="32" cy="9" r="4" fill="#F5A623"/></svg><span class="nword">MyP<span style="color:#14D4BE">a</span><span style="color:#38BAF5">i</span><span style="color:#9066F5">O</span><span style="color:#F040B5">S</span></span></a>
+    <div class="nlinks">
+      <a href="#demo">See it live</a>
+      <a href="#models">Models</a>
+      <a href="#help">Help</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#start">Get started</a>
+    </div>
+    <div class="nacts">
+      <div class="palette-wrap">
+        <button class="palette-btn" id="paletteBtn" aria-label="Choose accent color" onclick="togglePalette()">
+          <div class="palette-ring"></div>
+        </button>
+        <div class="palette-popup" id="palette-popup">
+          <div class="pswatch active" style="background:#14D4BE" title="Teal (default)" onclick="applyAccent(0)"></div>
+          <div class="pswatch" style="background:#38BAF5" title="Sky" onclick="applyAccent(1)"></div>
+          <div class="pswatch" style="background:#9066F5" title="Violet" onclick="applyAccent(2)"></div>
+          <div class="pswatch" style="background:#F040B5" title="Pink" onclick="applyAccent(3)"></div>
+          <div class="pswatch" style="background:#F5A623" title="Amber" onclick="applyAccent(4)"></div>
+        </div>
+      </div>
+      <button class="tgbtn" id="themeBtn" aria-label="Toggle theme">☀︎</button>
+      <a href="https://github.com/mypaios/mypaios" class="btnstar">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Star on GitHub
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <canvas id="cnv"></canvas>
+  <div class="hglow"></div>
+  <div class="hcontent rv">
+    <div class="hbadge"><span class="dot"></span> Open Source · MIT · 100% local · v1.13.51</div>
+    <h1 class="ht">Your AI OS.<br><span class="ga">Every model.</span><br>Zero cloud.</h1>
+    <p class="hlede">MyPaiOS runs <em>entirely on your machine</em>. Chat, research, write code, analyse video, triage email, generate images — powered by any of 35+ open-source models. No subscription. No data leaving. No lock-in.</p>
+    <div class="hcta">
+      <a href="https://github.com/mypaios/mypaios" class="btnp">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Star on GitHub
+      </a>
+      <a href="#demo" class="btno">See it in action →</a>
+    </div>
+  </div>
+
+  <!-- hero app window -->
+  <div class="appwin rv" style="transition-delay:.15s">
+    <div class="aw">
+      <div class="awchrome">
+        <span class="awd r"></span><span class="awd y"></span><span class="awd g"></span>
+        <span class="awtitle">MyPaiOS — localhost:7860</span>
+      </div>
+      <div class="awbody">
+        <div class="awsidebar">
+          <div class="awsh"><span class="awspi">π</span><span class="awsname">MyPaiOS</span></div>
+          <div class="awsi on"><span class="ico">💬</span>Chat</div>
+          <div class="awsi"><span class="ico">🤖</span>Agents</div>
+          <div class="awsi"><span class="ico">🕸️</span>Crew</div>
+          <div class="awsi"><span class="ico">🔬</span>Research</div>
+          <div class="awsi"><span class="ico">🎬</span>Video</div>
+          <div class="awsi"><span class="ico">📧</span>Email</div>
+          <div class="awsi"><span class="ico">🎨</span>Gallery</div>
+          <div class="awsi"><span class="ico">📝</span>Notes</div>
+        </div>
+        <div class="awchat">
+          <div class="awmsgs">
+            <div class="awmsg u">Compare DeepSeek-R1 and Qwen3 on multi-step reasoning tasks — which should I use for my coding agent?</div>
+            <div>
+              <div class="awmsg a">Great question. For a coding agent, here's the practical breakdown: DeepSeek-R1 excels at long chain-of-thought reasoning with explicit trace output — you can inspect every step. Qwen3 is faster and handles tool-use more naturally, which matters for agentic loops…</div>
+              <div class="awmeta"><span class="mbadge" id="hbadge">deepseek-r1:32b</span> · localhost:11434</div>
+            </div>
+          </div>
+          <div class="awbar">
+            <div class="awfield">Switch models and continue…</div>
+            <div class="awsend"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M22 2L11 13M22 2L15 22 11 13 2 9z"/></svg></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MARQUEE ── -->
+<div class="mwrap">
+  <div class="mtrack" id="mqt">
+    <span class="mi">deepseek-r1:32b <span class="mifam">Reasoning</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">qwen3-vl:32b <span class="mifam">Vision</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">llama3.3:70b <span class="mifam">Meta</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">qwen2.5-coder:32b <span class="mifam">Code</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">gemma2:27b <span class="mifam">Google</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">mixtral:8x7b <span class="mifam">Mistral</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">phi4:14b <span class="mifam">Microsoft</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">flux.1-schnell <span class="mifam">Images · MLX</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">deepseek-r1:70b <span class="mifam">Reasoning</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">qwen3-coder:30b <span class="mifam">Code</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">command-r:35b <span class="mifam">Cohere</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">yi:34b <span class="mifam">01.AI</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">internlm2:20b <span class="mifam">Shanghai AI</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">wizardlm2:8x22b <span class="mifam">Microsoft</span></span><span style="color:var(--border)">·</span>
+    <!-- dup -->
+    <span class="mi">deepseek-r1:32b <span class="mifam">Reasoning</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">qwen3-vl:32b <span class="mifam">Vision</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">llama3.3:70b <span class="mifam">Meta</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">qwen2.5-coder:32b <span class="mifam">Code</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">gemma2:27b <span class="mifam">Google</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">mixtral:8x7b <span class="mifam">Mistral</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">phi4:14b <span class="mifam">Microsoft</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">flux.1-schnell <span class="mifam">Images · MLX</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">deepseek-r1:70b <span class="mifam">Reasoning</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">qwen3-coder:30b <span class="mifam">Code</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">command-r:35b <span class="mifam">Cohere</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">yi:34b <span class="mifam">01.AI</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">internlm2:20b <span class="mifam">Shanghai AI</span></span><span style="color:var(--border)">·</span>
+    <span class="mi">wizardlm2:8x22b <span class="mifam">Microsoft</span></span>
+  </div>
+</div>
+
+<!-- ── STATS ── -->
+<div class="stats rv">
+  <div class="stat"><div class="snum">35<span>+</span></div><div class="slbl">Compatible models</div></div>
+  <div class="stat"><div class="snum"><span>$</span>0</div><div class="slbl">Monthly subscription</div></div>
+  <div class="stat"><div class="snum">100<span>%</span></div><div class="slbl">Data stays local</div></div>
+  <div class="stat"><div class="snum">9<span>+</span></div><div class="slbl">Built-in capabilities</div></div>
+</div>
+
+<!-- ── INTERACTIVE DEMO ── -->
+<section id="demo">
+  <div class="w">
+    <div class="demo-scroller rv">
+
+      <!-- Sticky left nav -->
+      <div class="demo-sticky-col">
+        <div class="ey">Live demo</div>
+        <h2 class="st" style="font-size:clamp(1.4rem,2.8vw,2rem)">Every capability,<br>right here.</h2>
+        <p class="ss" style="font-size:.86rem;margin-top:.5rem">Scroll to see each real-world workflow in action — most run themselves as you scroll.</p>
+        <nav class="demo-nav-list">
+          <a href="#db-chat"     class="dnav-item on">💬 Chat</a>
+          <a href="#db-research" class="dnav-item">🔬 Deep Research</a>
+          <a href="#db-code"     class="dnav-item">💻 Coding Agent</a>
+          <a href="#db-video"    class="dnav-item">🎬 Video Analysis</a>
+          <a href="#db-email"    class="dnav-item">📧 Email Triage</a>
+          <a href="#db-image"    class="dnav-item">🎨 Image Gen</a>
+          <a href="#db-crew"     class="dnav-item">🕸️ Crew</a>
+        </nav>
+      </div>
+
+      <!-- Scrollable demo blocks -->
+      <div class="demo-blocks-col">
+
+        <!-- CHAT -->
+        <div class="demo-block" id="db-chat">
+          <div class="demo-blabel">💬 Chat</div>
+          <div class="demo-btitle">Talk to Pi about anything — switch models on the fly</div>
+          <div class="demo-bdesc">Pi keeps context across sessions, handles code, images, documents and voice notes. Swap between any local model without losing the thread.</div>
+          <div class="demo-viewport-block">
+            <div class="dchat-win">
+              <div class="dchat-msgs" id="dchat-msgs">
+                <div class="dchat-msg u">What's the architectural difference between RAG and fine-tuning for a production chatbot?</div>
+                <div>
+                  <div class="dchat-msg a">RAG retrieves relevant documents at inference time — your knowledge stays updatable without retraining. Fine-tuning bakes knowledge into weights, which means faster inference but expensive updates. For production: RAG if your data changes often, fine-tuning for narrow tasks where latency is critical. You can combine both.</div>
+                  <div class="dchat-meta"><span class="mbadge" id="dchat-model">llama3.3:70b</span> · 1.2s · 284 tokens</div>
+                </div>
+              </div>
+              <div class="dchat-bar">
+                <div class="dchat-inp" id="dchat-inp">Ask anything — or click a suggestion below…</div>
+                <button class="dchat-send" id="dchat-btn">Send</button>
+              </div>
+            </div>
+            <div style="display:flex;gap:.5rem;flex-wrap:wrap;padding:.75rem 1.25rem;border-top:1px solid var(--border);background:var(--panel)">
+              <button class="da" onclick="chatSuggest('Summarise my notes from last week')">📝 Summarise notes</button>
+              <button class="da" onclick="chatSuggest('Debug this Python traceback…')">🐍 Debug Python</button>
+              <button class="da" onclick="chatSuggest('Draft a reply to a client complaint')">✉️ Draft email</button>
+              <button class="da" onclick="chatSuggest('Explain quantum entanglement simply')">⚛️ Explain concept</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- RESEARCH -->
+        <div class="demo-block" id="db-research">
+          <div class="demo-blabel">🔬 Deep Research</div>
+          <div class="demo-btitle">Multi-round web search with structured synthesis</div>
+          <div class="demo-bdesc">Pi searches multiple sources, cross-references findings, and produces a cited report — entirely locally. No API key needed for search.</div>
+          <div class="demo-viewport-block">
+            <div class="dres" id="dres-container">
+              <div class="dres-label">Research query</div>
+              <div class="dres-query">What are the best open-source LLMs for local coding assistants in 2025?</div>
+              <div class="dres-label">Sources found</div>
+              <div class="dres-sources" id="dres-sources">
+                <div class="dsrc"><span class="dsrc-ico">📰</span><div><div>The Practical Guide to Local LLMs — Hugging Face Blog</div><div class="dsrc-url">huggingface.co/blog/local-llms-coding</div></div></div>
+                <div class="dsrc"><span class="dsrc-ico">🔬</span><div><div>DeepSeek Coder v2 Benchmark Results</div><div class="dsrc-url">deepseek.com/research/coder-v2</div></div></div>
+                <div class="dsrc"><span class="dsrc-ico">📊</span><div><div>BigCode Leaderboard — StarCoder vs Qwen2.5</div><div class="dsrc-url">huggingface.co/spaces/bigcode/bigcode-models-leaderboard</div></div></div>
+                <div class="dsrc"><span class="dsrc-ico">💬</span><div><div>r/LocalLLaMA — coding model megathread</div><div class="dsrc-url">reddit.com/r/LocalLLaMA/comments/coding_models</div></div></div>
+              </div>
+              <div class="dres-label">Pi's synthesis</div>
+              <div class="dres-synth" id="dres-synth"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CODE AGENT -->
+        <div class="demo-block" id="db-code">
+          <div class="demo-blabel">💻 Coding Agent</div>
+          <div class="demo-btitle">Autonomous agent that reads, writes, and runs your code</div>
+          <div class="demo-bdesc">Give it a task — it browses your codebase, writes the change, runs tests, and iterates. Jobs survive tab close and run detached in the background.</div>
+          <div class="demo-viewport-block">
+            <div class="dcode">
+              <div class="dcode-header">
+                <span class="dcode-file">📄 auth/middleware.py</span>
+                <span style="flex:1"></span>
+                <span>🤖 Coding agent · qwen2.5-coder:32b</span>
+              </div>
+              <div class="dcode-body" id="dcode-body"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIDEO -->
+        <div class="demo-block" id="db-video">
+          <div class="demo-blabel">🎬 Video Analysis</div>
+          <div class="demo-btitle">Upload a video — chat with it, get timestamps and summaries</div>
+          <div class="demo-bdesc">Keyframe extraction + Whisper transcription + vision model analysis. Works on meeting recordings, lectures, screen captures, anything.</div>
+          <div class="demo-viewport-block">
+            <div class="dvid">
+              <div class="dvid-title">Analysing: team-standup-2026-07.mp4 <span style="color:var(--muted);font-weight:400">· 18:32 · qwen3-vl:32b + Whisper</span></div>
+              <div class="dvid-timeline">
+                <div class="dvid-progress"><div class="dvid-bar" id="dvbar"></div></div>
+                <div class="dvid-frames" id="dvframes">
+                  <div class="dvframe">🎥</div><div class="dvframe">👥</div><div class="dvframe">📊</div>
+                  <div class="dvframe">💻</div><div class="dvframe">📝</div><div class="dvframe">🎯</div>
+                </div>
+              </div>
+              <div class="dvid-title">Key moments detected</div>
+              <div class="dvid-events" id="dvevents">
+                <div class="dvev"><div class="dvev-ts">0:42</div><div class="dvev-text">Sprint retrospective begins — 3 blocked issues discussed</div></div>
+                <div class="dvev"><div class="dvev-ts">4:15</div><div class="dvev-text">Architecture decision: switch from REST to GraphQL for mobile API</div></div>
+                <div class="dvev"><div class="dvev-ts">9:30</div><div class="dvev-text">Action item: Vishal to review auth PR before Thursday</div></div>
+                <div class="dvev"><div class="dvev-ts">14:22</div><div class="dvev-text">Q3 OKR check-in — 78% on track, hiring at risk</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- EMAIL -->
+        <div class="demo-block" id="db-email">
+          <div class="demo-blabel">📧 Email Triage</div>
+          <div class="demo-btitle">Pi reads your inbox, prioritises, and drafts replies</div>
+          <div class="demo-bdesc">Connect your email account. Pi triages threads, finds attachments, flags deadlines, and pre-writes replies. Everything processed locally — nothing leaves your machine.</div>
+          <div class="demo-viewport-block">
+            <div class="demail">
+              <div class="demail-list">
+                <div class="demail-head">Inbox <span class="demail-badge">23</span></div>
+                <div class="dem on" onclick="selectEmail(0)">
+                  <div class="dem-pri hi">🔴 Urgent</div>
+                  <div class="dem-from">Sarah Chen · Investor</div>
+                  <div class="dem-sub">Re: Q3 metrics — need by 5pm</div>
+                </div>
+                <div class="dem" onclick="selectEmail(1)">
+                  <div class="dem-pri med">🟡 Follow-up</div>
+                  <div class="dem-from">AWS Support</div>
+                  <div class="dem-sub">Your cost anomaly alert fired</div>
+                </div>
+                <div class="dem" onclick="selectEmail(2)">
+                  <div class="dem-pri lo">🟢 FYI</div>
+                  <div class="dem-from">GitHub</div>
+                  <div class="dem-sub">New star on mypaios/mypaios ⭐</div>
+                </div>
+              </div>
+              <div class="demail-detail" id="demail-detail">
+                <div class="ded-from">From: Sarah Chen &lt;s.chen@sequoia.vc&gt;</div>
+                <div class="ded-sub">Re: Q3 metrics — need numbers by 5pm today</div>
+                <div class="ded-body">Hi, I need the Q3 retention, MRR delta, and churn figures for the LP update. Can you send by 5? Also please attach the cohort chart from last month.</div>
+                <div class="ded-pi"><div class="ded-pi-lbl">π Pi's triage</div><div class="ded-pi-text">High priority — investor deadline in 3h. Pi found the cohort chart in your attachments folder (2026-06-cohorts.pdf). Draft reply pre-filled with Q3 numbers from your notes. Needs your sign-off on MRR figure before sending.</div></div>
+                <div class="ded-actions">
+                  <button class="da pri">Review draft reply</button>
+                  <button class="da">Snooze 1h</button>
+                  <button class="da">Archive</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- IMAGE GEN -->
+        <div class="demo-block" id="db-image">
+          <div class="demo-blabel">🎨 Image Generation</div>
+          <div class="demo-btitle">Flux.1-Schnell running locally via MLX on Apple Silicon</div>
+          <div class="demo-bdesc">No Midjourney subscription. No upload queue. Text-to-image in ~3 seconds on your own GPU — completely private, completely free after setup.</div>
+          <div class="demo-viewport-block">
+            <div class="dimg">
+              <div class="dimg-prompt">
+                <span>A serene mountain landscape at dusk, cinematic lighting, 4K</span>
+                <button class="dimg-gen-btn" id="dimgbtn" onclick="runImgGen()">Generate ✨</button>
+              </div>
+              <div class="dimg-canvas" id="dimg-canvas">
+                <div class="dimg-spinner" id="dspinner"></div>
+                <div class="dimg-result" id="dimg-result">
+                  <div class="dimg-placeholder">🌅</div>
+                  <div class="dimg-caption">Generated locally · flux.1-schnell · MLX · Apple Silicon</div>
+                </div>
+                <div style="color:var(--muted);font-size:.88rem;text-align:center" id="dimg-hint">Click Generate to run locally with Flux.1-Schnell</div>
+              </div>
+              <div class="dimg-meta">
+                <div class="dimg-pill">Model: <span>flux.1-schnell</span></div>
+                <div class="dimg-pill">Runtime: <span>MLX · Apple Silicon</span></div>
+                <div class="dimg-pill">Steps: <span>4</span></div>
+                <div class="dimg-pill">Time: <span>~3.2s</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CREW -->
+        <div class="demo-block" id="db-crew">
+          <div class="demo-blabel">🕸️ Crew Orchestration</div>
+          <div class="demo-btitle">Multi-agent teams — supervisor delegates, specialists execute</div>
+          <div class="demo-bdesc">Crew runs parallel or sequential agent pipelines. A supervisor model breaks down a goal and hands tasks to specialist agents — researcher, writer, editor, saver — each with their own model and tools.</div>
+          <div class="demo-viewport-block">
+            <div class="dagent">
+              <div class="dag-goal"><strong>Goal:</strong> Research top 5 open-source AI tools of 2025, write a comparison blog post, and save to Notes.</div>
+              <div class="dag-crew" id="dag-crew">
+                <div class="dag-agent" id="dag0"><div class="dag-name">🔬 Researcher</div><div class="dag-role">Web search + synthesis</div><div class="dag-status"><div class="dag-dot"></div><span id="dag0-s">Waiting</span></div></div>
+                <div class="dag-agent" id="dag1"><div class="dag-name">✍️ Writer</div><div class="dag-role">Draft blog post</div><div class="dag-status"><div class="dag-dot"></div><span id="dag1-s">Waiting</span></div></div>
+                <div class="dag-agent" id="dag2"><div class="dag-name">📝 Editor</div><div class="dag-role">Polish + fact-check</div><div class="dag-status"><div class="dag-dot"></div><span id="dag2-s">Waiting</span></div></div>
+                <div class="dag-agent" id="dag3"><div class="dag-name">💾 Saver</div><div class="dag-role">Write to Notes</div><div class="dag-status"><div class="dag-dot"></div><span id="dag3-s">Waiting</span></div></div>
+              </div>
+              <div class="dag-log" id="dag-log"><div class="dag-logline" style="color:var(--muted)">Click "Run Crew" to start the multi-agent workflow…</div></div>
+              <div style="display:flex;gap:.65rem;align-items:center">
+                <button class="da pri" id="crewbtn" onclick="runCrew()">▶ Run Crew</button>
+                <span style="font-size:.78rem;color:var(--muted)" id="crewstatus">Idle · hermes3:70b supervising</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- demo-blocks-col -->
+    </div><!-- demo-scroller -->
+  </div>
+</section>
+
+<!-- ── MODEL BROWSER ── -->
+<section class="mbwrap" id="models">
+  <div class="w">
+    <div class="sh rv">
+      <div class="ey">The model ecosystem</div>
+      <h2 class="st">35+ models. Any task.<br>Your machine.</h2>
+      <p class="ss">Every Ollama-compatible model works in MyPaiOS. Filter by what you need — then pull and go.</p>
+    </div>
+    <div class="rv" style="transition-delay:.08s">
+      <div class="mbfilters">
+        <button class="mbf on" data-filter="all">All models</button>
+        <button class="mbf" data-filter="reasoning">🧠 Reasoning</button>
+        <button class="mbf" data-filter="code">💻 Code</button>
+        <button class="mbf" data-filter="vision">👁️ Vision</button>
+        <button class="mbf" data-filter="general">🌍 General</button>
+        <button class="mbf" data-filter="image">🎨 Image</button>
+        <button class="mbf" data-filter="cli">🔗 CLI bridge</button>
+      </div>
+      <div class="mbgrid" id="mbgrid">
+        <!-- Reasoning -->
+        <div class="mcard" data-cats="reasoning"><div class="mcname">deepseek-r1:32b</div><div class="mcprov">DeepSeek</div><div class="mctags"><span class="mctag reasoning">reasoning</span></div></div>
+        <div class="mcard" data-cats="reasoning"><div class="mcname">deepseek-r1:70b</div><div class="mcprov">DeepSeek</div><div class="mctags"><span class="mctag reasoning">reasoning</span></div></div>
+        <div class="mcard" data-cats="reasoning"><div class="mcname">deepseek-r1:671b</div><div class="mcprov">DeepSeek · Q4</div><div class="mctags"><span class="mctag reasoning">reasoning</span></div></div>
+        <div class="mcard" data-cats="reasoning"><div class="mcname">qwq:32b</div><div class="mcprov">Alibaba Qwen</div><div class="mctags"><span class="mctag reasoning">reasoning</span></div></div>
+        <div class="mcard" data-cats="reasoning general"><div class="mcname">nemotron:70b</div><div class="mcprov">NVIDIA</div><div class="mctags"><span class="mctag reasoning">reasoning</span><span class="mctag general">general</span></div></div>
+        <div class="mcard" data-cats="reasoning"><div class="mcname">gpt-oss:20b</div><div class="mcprov">OpenAI OSS</div><div class="mctags"><span class="mctag reasoning">reasoning</span></div></div>
+        <!-- Code -->
+        <div class="mcard" data-cats="code"><div class="mcname">qwen2.5-coder:7b</div><div class="mcprov">Alibaba Qwen</div><div class="mctags"><span class="mctag code">code</span></div></div>
+        <div class="mcard" data-cats="code"><div class="mcname">qwen2.5-coder:14b</div><div class="mcprov">Alibaba Qwen</div><div class="mctags"><span class="mctag code">code</span></div></div>
+        <div class="mcard" data-cats="code"><div class="mcname">qwen2.5-coder:32b</div><div class="mcprov">Alibaba Qwen</div><div class="mctags"><span class="mctag code">code</span></div></div>
+        <div class="mcard" data-cats="code"><div class="mcname">qwen3-coder:30b</div><div class="mcprov">Alibaba Qwen</div><div class="mctags"><span class="mctag code">code</span></div></div>
+        <div class="mcard" data-cats="code"><div class="mcname">qwen3-coder-next</div><div class="mcprov">Qwen · q4_K_M</div><div class="mctags"><span class="mctag code">code</span></div></div>
+        <div class="mcard" data-cats="code"><div class="mcname">deepseek-coder-v2</div><div class="mcprov">DeepSeek · 16B</div><div class="mctags"><span class="mctag code">code</span></div></div>
+        <div class="mcard" data-cats="code"><div class="mcname">codellama:70b</div><div class="mcprov">Meta</div><div class="mctags"><span class="mctag code">code</span></div></div>
+        <div class="mcard" data-cats="code"><div class="mcname">starcoder2:15b</div><div class="mcprov">BigCode</div><div class="mctags"><span class="mctag code">code</span></div></div>
+        <div class="mcard" data-cats="code"><div class="mcname">codegemma:7b</div><div class="mcprov">Google</div><div class="mctags"><span class="mctag code">code</span></div></div>
+        <!-- Vision -->
+        <div class="mcard" data-cats="vision"><div class="mcname">qwen3-vl:8b</div><div class="mcprov">Alibaba Qwen</div><div class="mctags"><span class="mctag vision">vision</span></div></div>
+        <div class="mcard" data-cats="vision"><div class="mcname">qwen3-vl:32b</div><div class="mcprov">Alibaba Qwen</div><div class="mctags"><span class="mctag vision">vision</span></div></div>
+        <div class="mcard" data-cats="vision"><div class="mcname">qwen2.5vl:7b</div><div class="mcprov">Alibaba Qwen</div><div class="mctags"><span class="mctag vision">vision</span></div></div>
+        <div class="mcard" data-cats="vision"><div class="mcname">llava:34b</div><div class="mcprov">Haotian Liu et al.</div><div class="mctags"><span class="mctag vision">vision</span></div></div>
+        <div class="mcard" data-cats="vision"><div class="mcname">moondream2</div><div class="mcprov">vikhyatk</div><div class="mctags"><span class="mctag vision">vision</span></div></div>
+        <div class="mcard" data-cats="vision"><div class="mcname">minicpm-v</div><div class="mcprov">OpenBMB</div><div class="mctags"><span class="mctag vision">vision</span></div></div>
+        <!-- General -->
+        <div class="mcard" data-cats="general"><div class="mcname">llama3.3:70b</div><div class="mcprov">Meta</div><div class="mctags"><span class="mctag general">general</span></div></div>
+        <div class="mcard" data-cats="general"><div class="mcname">llama3.1:8b</div><div class="mcprov">Meta</div><div class="mctags"><span class="mctag general">general</span></div></div>
+        <div class="mcard" data-cats="general"><div class="mcname">hermes3:8b</div><div class="mcprov">NousResearch</div><div class="mctags"><span class="mctag general">general</span></div></div>
+        <div class="mcard" data-cats="general"><div class="mcname">hermes3:70b</div><div class="mcprov">NousResearch</div><div class="mctags"><span class="mctag general">general</span></div></div>
+        <div class="mcard" data-cats="general"><div class="mcname">mistral:7b</div><div class="mcprov">Mistral AI</div><div class="mctags"><span class="mctag general">general</span></div></div>
+        <div class="mcard" data-cats="general"><div class="mcname">mistral-nemo</div><div class="mcprov">Mistral AI</div><div class="mctags"><span class="mctag general">general</span></div></div>
+        <div class="mcard" data-cats="general"><div class="mcname">mixtral:8x7b</div><div class="mcprov">Mistral AI</div><div class="mctags"><span class="mctag general">general</span></div></div>
+        <div class="mcard" data-cats="general"><div class="mcname">mixtral:8x22b</div><div class="mcprov">Mistral AI</div><div class="mctags"><span class="mctag general">general</span></div></div>
+        <div class="mcard" data-cats="general"><div class="mcname">gemma2:27b</div><div class="mcprov">Google</div><div class="mctags"><span class="mctag general">general</span></div></div>
+        <div class="mcard" data-cats="general"><div class="mcname">gemma2:9b</div><div class="mcprov">Google</div><div class="mctags"><span class="mctag general">general</span></div></div>
+        <div class="mcard" data-cats="general"><div class="mcname">phi4:14b</div><div class="mcprov">Microsoft</div><div class="mctags"><span class="mctag general">general</span></div></div>
+        <div class="mcard" data-cats="general"><div class="mcname">phi3:mini</div><div class="mcprov">Microsoft</div><div class="mctags"><span class="mctag general">general</span></div></div>
+        <div class="mcard" data-cats="general"><div class="mcname">command-r:35b</div><div class="mcprov">Cohere</div><div class="mctags"><span class="mctag general">general</span></div></div>
+        <div class="mcard" data-cats="general"><div class="mcname">yi:34b</div><div class="mcprov">01.AI</div><div class="mctags"><span class="mctag general">general</span></div></div>
+        <div class="mcard" data-cats="general"><div class="mcname">solar:10.7b</div><div class="mcprov">Upstage</div><div class="mctags"><span class="mctag general">general</span></div></div>
+        <div class="mcard" data-cats="general"><div class="mcname">openchat:7b</div><div class="mcprov">OpenChat</div><div class="mctags"><span class="mctag general">general</span></div></div>
+        <div class="mcard" data-cats="general"><div class="mcname">internlm2:20b</div><div class="mcprov">Shanghai AI Lab</div><div class="mctags"><span class="mctag general">general</span></div></div>
+        <div class="mcard" data-cats="general"><div class="mcname">wizardlm2:8x22b</div><div class="mcprov">Microsoft</div><div class="mctags"><span class="mctag general">general</span></div></div>
+        <div class="mcard" data-cats="general"><div class="mcname">dolphin-mixtral</div><div class="mcprov">Cognitive Computations</div><div class="mctags"><span class="mctag general">general</span></div></div>
+        <!-- Image -->
+        <div class="mcard" data-cats="image"><div class="mcname">flux.1-schnell</div><div class="mcprov">Black Forest Labs · MLX</div><div class="mctags"><span class="mctag image">image</span></div></div>
+        <!-- CLI -->
+        <div class="mcard" data-cats="cli"><div class="mcname">claude-cli</div><div class="mcprov">Anthropic · your key</div><div class="mctags"><span class="mctag cli">CLI bridge</span></div></div>
+        <div class="mcard" data-cats="cli"><div class="mcname">codex-cli</div><div class="mcprov">OpenAI · your key</div><div class="mctags"><span class="mctag cli">CLI bridge</span></div></div>
+      </div>
+      <p style="margin-top:1.25rem;font-size:.84rem;color:var(--muted);text-align:center">Any Ollama-compatible model works — including custom GGUF files, Hugging Face imports, or any OpenAI-compatible API endpoint.</p>
+    </div>
+  </div>
+</section>
+
+<section id="arena" class="altbg">
+  <div class="w">
+    <div class="sh rv">
+      <div class="ey">COMPARE ARENA</div>
+      <h2 class="st">One prompt in.<br>Three models out.</h2>
+      <p class="ss">Fan the same prompt out to two, three, or four local models and watch them stream side-by-side. Vote for the answer you'd actually use. Over time that becomes a leaderboard built from your tasks — not someone else's benchmark suite.</p>
+    </div>
+
+    <div class="arena-stage rv">
+      <div class="arena-prompt">
+        <span class="arena-prompt-tag">prompt</span>
+        <span class="arena-prompt-txt">Summarise this 42-page lease and flag every clause that can hurt me.</span>
+      </div>
+
+      <div class="arena-grid">
+        <div class="arena-pane arena-pane--won">
+          <div class="arena-head">
+            <span class="arena-chip"><span class="arena-dot arena-dot--ds"></span>deepseek-r1:32b</span>
+            <span class="arena-state arena-state--done">done</span>
+          </div>
+          <div class="arena-lines" aria-hidden="true">
+            <div class="arena-ln" style="width:100%"></div>
+            <div class="arena-ln" style="width:93%"></div>
+            <div class="arena-ln" style="width:97%"></div>
+            <div class="arena-ln" style="width:86%"></div>
+            <div class="arena-ln" style="width:95%"></div>
+            <div class="arena-ln" style="width:71%"></div>
+            <div class="arena-ln" style="width:42%"></div>
+          </div>
+          <div class="arena-pick arena-pick--sel">Picked &#10003;</div>
+        </div>
+
+        <div class="arena-pane">
+          <div class="arena-head">
+            <span class="arena-chip"><span class="arena-dot arena-dot--qw"></span>qwen3-vl:32b</span>
+            <span class="arena-state arena-state--live">streaming</span>
+          </div>
+          <div class="arena-lines" aria-hidden="true">
+            <div class="arena-ln arena-ln--sh" style="width:96%"></div>
+            <div class="arena-ln arena-ln--sh" style="width:84%"></div>
+            <div class="arena-ln arena-ln--sh" style="width:91%"></div>
+            <div class="arena-ln arena-ln--sh" style="width:68%"></div>
+            <div class="arena-ln arena-ln--sh" style="width:88%"></div>
+            <div class="arena-ln arena-ln--sh" style="width:33%"></div>
+          </div>
+          <div class="arena-pick">Pick</div>
+        </div>
+
+        <div class="arena-pane">
+          <div class="arena-head">
+            <span class="arena-chip"><span class="arena-dot arena-dot--ll"></span>llama3.3:70b</span>
+            <span class="arena-state arena-state--live">streaming</span>
+          </div>
+          <div class="arena-lines" aria-hidden="true">
+            <div class="arena-ln arena-ln--sh" style="width:90%"></div>
+            <div class="arena-ln arena-ln--sh" style="width:97%"></div>
+            <div class="arena-ln arena-ln--sh" style="width:74%"></div>
+            <div class="arena-ln arena-ln--sh" style="width:51%"></div>
+          </div>
+          <div class="arena-pick">Pick</div>
+        </div>
+      </div>
+
+      <div class="arena-board">
+        <span class="arena-board-lab">Your picks</span>
+        <span class="arena-pill"><span class="arena-dot arena-dot--ds"></span>deepseek-r1 <b>12</b></span>
+        <span class="arena-pill"><span class="arena-dot arena-dot--qw"></span>qwen3-vl <b>9</b></span>
+        <span class="arena-pill"><span class="arena-dot arena-dot--ll"></span>llama3.3 <b>7</b></span>
+        <span class="arena-board-note">28 rounds &middot; none of them left this machine</span>
+      </div>
+    </div>
+
+    <div class="arena-feats">
+      <div class="arena-feat rv">
+        <h3>Simultaneous, not sequential</h3>
+        <p>Every model streams at once. You see who is fast, who is thorough, and who rambles — on the exact task in front of you.</p>
+      </div>
+      <div class="arena-feat rv" style="transition-delay:.1s">
+        <h3>Vote, don't decode scores</h3>
+        <p>When the answers land, pick the one you'd ship. One click. No scoring rubric, no eval harness to configure.</p>
+      </div>
+      <div class="arena-feat rv" style="transition-delay:.2s">
+        <h3>A leaderboard that's yours</h3>
+        <p>Picks add up per model. After a week the arena tells you which model earns your default slot — with receipts.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="everything">
+  <div class="w">
+    <div class="sh rv">
+      <div class="ey">Everything included</div>
+      <h2 class="st">One install.<br>A full AI workspace.</h2>
+      <p class="ss">Chat is just the front door. Research, code, video, email, images, voice — all of it runs on your hardware, against your models.</p>
+    </div>
+    <div class="bento-grid">
+      <article class="bento-card bento-lg rv">
+        <div class="bento-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/><line x1="8" y1="11" x2="14" y2="11"/><line x1="11" y1="8" x2="11" y2="14"/></svg></div>
+        <h3 class="bento-name">Deep Research</h3>
+        <p class="bento-line">Multi-round web search with a local reasoning loop. Pi plans the queries, reads what it finds, and writes the report itself.</p>
+        <ul class="bento-list">
+          <li>Plans and runs multiple search rounds, each refining the last</li>
+          <li>Reads and cross-references sources before it writes</li>
+          <li>Outputs a structured report — every claim cited, every source linked</li>
+        </ul>
+      </article>
+      <article class="bento-card bento-lg rv" style="transition-delay:.1s">
+        <div class="bento-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
+        <h3 class="bento-name">Coding Agent</h3>
+        <p class="bento-line">An agent that works in your codebase, not a snippet generator.</p>
+        <ul class="bento-list">
+          <li>Reads, writes, and executes code in your projects</li>
+          <li>Jobs run server-side — closing the tab doesn't kill them</li>
+          <li>Reattach to any running job when you come back</li>
+        </ul>
+      </article>
+      <article class="bento-card bento-sky rv" style="transition-delay:.05s">
+        <div class="bento-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M10 9.5l4.5 2.5L10 14.5V9.5z" fill="currentColor" stroke="none"/></svg></div>
+        <h3 class="bento-name">Video Analysis</h3>
+        <p class="bento-line">Keyframes plus a Whisper transcript. Chat with any video by timestamp.</p>
+      </article>
+      <article class="bento-card rv" style="transition-delay:.1s">
+        <div class="bento-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg></div>
+        <h3 class="bento-name">Email + MailGuard</h3>
+        <p class="bento-line">IMAP triage with local spam and threat scoring.</p>
+      </article>
+      <article class="bento-card bento-violet rv" style="transition-delay:.15s">
+        <div class="bento-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 5-9 5-9-5 9-5z"/><polyline points="3 13.5 12 18.5 21 13.5"/></svg></div>
+        <h3 class="bento-name">Image Studio</h3>
+        <p class="bento-line">Image generation plus a full layer-based editor.</p>
+      </article>
+      <article class="bento-card rv" style="transition-delay:.2s">
+        <div class="bento-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="10" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><line x1="12" y1="18" x2="12" y2="21"/><line x1="9" y1="21" x2="15" y2="21"/></svg></div>
+        <h3 class="bento-name">Voice Mode</h3>
+        <p class="bento-line">Kokoro TTS, Whisper STT. Spoken conversation, fully local.</p>
+      </article>
+      <article class="bento-card rv" style="transition-delay:.05s">
+        <div class="bento-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h9l4 4v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg></div>
+        <h3 class="bento-name">Notes &amp; Documents</h3>
+        <p class="bento-line">Everything you write, indexed for RAG search.</p>
+      </article>
+      <article class="bento-card bento-violet rv" style="transition-delay:.1s">
+        <div class="bento-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l1.8 4.6 4.6 1.8-4.6 1.8L12 16.8l-1.8-4.6-4.6-1.8 4.6-1.8L12 4z"/><line x1="18.5" y1="17" x2="18.5" y2="21"/><line x1="16.5" y1="19" x2="20.5" y2="19"/></svg></div>
+        <h3 class="bento-name">Memory &amp; Skills</h3>
+        <p class="bento-line">Pi learns your context. Teach it new skills.</p>
+      </article>
+      <article class="bento-card rv" style="transition-delay:.15s">
+        <div class="bento-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.5" r="1.2" fill="currentColor" stroke="none"/></svg></div>
+        <h3 class="bento-name">Encrypted Vault</h3>
+        <p class="bento-line">AES-GCM storage for keys, tokens, and secrets.</p>
+      </article>
+      <article class="bento-card bento-sky rv" style="transition-delay:.2s">
+        <div class="bento-glyph"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="7" height="14" rx="1.5"/><rect x="13" y="5" width="7" height="14" rx="1.5"/></svg></div>
+        <h3 class="bento-name">Model Compare</h3>
+        <p class="bento-line">Same prompt, multiple models, side by side.</p>
+      </article>
+    </div>
+    <p class="bento-more rv" style="transition-delay:.1s"><strong>Also in the box:</strong> Calendar &amp; Contacts with CalDAV sync, a Prompt Cookbook, an MCP client for external tools, and multi-agent Crews.</p>
+  </div>
+</section>
+
+<section id="daywithpi">
+  <div class="w">
+    <div class="sh rv">
+      <div class="ey">A DAY WITH PI</div>
+      <h2 class="st">Six moments.<br>None of them touched the cloud.</h2>
+      <p class="ss">A realistic Tuesday with Pi — triage, research, a background refactor, a meeting recording, a model bake-off, and a ping from your phone. Every token generated on your own hardware.</p>
+    </div>
+    <div class="day-tl">
+      <div class="day-item rv" style="--day-c:var(--accent);--day-cn:#38BAF5">
+        <div class="day-time">07:30</div>
+        <div class="day-dot"></div>
+        <div class="day-body">
+          <h3 class="day-title">Inbox already triaged</h3>
+          <p class="day-desc">MailGuard worked through 41 overnight emails and flagged the 2 that actually mattered. The rest never reached your attention.</p>
+          <span class="day-tag">MailGuard</span>
+        </div>
+      </div>
+      <div class="day-item rv" style="--day-c:#38BAF5;--day-cn:#9066F5;transition-delay:.06s">
+        <div class="day-time">09:00</div>
+        <div class="day-dot"></div>
+        <div class="day-body">
+          <h3 class="day-title">Research with citations</h3>
+          <p class="day-desc">“Battery chemistries for home storage.” Four rounds of Deep Research, 23 sources, one cited report waiting by the time the coffee is gone.</p>
+          <span class="day-tag">Deep Research</span>
+        </div>
+      </div>
+      <div class="day-item rv" style="--day-c:#9066F5;--day-cn:#F040B5;transition-delay:.12s">
+        <div class="day-time">11:00</div>
+        <div class="day-dot"></div>
+        <div class="day-body">
+          <h3 class="day-title">A refactor you didn't watch</h3>
+          <p class="day-desc">The Coding Agent reworked a FastAPI service as a detached job while you sat in a meeting. The job kept running after you closed the tab.</p>
+          <span class="day-tag">Coding Agent</span>
+        </div>
+      </div>
+      <div class="day-item rv" style="--day-c:#F040B5;--day-cn:#F5A623;transition-delay:.18s">
+        <div class="day-time">14:00</div>
+        <div class="day-dot"></div>
+        <div class="day-body">
+          <h3 class="day-title">40 minutes of video, searchable</h3>
+          <p class="day-desc">Dropped in a meeting recording. Minutes later: a full transcript with timestamps, ready to search and question.</p>
+          <span class="day-tag">Video Analysis</span>
+        </div>
+      </div>
+      <div class="day-item rv" style="--day-c:#F5A623;--day-cn:var(--accent);transition-delay:.24s">
+        <div class="day-time">16:00</div>
+        <div class="day-dot"></div>
+        <div class="day-body">
+          <h3 class="day-title">Three models, one verdict</h3>
+          <p class="day-desc">Same refactor prompt, three models, side by side in the Compare arena. You picked the winner on the evidence.</p>
+          <span class="day-tag">Compare Arena</span>
+        </div>
+      </div>
+      <div class="day-item rv" style="--day-c:var(--accent);transition-delay:.3s">
+        <div class="day-time">19:00</div>
+        <div class="day-dot"></div>
+        <div class="day-body">
+          <h3 class="day-title">Pi from your phone</h3>
+          <p class="day-desc">Asked Pi to summarise the day over the Telegram gateway. Your laptop composed the answer. Nothing ever left it.</p>
+          <span class="day-tag">Telegram Gateway</span>
+        </div>
+      </div>
+    </div>
+    <div class="day-foot rv" style="transition-delay:.36s"><span class="day-foot-k">35+</span> models on call all day. <span class="day-foot-k">0</span> requests left the machine.</div>
+  </div>
+</section>
+
+<section id="willitrun">
+  <div class="w">
+    <div class="sh rv">
+      <div class="ey">Will it run?</div>
+      <h2 class="st">Every model, scored<br>for your exact machine.</h2>
+      <p class="ss">MyPaiOS ships a hardware-fit scorer. It reads your GPU, RAM and CPU, then rates all 35+ models from 0 to 100 for the box you actually own — so you never pull a model that will not fit.</p>
+    </div>
+    <div class="hwfit-grid">
+      <div class="hwfit-steps rv">
+        <div class="hwfit-step">
+          <span class="hwfit-step-n">01</span>
+          <div>
+            <h3>Detect</h3>
+            <p>On first run, Pi reads your GPU, unified or system RAM, and CPU core count. Locally, like everything else.</p>
+          </div>
+        </div>
+        <div class="hwfit-step">
+          <span class="hwfit-step-n">02</span>
+          <div>
+            <h3>Score</h3>
+            <p>Every model in the catalog gets a fit score from 0 to 100 — for your machine, not a spec-sheet average.</p>
+          </div>
+        </div>
+        <div class="hwfit-step">
+          <span class="hwfit-step-n">03</span>
+          <div>
+            <h3>Pull</h3>
+            <p>Download what scores well. Skip what doesn't. No wasted disk, no model that loads once and swaps forever.</p>
+          </div>
+        </div>
+      </div>
+      <div class="hwfit-card rv" style="transition-delay:.1s">
+        <div class="hwfit-card-head">
+          <span class="hwfit-card-label">FIT REPORT</span>
+          <span class="hwfit-machine">Apple M2 Max &middot; 96 GB unified</span>
+        </div>
+        <div class="hwfit-rows">
+          <div class="hwfit-row hwfit-good">
+            <div class="hwfit-model"><span class="hwfit-name">qwen2.5-coder:14b</span><span class="hwfit-size">9 GB</span></div>
+            <div class="hwfit-bar"><span class="hwfit-fill" data-fit="97"></span></div>
+            <span class="hwfit-score">97</span>
+            <span class="hwfit-verdict">Comfortable</span>
+          </div>
+          <div class="hwfit-row hwfit-good">
+            <div class="hwfit-model"><span class="hwfit-name">qwen3-vl:32b</span><span class="hwfit-size">21 GB</span></div>
+            <div class="hwfit-bar"><span class="hwfit-fill" data-fit="92"></span></div>
+            <span class="hwfit-score">92</span>
+            <span class="hwfit-verdict">Comfortable</span>
+          </div>
+          <div class="hwfit-row hwfit-good">
+            <div class="hwfit-model"><span class="hwfit-name">deepseek-r1:32b</span><span class="hwfit-size">20 GB</span></div>
+            <div class="hwfit-bar"><span class="hwfit-fill" data-fit="88"></span></div>
+            <span class="hwfit-score">88</span>
+            <span class="hwfit-verdict">Comfortable</span>
+          </div>
+          <div class="hwfit-row hwfit-mid">
+            <div class="hwfit-model"><span class="hwfit-name">llama3.3:70b</span><span class="hwfit-size">43 GB</span></div>
+            <div class="hwfit-bar"><span class="hwfit-fill" data-fit="61"></span></div>
+            <span class="hwfit-score">61</span>
+            <span class="hwfit-verdict">Fits</span>
+          </div>
+          <div class="hwfit-row hwfit-low">
+            <div class="hwfit-model"><span class="hwfit-name">llama3.1:405b</span><span class="hwfit-size">243 GB</span></div>
+            <div class="hwfit-bar"><span class="hwfit-fill" data-fit="12"></span></div>
+            <span class="hwfit-score">12</span>
+            <span class="hwfit-verdict">Too big</span>
+          </div>
+        </div>
+        <div class="hwfit-legend">
+          <span class="hwfit-key"><span class="hwfit-dot hwfit-dot-good"></span>80+ comfortable</span>
+          <span class="hwfit-key"><span class="hwfit-dot hwfit-dot-mid"></span>50&ndash;80 fits</span>
+          <span class="hwfit-key"><span class="hwfit-dot hwfit-dot-low"></span>under 50 skip it</span>
+        </div>
+      </div>
+    </div>
+    <p class="hwfit-note rv" style="transition-delay:.15s">Works on any Mac, Linux, or Windows box. No dedicated GPU? CPU-only machines run the small models fine &mdash; the scorer points you straight to them.</p>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section id="start">
+  <div class="w">
+    <div class="sh rv">
+      <div class="ey">Get started</div>
+      <h2 class="st">Running in three steps.<br>No Docker. No cloud account.</h2>
+    </div>
+    <div class="wfsteps rv">
+      <div class="wfstep">
+        <div class="wfnum">Step 01</div>
+        <h3>Install Ollama + pull a model</h3>
+        <p>Ollama manages local LLMs on Mac, Linux, and Windows. Pull any model you want — or all of them.</p>
+        <div class="wfcode"><span class="wfc"># macOS</span><br>brew install ollama<br>ollama pull deepseek-r1:32b<br>ollama pull qwen3-vl:32b</div>
+      </div>
+      <div class="wfstep">
+        <div class="wfnum">Step 02</div>
+        <h3>Clone MyPaiOS &amp; run setup</h3>
+        <p>One script creates the virtual environment, installs dependencies, and starts the server.</p>
+        <div class="wfcode">git clone https://github.com/<br>&nbsp;&nbsp;mypaios/mypaios && cd mypaios<br>./start-macos.sh <span class="wfc"># Windows: launch-windows.ps1</span></div>
+      </div>
+      <div class="wfstep">
+        <div class="wfnum">Step 03</div>
+        <h3>Open and explore</h3>
+        <p>Navigate to localhost:7860. Switch models from the picker. Your data never leaves this machine — even offline.</p>
+        <div class="wfcode"><span class="wfc"># Pi is waiting at</span><br>http://localhost:7860<br><span class="wfc"># Also available as a launchd service</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cost" class="altbg">
+  <div class="w">
+    <div class="sh rv">
+      <div class="ey">The math</div>
+      <h2 class="st">$3,600 over five years.<br>Or $0.</h2>
+      <p class="ss">ChatGPT Plus, Claude Pro, Gemini Advanced — $20 a month each. One is $240 a year, $1,200 over five years. All three, $3,600. MyPaiOS costs nothing, and you already own the hardware.</p>
+    </div>
+    <div class="cost-grid">
+      <div class="cost-left rv">
+        <div class="cost-sub">
+          <div>
+            <div class="cost-sub-name">ChatGPT Plus</div>
+            <div class="cost-sub-yr">$240 / yr &middot; $1,200 / 5 yrs</div>
+          </div>
+          <div class="cost-sub-price">$20<span>/mo</span></div>
+        </div>
+        <div class="cost-op">+</div>
+        <div class="cost-sub">
+          <div>
+            <div class="cost-sub-name">Claude Pro</div>
+            <div class="cost-sub-yr">$240 / yr &middot; $1,200 / 5 yrs</div>
+          </div>
+          <div class="cost-sub-price">$20<span>/mo</span></div>
+        </div>
+        <div class="cost-op">+</div>
+        <div class="cost-sub">
+          <div>
+            <div class="cost-sub-name">Gemini Advanced</div>
+            <div class="cost-sub-yr">$240 / yr &middot; $1,200 / 5 yrs</div>
+          </div>
+          <div class="cost-sub-price">$20<span>/mo</span></div>
+        </div>
+        <div class="cost-op">=</div>
+        <div class="cost-total">
+          <div class="cost-total-label">All three, over five years</div>
+          <div class="cost-total-num" id="cost-total-num">$3,600</div>
+        </div>
+      </div>
+      <div class="cost-right rv" style="transition-delay:.1s">
+        <div class="cost-zero-card">
+          <div class="cost-zero-brand">MyPaiOS</div>
+          <div class="cost-zero">$0</div>
+          <div class="cost-zero-sub">forever &middot; MIT license &middot; no premium tier</div>
+          <div class="cost-zero-note">Runs on the hardware you already own.</div>
+        </div>
+      </div>
+    </div>
+    <div class="cost-ticker rv" style="transition-delay:.2s">Counting from the moment you loaded this page: cloud subscriptions would have cost you <span class="cost-ticker-num" id="cost-tick">$0.000000</span></div>
+  </div>
+</section>
+
+<!-- ── PRIVACY ── -->
+<section class="altbg" id="privacy">
+  <div class="w">
+    <div class="pgrid">
+      <div class="rv">
+        <div class="pviz">
+          <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.6rem">Where your data goes</div>
+          <div class="pvflow">
+            <div class="pvnode you">You</div>
+            <div class="pvarr">→</div>
+            <div class="pvnode">MyPaiOS</div>
+            <div class="pvarr">→</div>
+            <div class="pvnode">Ollama</div>
+            <div class="pvarr">→</div>
+            <div class="pvnode you">You</div>
+          </div>
+          <div style="height:1px;background:var(--border);margin:.9rem 0"></div>
+          <div style="font-size:.77rem;color:var(--muted);margin-bottom:.5rem">What never happens</div>
+          <div class="pvflow" style="gap:.55rem">
+            <div class="pvnode no">OpenAI</div>
+            <div class="pvnode no">Anthropic</div>
+            <div class="pvnode no">Google</div>
+            <div class="pvnode no">Meta</div>
+          </div>
+          <div class="pvblock">🚫 No external requests by default</div>
+        </div>
+      </div>
+      <div class="pvpts rv" style="transition-delay:.1s">
+        <div class="ey" style="margin-bottom:.75rem">Privacy by design</div>
+        <h2 class="st" style="margin-bottom:1.5rem">Your machine.<br>Your models.<br>Your rules.</h2>
+        <div class="pvpt"><div class="pvpt-ico">🏠</div><div><h4>Works fully offline</h4><p>Once models are pulled, MyPaiOS needs zero internet. Airplane mode AI — no calls home, ever.</p></div></div>
+        <div class="pvpt"><div class="pvpt-ico">🗄️</div><div><h4>Local database only</h4><p>Conversations, notes, memory, embeddings — SQLite + ChromaDB on your disk. Nothing synced.</p></div></div>
+        <div class="pvpt"><div class="pvpt-ico">🔑</div><div><h4>No account or email</h4><p>No sign-up. No telemetry. Admin panel is local-only, protected by a key you set.</p></div></div>
+        <div class="pvpt"><div class="pvpt-ico">📖</div><div><h4>Open source, fully auditable</h4><p>Every line is on GitHub, MIT-licensed, with all third-party notices carried. Read it, fork it, modify it — no black boxes.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="whyswitch">
+  <div class="w">
+    <div class="sh rv">
+      <div class="ey">Local vs cloud</div>
+      <h2 class="st">Same questions.<br>Different answers.</h2>
+      <p class="ss">What changes when inference moves off someone else's datacenter and onto your machine. No benchmarks, no cherry-picking — just the terms.</p>
+    </div>
+    <div class="table-scroll rv" style="transition-delay:.1s">
+      <table class="table-cmp" aria-label="Feature comparison: MyPaiOS versus ChatGPT, Claude, and Gemini">
+        <thead>
+          <tr>
+            <th scope="col" class="table-feat"></th>
+            <th scope="col" class="table-pi">MyPaiOS</th>
+            <th scope="col">ChatGPT</th>
+            <th scope="col">Claude</th>
+            <th scope="col">Gemini</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row" class="table-feat">Your data leaves your machine</th>
+            <td class="table-pi"><span class="table-y" aria-hidden="true">&#10003;</span>No</td>
+            <td><span class="table-n" aria-hidden="true">&#10005;</span>Yes</td>
+            <td><span class="table-n" aria-hidden="true">&#10005;</span>Yes</td>
+            <td><span class="table-n" aria-hidden="true">&#10005;</span>Yes</td>
+          </tr>
+          <tr>
+            <th scope="row" class="table-feat">Works offline</th>
+            <td class="table-pi"><span class="table-y" aria-hidden="true">&#10003;</span>Yes</td>
+            <td><span class="table-n" aria-hidden="true">&#10005;</span>No</td>
+            <td><span class="table-n" aria-hidden="true">&#10005;</span>No</td>
+            <td><span class="table-n" aria-hidden="true">&#10005;</span>No</td>
+          </tr>
+          <tr>
+            <th scope="row" class="table-feat">Monthly cost</th>
+            <td class="table-pi table-cost">$0</td>
+            <td class="table-cost">$20</td>
+            <td class="table-cost">$20</td>
+            <td class="table-cost">$20</td>
+          </tr>
+          <tr>
+            <th scope="row" class="table-feat">Choose any model</th>
+            <td class="table-pi"><span class="table-y" aria-hidden="true">&#10003;</span>35+ and growing</td>
+            <td><span class="table-n" aria-hidden="true">&#10005;</span>Their models only</td>
+            <td><span class="table-n" aria-hidden="true">&#10005;</span>Their models only</td>
+            <td><span class="table-n" aria-hidden="true">&#10005;</span>Their models only</td>
+          </tr>
+          <tr>
+            <th scope="row" class="table-feat">Rate limits</th>
+            <td class="table-pi"><span class="table-y" aria-hidden="true">&#10003;</span>None</td>
+            <td><span class="table-n" aria-hidden="true">&#10005;</span>Yes</td>
+            <td><span class="table-n" aria-hidden="true">&#10005;</span>Yes</td>
+            <td><span class="table-n" aria-hidden="true">&#10005;</span>Yes</td>
+          </tr>
+          <tr>
+            <th scope="row" class="table-feat">Account required</th>
+            <td class="table-pi"><span class="table-y" aria-hidden="true">&#10003;</span>No</td>
+            <td><span class="table-n" aria-hidden="true">&#10005;</span>Yes</td>
+            <td><span class="table-n" aria-hidden="true">&#10005;</span>Yes</td>
+            <td><span class="table-n" aria-hidden="true">&#10005;</span>Yes</td>
+          </tr>
+          <tr>
+            <th scope="row" class="table-feat">Your chats train someone's model</th>
+            <td class="table-pi"><span class="table-y" aria-hidden="true">&#10003;</span>Never</td>
+            <td><span class="table-v" aria-hidden="true">~</span>Opt-out varies</td>
+            <td><span class="table-v" aria-hidden="true">~</span>Opt-out varies</td>
+            <td><span class="table-v" aria-hidden="true">~</span>Opt-out varies</td>
+          </tr>
+          <tr>
+            <th scope="row" class="table-feat">Open source</th>
+            <td class="table-pi"><span class="table-y" aria-hidden="true">&#10003;</span>MIT</td>
+            <td><span class="table-n" aria-hidden="true">&#10005;</span>No</td>
+            <td><span class="table-n" aria-hidden="true">&#10005;</span>No</td>
+            <td><span class="table-n" aria-hidden="true">&#10005;</span>No</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="table-note rv" style="transition-delay:.2s">Cloud rows describe consumer plans as of mid-2026; enterprise terms differ.</p>
+  </div>
+</section>
+
+<section id="connect" class="altbg">
+  <div class="w">
+    <div class="sh rv">
+      <div class="ey">Plays well with others</div>
+      <h2 class="st">Local-first.<br>Not isolated.</h2>
+      <p class="ss">Everything runs on your machine — and still talks to the outside world over standard protocols. Six doors, all of them yours to open or close.</p>
+    </div>
+
+    <div class="integrations-grid">
+      <div class="integrations-card integrations-card--l integrations-c1 rv">
+        <h3 class="integrations-name">MCP client</h3>
+        <p class="integrations-desc">Connect any Model Context Protocol server and Pi picks up its tools. OAuth flows handled.</p>
+        <code class="integrations-tag">MCP &middot; stdio/SSE/HTTP</code>
+      </div>
+
+      <div class="integrations-card integrations-card--l integrations-c2 rv" style="transition-delay:.05s">
+        <h3 class="integrations-name">OpenAI-compatible endpoints</h3>
+        <p class="integrations-desc">Point at any server: llama.cpp, vLLM, LM Studio. Or a cloud key — only if you choose.</p>
+        <code class="integrations-tag">API &middot; /v1 compatible</code>
+      </div>
+
+      <div class="integrations-card integrations-card--l integrations-c3 rv" style="transition-delay:.1s">
+        <h3 class="integrations-name">Webhooks out</h3>
+        <p class="integrations-desc">Push events to anything with a URL. Your other systems find out the moment Pi does.</p>
+        <code class="integrations-tag">HTTP &middot; outbound POST</code>
+      </div>
+
+      <div class="integrations-hub rv" style="transition-delay:.15s">
+        <div class="integrations-mark" aria-hidden="true">Pi</div>
+        <div class="integrations-hubname">MyPaiOS</div>
+        <div class="integrations-hubsub">local core &middot; v1.13</div>
+        <div class="integrations-hubstatus"><span class="integrations-live" aria-hidden="true"></span>running on your machine</div>
+      </div>
+
+      <div class="integrations-card integrations-card--r integrations-c4 rv" style="transition-delay:.05s">
+        <h3 class="integrations-name">Telegram gateway</h3>
+        <p class="integrations-desc">Chat with Pi from your phone. Same assistant, smaller screen.</p>
+        <code class="integrations-tag">Telegram &middot; bot API</code>
+      </div>
+
+      <div class="integrations-card integrations-card--r integrations-c5 rv" style="transition-delay:.1s">
+        <h3 class="integrations-name">CalDAV sync</h3>
+        <p class="integrations-desc">Calendar sync over the open standard. Works with the calendar you already have.</p>
+        <code class="integrations-tag">CalDAV &middot; RFC 4791</code>
+      </div>
+
+      <div class="integrations-card integrations-card--r integrations-c6 rv" style="transition-delay:.15s">
+        <h3 class="integrations-name">PWA install</h3>
+        <p class="integrations-desc">Put MyPaiOS in your dock or on your home screen. Feels native, stays local.</p>
+        <code class="integrations-tag">PWA &middot; installable</code>
+      </div>
+    </div>
+
+    <div class="integrations-kickerwrap rv" style="transition-delay:.2s">
+      <p class="integrations-kicker">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <span>The connections are yours: keys live in an <code>AES-GCM</code> vault on <strong>YOUR</strong> disk.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ── HELP ── -->
+<section class="altbg" id="help">
+  <div class="w">
+    <div class="sh rv">
+      <div class="ey">Documentation</div>
+      <h2 class="st">39 sections of depth.<br>Built into the app.</h2>
+      <p class="ss">Every feature is documented inside MyPaiOS — reachable from the <code style="background:var(--code-bg);border:1px solid var(--border);border-radius:4px;padding:.1rem .4rem;font-size:.9rem;font-family:monospace;color:var(--accent)">/help</code> panel. Exportable to PDF. Here's a live preview.</p>
+    </div>
+
+    <div class="help-backdrop" id="help-backdrop" onclick="toggleHelpFs()"></div>
+    <div class="help-win rv" id="help-win" style="transition-delay:.1s">
+      <div class="help-chrome">
+        <span class="awd r"></span><span class="awd y"></span><span class="awd g"></span>
+        <span class="help-url">MyPaiOS — Help Guide</span>
+        <div style="display:flex;gap:.4rem;margin-left:auto;flex-shrink:0">
+          <button onclick="exportHelpPDF()" style="background:var(--panel);border:1px solid var(--border);border-radius:5px;padding:.2rem .65rem;font-size:.72rem;color:var(--muted);cursor:pointer" title="Export to PDF">↓ PDF</button>
+          <button id="help-fs-btn" onclick="toggleHelpFs()" title="Fullscreen" style="background:var(--panel);border:1px solid var(--border);border-radius:5px;padding:.2rem .55rem;font-size:.88rem;color:var(--muted);cursor:pointer;line-height:1;transition:color .15s,border-color .15s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">⤢</button>
+        </div>
+      </div>
+      <div class="help-body">
+        <!-- Left nav -->
+        <div class="help-nav" id="help-nav">
+          <!-- groups injected by JS -->
+        </div>
+        <!-- Right content -->
+        <div class="help-content" id="help-content">
+          <!-- content injected by JS -->
+        </div>
+      </div>
+    </div>
+
+    <div class="help-stats-row rv" style="transition-delay:.15s">
+      <div class="help-stat-block"><span class="help-stat-n">3<span>9</span></span><span class="help-stat-l">sections<br>documented</span></div>
+      <div class="help-stat-block"><span class="help-stat-n">8</span><span class="help-stat-l">topic<br>chapters</span></div>
+      <div class="help-stat-block"><span class="help-stat-n"><span>↓</span>PDF</span><span class="help-stat-l">export<br>built-in</span></div>
+      <div class="help-stat-block"><span class="help-stat-n">✓</span><span class="help-stat-l">offline<br>available</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ARCHITECTURE GRAPH ── -->
+<section id="architecture">
+  <div class="w">
+    <div class="sh rv">
+      <div class="ey">Under the hood</div>
+      <h2 class="st">1,041 files. Fully mapped.<br>Zero guesswork.</h2>
+      <p class="ss">We turned MyPaiOS's own codebase into a queryable knowledge graph — every file, every cross-reference, traced locally with tree-sitter AST parsing. No LLM calls, no vector store, nothing left the machine. Explore it yourself below.</p>
+    </div>
+
+    <div class="arch-tabs rv" style="transition-delay:.05s">
+      <button class="arch-tab on" id="arch-tab-domain" onclick="switchArch('domain')">Domain Map</button>
+      <button class="arch-tab" id="arch-tab-file" onclick="switchArch('file')">File Graph <span style="opacity:.7">(Obsidian-style)</span></button>
+      <button class="arch-tab" id="arch-tab-call" onclick="switchArch('call')">Call Graph <span style="opacity:.7">(functions)</span></button>
+    </div>
+
+    <div class="arch-win rv" id="arch-win" style="transition-delay:.1s">
+      <div class="arch-chrome">
+        <span class="awd r"></span><span class="awd y"></span><span class="awd g"></span>
+        <span class="arch-url" id="arch-url">codebase-graph.html — layers → domains → files</span>
+      </div>
+      <div class="arch-body">
+        <iframe id="arch-iframe" src="codebase-graph.html" loading="lazy" title="MyPaiOS architecture graph"></iframe>
+      </div>
+    </div>
+
+    <p class="arch-credit rv" style="transition-delay:.15s">
+      Graphs built locally, zero API cost: domain &amp; file maps with <a href="https://github.com/Graphify-Labs/graphify" target="_blank" rel="noopener">Graphify</a> (tree-sitter AST, Apache-2.0) — 15,471 symbols · 34,652 relationships · 817 communities; the call graph with <a href="https://github.com/colbymchenry/codegraph" target="_blank" rel="noopener">CodeGraph</a> (Rust kernel, MIT) — 21,652 symbols · 84,716 edges, dynamic dispatch resolved.
+    </p>
+  </div>
+</section>
+
+<section id="numbers" class="altbg">
+  <div class="w">
+    <div class="sh rv">
+      <div class="ey">BUILT IN PUBLIC</div>
+      <h2 class="st">Credibility by construction,<br>not testimonials.</h2>
+      <p class="ss">No borrowed quotes, no vanity graphs. These numbers come from the repository itself — clone it and count them yourself.</p>
+    </div>
+    <div class="numbers-grid">
+      <div class="numbers-tile rv">
+        <div class="numbers-tick"></div>
+        <div class="numbers-num" data-target="1041">1,041</div>
+        <div class="numbers-lbl">files in the repo</div>
+      </div>
+      <div class="numbers-tile rv" style="transition-delay:.05s">
+        <div class="numbers-tick"></div>
+        <div class="numbers-num" data-target="62">62</div>
+        <div class="numbers-lbl">API route modules</div>
+      </div>
+      <div class="numbers-tile rv" style="transition-delay:.1s">
+        <div class="numbers-tick"></div>
+        <div class="numbers-num" data-target="90">90</div>
+        <div class="numbers-lbl">core engine modules</div>
+      </div>
+      <div class="numbers-tile rv" style="transition-delay:.15s">
+        <div class="numbers-tick"></div>
+        <div class="numbers-num" data-target="35" data-suffix="+">35+</div>
+        <div class="numbers-lbl">open-source models supported</div>
+      </div>
+      <div class="numbers-tile rv" style="transition-delay:.2s">
+        <div class="numbers-tick"></div>
+        <div class="numbers-num" data-target="39">39</div>
+        <div class="numbers-lbl">documented help sections</div>
+      </div>
+      <div class="numbers-tile rv" style="transition-delay:.25s">
+        <div class="numbers-tick"></div>
+        <div class="numbers-num" data-target="15471">15,471</div>
+        <div class="numbers-lbl">nodes in its own code knowledge-graph</div>
+      </div>
+    </div>
+    <div class="numbers-wide rv" style="transition-delay:.1s">
+      <svg class="numbers-wide-svg" viewBox="0 0 120 84" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g stroke="var(--border)" stroke-width="1.2">
+          <line x1="16" y1="62" x2="46" y2="22"/>
+          <line x1="46" y1="22" x2="62" y2="64"/>
+          <line x1="46" y1="22" x2="78" y2="12"/>
+          <line x1="62" y1="64" x2="92" y2="38"/>
+          <line x1="92" y1="38" x2="78" y2="12"/>
+          <line x1="92" y1="38" x2="106" y2="70"/>
+          <line x1="16" y1="62" x2="62" y2="64"/>
+        </g>
+        <circle cx="16" cy="62" r="4.5" fill="var(--muted)"/>
+        <circle cx="46" cy="22" r="5" fill="var(--accent)"/>
+        <circle cx="62" cy="64" r="4.5" fill="#38BAF5"/>
+        <circle cx="78" cy="12" r="4" fill="var(--muted)"/>
+        <circle cx="92" cy="38" r="5" fill="var(--accent)"/>
+        <circle cx="106" cy="70" r="4" fill="var(--muted)"/>
+      </svg>
+      <div class="numbers-wide-body">
+        <h3 class="numbers-wide-title">The codebase maps itself.</h3>
+        <p class="numbers-wide-text">The Architecture section below is generated from the repo's own AST graph — <strong>15,471 nodes</strong> parsed straight from source. The code describes the code.</p>
+        <span class="numbers-chip">parse source → build graph → render page</span>
+      </div>
+    </div>
+    <div class="numbers-strip rv" style="transition-delay:.15s">
+      <span class="numbers-pill"><span class="numbers-pill-dot"></span>MIT license</span>
+      <span class="numbers-pill"><span class="numbers-pill-dot"></span>Zero telemetry</span>
+      <span class="numbers-pill"><span class="numbers-pill-dot"></span>No account</span>
+      <span class="numbers-pill"><span class="numbers-pill-dot"></span>Single Python process</span>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="w">
+    <div class="sh rv">
+      <div class="ey">Questions</div>
+      <h2 class="st">Asked often.<br>Answered straight.</h2>
+      <p class="ss">The things people want to know before they run the install script. Short answers, no fine print.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item rv">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a1"><span>Do I need a GPU?</span><span class="faq-x" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-a1"><div class="faq-ain">Apple Silicon is ideal — unified memory suits local models well. Any GPU Ollama supports works too. CPU-only machines run the smaller models fine; start there and scale up.</div></div>
+      </div>
+      <div class="faq-item rv" style="transition-delay:.05s">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a2"><span>Is it really free?</span><span class="faq-x" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-a2"><div class="faq-ain">MIT-licensed. No premium tier, no trial clock, no telemetry phoning home. Fork it if you like.</div></div>
+      </div>
+      <div class="faq-item rv" style="transition-delay:.1s">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a3"><span>Where does my data live?</span><span class="faq-x" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-a3"><div class="faq-ain">SQLite plus a local vector store, all inside a <code>data/</code> folder on your disk. You can copy it, back it up, or delete it. It never leaves your machine.</div></div>
+      </div>
+      <div class="faq-item rv" style="transition-delay:.15s">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a4"><span>Can I use cloud models too?</span><span class="faq-x" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-a4"><div class="faq-ain">Yes, optionally. Point MyPaiOS at any OpenAI-compatible endpoint. Keys are encrypted on your disk, and nothing is sent anywhere unless you configure it yourself.</div></div>
+      </div>
+      <div class="faq-item rv" style="transition-delay:.2s">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a5"><span>How is this different from a chat UI like Open WebUI?</span><span class="faq-x" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-a5"><div class="faq-ain">Those are chat frontends. MyPaiOS is an operating system: a research engine, a coding agent, email, video, voice, agent crews, and persistent memory — all running locally.</div></div>
+      </div>
+      <div class="faq-item rv" style="transition-delay:.25s">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a6"><span>Mac only?</span><span class="faq-x" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-a6"><div class="faq-ain">No. macOS gets the polish, including a <code>launchd</code> background service. Linux and Windows run fine via Python.</div></div>
+      </div>
+      <div class="faq-item rv" style="transition-delay:.3s">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a7"><span>What hardware do the big models need?</span><span class="faq-x" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-a7"><div class="faq-ain">32B models want around 24 GB of memory. The built-in hardware-fit scorer reads your machine and tells you exactly what it can handle — before you download a single gigabyte.</div></div>
+      </div>
+      <div class="faq-item rv" style="transition-delay:.35s">
+        <button class="faq-q" aria-expanded="false" aria-controls="faq-a8"><span>How do I move my data to a new machine?</span><span class="faq-x" aria-hidden="true">+</span></button>
+        <div class="faq-a" id="faq-a8"><div class="faq-ain">Copy the <code>data/</code> folder. That is the whole migration.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── OSS CTA ── -->
+<section style="text-align:center" id="opensource">
+  <div class="w">
+    <div class="rv">
+      <div class="ey" style="text-align:center">Open source</div>
+      <h2 class="st" style="text-align:center;max-width:600px;margin:0 auto 1rem">Built in the open.<br>Free forever.</h2>
+      <p class="ss" style="margin:0 auto;text-align:center">MIT License. Fork it, self-host it, run it on your Mac, Linux box, or homelab. No telemetry, no premium tier, no rug-pull.</p>
+    </div>
+    <div class="osscards rv" style="transition-delay:.1s">
+      <div class="osscard"><h4>MIT License</h4><p>Commercial use, forks, modifications — no strings.</p></div>
+      <div class="osscard"><h4>Mac · Linux · Windows</h4><p>Runs anywhere Python and Ollama run.</p></div>
+      <div class="osscard"><h4>GitHub Pages site</h4><p>Free website, free HTTPS, zero domain cost.</p></div>
+      <div class="osscard"><h4>launchd service</h4><p>Starts at login on macOS — always there when you need it.</p></div>
+    </div>
+    <div class="osscta rv" style="transition-delay:.2s">
+      <a href="https://github.com/mypaios/mypaios" class="btnp" style="font-size:1.02rem;padding:.8rem 1.8rem">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Star on GitHub
+      </a>
+      <a href="#start" class="btno" style="font-size:1.02rem;padding:.8rem 1.5rem">Get started →</a>
+    </div>
+  </div>
+</section>
+
+<section id="community">
+  <div class="w">
+    <div class="sh rv star-hd">
+      <div class="ey">One ask</div>
+      <h2 class="st">If this replaced a $20 subscription,<br>it costs one star.</h2>
+      <p class="ss">Stars are how open source travels. They are the only currency this project asks for &mdash; no account, no invoice, nothing tracked. One click, if it earned it.</p>
+    </div>
+    <div class="star-cta rv" style="transition-delay:.1s">
+      <a class="star-btn star-btn-p" href="https://github.com/mypaios/mypaios" target="_blank" rel="noopener"><span class="star-glyph">&#9733;</span>Star mypaios on GitHub</a>
+      <a class="star-btn star-btn-s" href="https://github.com/mypaios/mypaios/releases" target="_blank" rel="noopener">Watch releases</a>
+    </div>
+    <div class="star-grid">
+      <a class="star-card star-c1 rv" style="transition-delay:.15s" href="https://github.com/mypaios/mypaios/issues" target="_blank" rel="noopener">
+        <span class="star-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M9 9h6v5a3 3 0 0 1-6 0V9Z"/><path d="M9 9a3 3 0 0 1 6 0"/><path d="M4 13h3M17 13h3M5 8l2.5 1.5M19 8l-2.5 1.5M5.5 18l2.3-1.8M18.5 18l-2.3-1.8"/></svg></span>
+        <h3>Report a bug</h3>
+        <p>Something broke on your machine? File it with your OS and the model you ran. Clear reproductions get fixed first.</p>
+        <span class="star-card-go">Open an issue <span class="star-arr">&rarr;</span></span>
+      </a>
+      <a class="star-card star-c2 rv" style="transition-delay:.25s" href="https://github.com/mypaios/mypaios/discussions" target="_blank" rel="noopener">
+        <span class="star-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.6 10.8c.7.55 1.1 1.3 1.1 2.2h5c0-.9.4-1.65 1.1-2.2A6 6 0 0 0 12 3Z"/></svg></span>
+        <h3>Suggest a feature</h3>
+        <p>Discussions is where the roadmap starts. Pitch an idea, or add weight to one somebody already argued for.</p>
+        <span class="star-card-go">Start a discussion <span class="star-arr">&rarr;</span></span>
+      </a>
+      <a class="star-card star-c3 rv" style="transition-delay:.35s" href="https://github.com/mypaios/mypaios" target="_blank" rel="noopener">
+        <span class="star-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M13 5l-2 14"/></svg></span>
+        <h3>Read the code</h3>
+        <p>MIT-licensed, notices and all. The Architecture section above maps all 1,041 files &mdash; pick a folder and start reading.</p>
+        <span class="star-card-go">Browse the source <span class="star-arr">&rarr;</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="fi">
+    <div class="fcp">
+      <em style="color:var(--text);font-style:italic">Built in the spirit of <b>Swarajya</b> — self-rule — inspired by Chhatrapati Shivaji Maharaj.</em><br>
+      © 2026 Vishal Pawar — MyPaiOS is MIT licensed.<br>
+      <span style="font-size:.73rem">Third-party notices and full credits live in the repo.</span>
+    </div>
+    <div class="flinks">
+      <a href="https://github.com/mypaios/mypaios">GitHub</a>
+      <a href="https://github.com/mypaios/mypaios/blob/main/LICENSE">License</a>
+      <a href="https://github.com/mypaios/mypaios/blob/main/ACKNOWLEDGMENTS.md">Credits</a>
+      <a href="https://github.com/mypaios/mypaios/blob/main/SECURITY.md">Security</a>
+      <a href="https://github.com/mypaios/mypaios/blob/main/CHANGELOG.md">Changelog</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── Theme ── */
+const root = document.documentElement, tbtn = document.getElementById('themeBtn');
+const saved = localStorage.getItem('paios-theme');
+if (saved) { root.setAttribute('data-theme', saved); tbtn.textContent = saved === 'dark' ? '☀︎' : '☽'; }
+tbtn.addEventListener('click', () => {
+  const n = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  root.setAttribute('data-theme', n); tbtn.textContent = n === 'dark' ? '☀︎' : '☽';
+  localStorage.setItem('paios-theme', n);
+});
+
+/* ── Nav scroll ── */
+window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 20), {passive:true});
+
+/* ── Reveal ── */
+const io = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);} }), {threshold:.07});
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+/* ── Hero model cycling ── */
+const heroModels = ['deepseek-r1:32b','qwen3-vl:32b','llama3.3:70b','hermes3:70b','phi4:14b','qwen2.5-coder:32b','gemma2:27b'];
+let hmi = 0; const hb = document.getElementById('hbadge');
+if (hb) { hb.style.transition='opacity .3s'; setInterval(()=>{ hb.style.opacity='0'; setTimeout(()=>{ hmi=(hmi+1)%heroModels.length; hb.textContent=heroModels[hmi]; hb.style.opacity='1'; },300); },2000); }
+
+/* ── Constellation canvas ── */
+(()=>{
+  const c=document.getElementById('cnv'); if(!c)return;
+  const ctx=c.getContext('2d'); let W,H,nodes=[];
+  const LABELS=['deepseek','qwen3','llama3','hermes','mistral','gemma2','phi4','flux.1','command-r','yi-34b','starcoder','codellama','internlm','solar'];
+  function resize(){W=c.width=c.offsetWidth;H=c.height=c.offsetHeight;}
+  function spawn(){ nodes=[]; const n=Math.min(16,Math.floor(W/90));
+    for(let i=0;i<n;i++) nodes.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.22,lbl:LABELS[i%LABELS.length],r:2+Math.random()*2,op:.3+Math.random()*.4}); }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const dark=root.getAttribute('data-theme')!=='light';
+    const nc=dark?'rgba(20,212,190,':'rgba(10,158,134,'; const lc=dark?'rgba(20,212,190,':'rgba(10,158,134,'; const tc=dark?'rgba(94,120,154,':'rgba(90,112,144,';
+    for(let i=0;i<nodes.length;i++) for(let j=i+1;j<nodes.length;j++){
+      const d=Math.hypot(nodes[i].x-nodes[j].x,nodes[i].y-nodes[j].y);
+      if(d<170){ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);ctx.strokeStyle=lc+(0.1*(1-d/170))+')';ctx.lineWidth=.7;ctx.stroke();}
+    }
+    ctx.font='10px monospace';
+    nodes.forEach(n=>{
+      ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);ctx.fillStyle=nc+n.op+')';ctx.fill();
+      ctx.fillStyle=tc+'.65)';ctx.fillText(n.lbl,n.x+n.r+4,n.y+3);
+      n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>W)n.vx*=-1;if(n.y<0||n.y>H)n.vy*=-1;
+    });
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',()=>{resize();spawn();});
+  resize();spawn();draw();
+})();
+
+/* ── Scroll-spy: highlight left nav as demos scroll into view ── */
+const demoBlocks = document.querySelectorAll('.demo-block');
+const demoNavLinks = document.querySelectorAll('.dnav-item');
+const triggered = new Set();
+
+const demoIO = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const id = entry.target.id;
+    // update nav highlight
+    demoNavLinks.forEach(l => {
+      l.classList.toggle('on', l.getAttribute('href') === '#' + id);
+    });
+    // trigger demo animation once
+    if (!triggered.has(id)) {
+      triggered.add(id);
+      const key = id.replace('db-', '');
+      if (key === 'research') startResearch();
+      else if (key === 'code') startCode();
+      else if (key === 'video') startVideo();
+    }
+  });
+}, { threshold: 0.35 });
+
+demoBlocks.forEach(b => demoIO.observe(b));
+
+/* smooth-scroll nav clicks */
+demoNavLinks.forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+/* ── Chat suggestions ── */
+const chatReplies = {
+  'Summarise my notes from last week': 'Here\'s a summary of your notes from July 19–25:\n\n• 3 architecture decisions logged (auth refactor, API versioning, caching strategy)\n• 7 meeting notes — standups + 1 investor call\n• 2 research threads: local LLMs for production, vector DB comparison\n\nTop action item: finish the auth PR review before Thursday.',
+  'Debug this Python traceback…': 'The traceback suggests a NoneType error at line 47 — `user.profile` is None when it should be a UserProfile instance. This happens when a user is created without calling `create_profile()`. Fix: add a post_save signal on User model, or check `if user.profile is None` before accessing it.',
+  'Draft a reply to a client complaint': 'Draft reply:\n\nHi [Client Name],\n\nThank you for flagging this — I\'m sorry for the inconvenience. I\'ve reviewed the issue and have a fix ready to deploy within 24 hours. I\'ll personally follow up once it\'s live. Your feedback is how we improve.\n\nBest,\n[Your name]',
+  'Explain quantum entanglement simply': 'Two particles can become "entangled" — measuring one instantly tells you the state of the other, no matter how far apart they are. It\'s not faster-than-light communication (you can\'t use it to send information), but it\'s real and verified. Think of it as two coins that always land on opposite faces, no matter where they are when you flip them.'
+};
+let chatBusy=false;
+function chatSuggest(prompt){
+  if(chatBusy)return; chatBusy=true;
+  const msgs=document.getElementById('dchat-msgs');
+  const inp=document.getElementById('dchat-inp');
+  const models=['llama3.3:70b','qwen3:32b','hermes3:70b','deepseek-r1:32b','phi4:14b'];
+  const m=models[Math.floor(Math.random()*models.length)];
+  // user msg
+  const um=document.createElement('div');um.className='dchat-msg u';um.textContent=prompt;msgs.appendChild(um);
+  inp.textContent='Pi is thinking…';
+  // ai response
+  setTimeout(()=>{
+    const wrap=document.createElement('div');
+    const am=document.createElement('div');am.className='dchat-msg a';am.textContent='';
+    const meta=document.createElement('div');meta.className='dchat-meta';
+    meta.innerHTML=`<span class="mbadge">${m}</span> · ${(.8+Math.random()*.9).toFixed(1)}s`;
+    wrap.appendChild(am);wrap.appendChild(meta);msgs.appendChild(wrap);
+    msgs.scrollTop=msgs.scrollHeight;
+    const reply=chatReplies[prompt]||'I\'d be happy to help with that. Let me think through it carefully…';
+    let i=0;
+    const t=setInterval(()=>{
+      am.textContent=reply.slice(0,i+=3);msgs.scrollTop=msgs.scrollHeight;
+      if(i>=reply.length){clearInterval(t);inp.textContent='Ask anything — or click a suggestion below…';chatBusy=false;}
+    },20);
+  },800);
+}
+document.getElementById('dchat-btn').addEventListener('click',()=>{
+  const inp=document.getElementById('dchat-inp');
+  if(inp.tagName!=='INPUT'&&!chatBusy)chatSuggest('Summarise my notes from last week');
+});
+
+/* ── Research demo ── */
+function startResearch(){
+  const srcs=document.querySelectorAll('#dres-sources .dsrc');
+  const synth=document.getElementById('dres-synth');
+  srcs.forEach(s=>s.classList.remove('show'));synth.textContent='';
+  let i=0;
+  const si=setInterval(()=>{if(i<srcs.length){srcs[i].classList.add('show');i++;}else clearInterval(si);},600);
+  setTimeout(()=>{
+    const txt='For local coding assistants in 2025, the top picks are: (1) Qwen2.5-Coder 32B — best overall benchmark scores, strong at code completion and review; (2) DeepSeek Coder V2 16B — excellent reasoning about code, fast locally; (3) StarCoder2 15B — specialised for code generation with a wide language range; (4) CodeLlama 70B — best for large refactors with context; (5) CodeGemma 7B — best lightweight option for resource-constrained machines. All run in MyPaiOS via Ollama.';
+    let j=0;const ti=setInterval(()=>{synth.textContent=txt.slice(0,j+=4);if(j>=txt.length)clearInterval(ti);},18);
+  },3000);
+}
+
+/* ── Code agent demo ── */
+const codeLines = [
+  '<span class="cm"># Coding agent: refactoring auth middleware</span>',
+  '<span class="cm"># Task: add rate limiting + JWT validation</span>',
+  '',
+  '<span class="ck">from</span> functools <span class="ck">import</span> wraps',
+  '<span class="ck">from</span> flask_jwt_extended <span class="ck">import</span> verify_jwt_in_request',
+  '<span class="ck">from</span> redis <span class="ck">import</span> Redis',
+  '',
+  'r <span class="cv">= Redis()</span>',
+  '',
+  '<span class="ck">def</span> <span class="cn">auth_required</span>(f):',
+  '    <span class="cv">@wraps</span>(f)',
+  '    <span class="ck">def</span> <span class="cn">decorated</span>(*args, **kwargs):',
+  '        verify_jwt_in_request()',
+  '        key <span class="cv">= f"rl:{get_jwt_identity()}"</span>',
+  '        count <span class="cv">= r.incr(key)</span>',
+  '        <span class="ck">if</span> count <span class="cv">== 1:</span> r.expire(key, <span class="cv">60</span>)',
+  '        <span class="ck">if</span> count <span class="cv">&gt; 100:</span>',
+  '            <span class="ck">return</span> {<span class="cs">"error"</span>: <span class="cs">"rate_limit"</span>}, <span class="cv">429</span>',
+  '        <span class="ck">return</span> f(*args, **kwargs)',
+  '    <span class="ck">return</span> decorated',
+  '',
+  '<span class="cm"># ✓ Done — 18 lines, 0 external deps beyond existing stack</span>'
+];
+function startCode(){
+  const body=document.getElementById('dcode-body');body.innerHTML='';
+  let i=0;
+  const t=setInterval(()=>{
+    if(i<codeLines.length){ body.innerHTML+=codeLines[i]+'\n'; i++; }
+    else clearInterval(t);
+  },100);
+}
+
+/* ── Video demo ── */
+function startVideo(){
+  const bar=document.getElementById('dvbar'); bar.style.width='0%';
+  const frames=document.querySelectorAll('.dvframe'); frames.forEach(f=>f.classList.remove('show'));
+  const evs=document.querySelectorAll('.dvev'); evs.forEach(e=>e.classList.remove('show'));
+  setTimeout(()=>bar.style.width='100%',100);
+  frames.forEach((f,i)=>setTimeout(()=>f.classList.add('show'),400+i*500));
+  evs.forEach((e,i)=>setTimeout(()=>e.classList.add('show'),800+i*700));
+}
+
+/* ── Email select ── */
+const emails=[
+  {from:'Sarah Chen · Investor',sub:'Re: Q3 metrics — need numbers by 5pm today',body:'Hi, I need the Q3 retention, MRR delta, and churn figures for the LP update. Can you send by 5? Also please attach the cohort chart from last month.',pi:'High priority — investor deadline in 3h. Pi found the cohort chart in your attachments folder (2026-06-cohorts.pdf). Draft reply pre-filled with Q3 numbers from your notes. Needs your sign-off on MRR figure before sending.'},
+  {from:'AWS Support',sub:'Your cost anomaly alert fired',body:'We detected an unusual spike in your EC2 spend — 340% above your 30-day baseline in us-east-1. This started at 14:23 UTC. Please review your running instances.',pi:'Billing alert — likely a runaway instance. Pi found 3 large EC2 instances (c5.4xlarge) launched at 14:20 UTC not in your usual fleet. Draft action: stop those instances + add budget alert at $200/day.'},
+  {from:'GitHub · mypaios/mypaios',sub:'New star on mypaios/mypaios ⭐',body:'🌟 someone just starred your repository mypaios/mypaios. Keep shipping great work!',pi:'FYI only — no action needed. Your repo now has another star. Pi logged this in your project notes milestone tracker.'}
+];
+function selectEmail(i){
+  document.querySelectorAll('.dem').forEach((d,j)=>d.classList.toggle('on',j===i));
+  const d=document.getElementById('demail-detail'); const e=emails[i];
+  d.innerHTML=`<div class="ded-from">From: ${e.from}</div><div class="ded-sub">${e.sub}</div><div class="ded-body">${e.body}</div><div class="ded-pi"><div class="ded-pi-lbl">π Pi's triage</div><div class="ded-pi-text">${e.pi}</div></div><div class="ded-actions"><button class="da pri">Review draft reply</button><button class="da">Snooze 1h</button><button class="da">Archive</button></div>`;
+}
+
+/* ── Image gen demo ── */
+function runImgGen(){
+  const spinner=document.getElementById('dspinner');
+  const result=document.getElementById('dimg-result');
+  const hint=document.getElementById('dimg-hint');
+  const btn=document.getElementById('dimgbtn');
+  hint.style.display='none'; result.style.display='none';
+  spinner.style.display='block'; btn.disabled=true; btn.textContent='Generating…';
+  setTimeout(()=>{
+    spinner.style.display='none'; result.style.display='flex';
+    btn.disabled=false; btn.textContent='Generate again ✨';
+  },3200);
+}
+
+/* ── Crew demo ── */
+let crewRunning=false;
+function resetCrew(){
+  ['dag0','dag1','dag2','dag3'].forEach(id=>{ const el=document.getElementById(id); el.classList.remove('active','done'); });
+  ['dag0-s','dag1-s','dag2-s','dag3-s'].forEach(id=>document.getElementById(id).textContent='Waiting');
+  document.getElementById('dag-log').innerHTML='<div class="dag-logline" style="color:var(--muted)">Click "Run Crew" to start…</div>';
+  document.getElementById('crewstatus').textContent='Idle · hermes3:70b supervising';
+  document.getElementById('crewbtn').textContent='▶ Run Crew';
+  crewRunning=false;
+}
+function crewLog(msg){ const l=document.getElementById('dag-log'); const d=document.createElement('div'); d.className='dag-logline'; d.innerHTML=msg; l.appendChild(d); l.scrollTop=l.scrollHeight; }
+function runCrew(){
+  if(crewRunning)return; crewRunning=true;
+  document.getElementById('crewbtn').textContent='Running…';
+  document.getElementById('crewstatus').textContent='Running · hermes3:70b supervising';
+  document.getElementById('dag-log').innerHTML='';
+  const steps=[
+    {id:'dag0',s:'Running',log:'<span>Researcher</span>: searching "best open-source AI tools 2025"…',delay:0},
+    {id:'dag0',s:'Running',log:'<span>Researcher</span>: found 12 sources — filtering top 5 tools…',delay:1400},
+    {id:'dag0',s:'Done ✓',done:true,log:'<span>Researcher</span>: synthesis complete → handoff to Writer',delay:2800},
+    {id:'dag1',s:'Running',log:'<span>Writer</span>: drafting blog post from research notes…',delay:3200},
+    {id:'dag1',s:'Running',log:'<span>Writer</span>: 1,240 words generated…',delay:4800},
+    {id:'dag1',s:'Done ✓',done:true,log:'<span>Writer</span>: draft complete → handoff to Editor',delay:6200},
+    {id:'dag2',s:'Running',log:'<span>Editor</span>: fact-checking claims against sources…',delay:6600},
+    {id:'dag2',s:'Running',log:'<span>Editor</span>: polishing prose, adding subheadings…',delay:8000},
+    {id:'dag2',s:'Done ✓',done:true,log:'<span>Editor</span>: 1,180 words, 3 edits made → handoff to Saver',delay:9200},
+    {id:'dag3',s:'Running',log:'<span>Saver</span>: writing to Notes — "AI Tools Comparison 2025"…',delay:9600},
+    {id:'dag3',s:'Done ✓',done:true,log:'<span>Saver</span>: saved ✓ — crew complete in 10.4s',delay:10400},
+  ];
+  steps.forEach(step=>{
+    setTimeout(()=>{
+      const el=document.getElementById(step.id);
+      el.classList.toggle('active',step.s==='Running');
+      el.classList.toggle('done',step.done||false);
+      document.getElementById(step.id+'-s').textContent=step.s;
+      crewLog(step.log);
+      if(step.done&&step.id==='dag3') document.getElementById('crewstatus').textContent='Complete ✓ · 10.4s';
+    },step.delay);
+  });
+}
+
+/* ── Model filter ── */
+document.querySelectorAll('.mbf').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.mbf').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    const f=btn.dataset.filter;
+    document.querySelectorAll('.mcard').forEach(c=>{
+      const cats=c.dataset.cats||'';
+      c.classList.toggle('hidden', f!=='all' && !cats.includes(f));
+    });
+  });
+});
+
+/* ── Palette picker ── */
+const accents = [
+  {name:'Teal',   accent:'#14D4BE', a2:'#0DBBA8', glow:'rgba(20,212,190,0.15)'},
+  {name:'Sky',    accent:'#38BAF5', a2:'#1498E2', glow:'rgba(56,186,245,0.15)'},
+  {name:'Violet', accent:'#9066F5', a2:'#7048E2', glow:'rgba(144,102,245,0.15)'},
+  {name:'Pink',   accent:'#F040B5', a2:'#E01D9E', glow:'rgba(240,64,181,0.15)'},
+  {name:'Amber',  accent:'#F5A623', a2:'#E08B10', glow:'rgba(245,166,35,0.15)'},
+];
+let activeAccent = 0;
+function applyAccent(idx) {
+  const t = accents[idx]; activeAccent = idx;
+  const r = document.documentElement;
+  r.style.setProperty('--accent', t.accent);
+  r.style.setProperty('--a2', t.a2);
+  r.style.setProperty('--glow', t.glow);
+  document.querySelectorAll('.pswatch').forEach((s,i) => s.classList.toggle('active', i===idx));
+  document.getElementById('palette-popup').classList.remove('open');
+}
+function togglePalette() {
+  document.getElementById('palette-popup').classList.toggle('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.palette-wrap')) document.getElementById('palette-popup').classList.remove('open');
+});
+
+/* ── Help guide data ── */
+const helpGroups = [
+  { title:'Getting Started', ico:'🚀', sections:['Installation','First Launch','Connecting Ollama','Quick Tour'],
+    content: { title:'Installation', crumb:'Getting Started › Installation',
+      body:'MyPaiOS runs as a standard Python app — no Docker, no cloud required.\n\n<strong>Requirements:</strong> Python 3.11+, Ollama, macOS, Linux, or Windows.\n\nClone the repo and run the start script:',
+      code:'git clone https://github.com/mypaios/mypaios\ncd mypaios\n./start-macos.sh   # Windows: launch-windows.ps1',
+      tip:'💡 The setup script creates a virtual environment, installs all Python dependencies, and on macOS registers a launchd service so MyPaiOS starts at login automatically.' } },
+  { title:'Chat & Pi', ico:'💬', sections:['Chatting with Pi','Memory & Context','Model Selection','Attachments','Voice Notes','Plugins'],
+    content: { title:'Chatting with Pi', crumb:'Chat & Pi › Chatting with Pi',
+      body:'Pi is your AI assistant — it answers questions, helps with writing, debugs code, and can use tools like web search and calendar access.\n\nEvery message is processed locally by your chosen model. Pi remembers your conversation within a session and can reference your personal notes when you ask.',
+      code:'# Switch model mid-conversation:\n# Open model picker → select any Ollama model\n# Context is preserved across the switch',
+      tip:'💡 Try <code>deepseek-r1:32b</code> for step-by-step reasoning, <code>qwen2.5-coder:32b</code> for code tasks, and <code>qwen3-vl:32b</code> for images and screenshots.' } },
+  { title:'Research & Knowledge', ico:'🔬', sections:['Deep Research','Web Search','Knowledge Base','Notes','Citations'],
+    content: { title:'Deep Research', crumb:'Research & Knowledge › Deep Research',
+      body:'Deep Research runs a multi-step investigation: search → read → identify gaps → synthesise a cited report — all locally, with no data sent to external AI services.\n\nAn agent issues multiple searches, reads each source, and distils a structured answer with inline citations.',
+      code:'# Invoke from chat:\n"Research the best local coding models in 2025"\n# Or open the Research panel directly',
+      tip:'💡 Research runs take 2–10 minutes depending on depth. Watch sources appear in real time and stop at any point. Results are saved to your Notes automatically.' } },
+  { title:'Agents & Automation', ico:'🤖', sections:['Task Agents','Code Agent','Crew Mode','Scheduled Tasks','Agent API'],
+    content: { title:'Crew Mode', crumb:'Agents & Automation › Crew Mode',
+      body:'Crew mode coordinates multiple specialised agents in sequence: Researcher → Writer → Editor → Saver. Each agent hands its output to the next, supervised by a controlling model.\n\nYou define the goal once; the crew does the work while you watch the live log.',
+      code:'# Example crew goal:\n"Write a 1,000-word blog post on local AI\n tools in 2025, fact-checked, saved to Notes"',
+      tip:'💡 Use <code>hermes3:70b</code> or <code>qwen3:32b</code> as the crew supervisor for best results. Crew templates can be saved and re-run with one click.' } },
+  { title:'Media & Gallery', ico:'🎥', sections:['Video Analysis','Image Generation','Gallery','Exports'],
+    content: { title:'Video Analysis', crumb:'Media & Gallery › Video Analysis',
+      body:'Drop any video and Pi analyses it end-to-end: keyframe extraction via FFmpeg → transcription via Whisper Turbo → visual description via a vision model → timestamped digest you can chat with.\n\nSupported: mp4, mov, webm, mkv.',
+      code:'# Just drop a video into the chat window\n# Or click the 📎 attachment button\n# Analysis starts automatically on upload',
+      tip:'💡 Voice notes (.webm from your mic) are automatically transcribed and added to the conversation — great for capturing ideas on the go.' } },
+  { title:'Email & Calendar', ico:'📧', sections:['Email Triage','Smart Compose','Calendar Events','Contacts'],
+    content: { title:'Email Triage', crumb:'Email & Calendar › Email Triage',
+      body:'Pi reads your inbox (IMAP), classifies emails by priority, and drafts replies using context from your notes and past conversations.\n\nSmart compose adapts to your writing style over time — drafts get better the more you use it.',
+      code:'# Pi never sends without your approval\n# Every draft is shown for review first\n# Settings → Email → Connect IMAP account',
+      tip:'💡 Pi can also schedule emails for optimal send time and flag threads that need follow-up before they go cold.' } },
+  { title:'Skills & Settings', ico:'⚙️', sections:['Skill Library','Model Endpoints','Privacy Settings','Themes','Keyboard Shortcuts','Updates'],
+    content: { title:'Skill Library', crumb:'Skills & Settings › Skill Library',
+      body:'Skills extend Pi\'s capabilities: web browsing, calendar control, note creation, code execution, shell access, and more. Install from the built-in library or write your own in Python.\n\nDisabled skills save resources — only enable what you actively use.',
+      code:'# Skills are sandboxed:\n# Read/write only to data/ directory\n# No network access unless explicitly granted',
+      tip:'💡 The Code skill lets Pi run Python locally in a subprocess — great for data analysis, file processing, and automation tasks.' } },
+  { title:'Privacy & Security', ico:'🔒', sections:['Local-first by default','Data isolation','Encryption','API keys','Audit log'],
+    content: { title:'Local-first by default', crumb:'Privacy & Security › Local-first by default',
+      body:'Every model call, every search, every conversation stays on your machine. MyPaiOS has no telemetry, no crash reporting, and no analytics.\n\nThe only outbound network calls are ones you explicitly request — web search when you enable it, email sync when you connect an account.',
+      code:'# Verify it yourself — check Settings → Privacy\n# Live log of every outbound connection\n# Default: empty list (no connections)',
+      tip:'💡 MyPaiOS works fully offline once Ollama models are downloaded. Airplane mode AI — no calls home, ever.' } },
+];
+
+function buildHelpNav() {
+  const nav = document.getElementById('help-nav');
+  if (!nav) return;
+  nav.innerHTML = helpGroups.map((g, gi) => `
+    <div class="hgrp${gi===0?' open':''}">
+      <div class="hgrp-head" onclick="toggleHelpGroup(${gi})">
+        <span class="grpico">${g.ico}</span>
+        <span class="grptitle">${g.title}</span>
+        <span class="grarrow">▶</span>
+      </div>
+      <div class="hgrp-items">
+        ${g.sections.map((s,si) => `<div class="hgi${gi===0&&si===0?' on':''}" onclick="showHelpSection(${gi},${si})">${s}</div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function showHelpContent(gi) {
+  const g = helpGroups[gi]; const c = g.content;
+  const area = document.getElementById('help-content');
+  if (!area) return;
+  area.innerHTML = `
+    <div class="hc-crumb">${c.crumb.replace(' › ','<span style="margin:0 .25rem;opacity:.5"> › </span>')}</div>
+    <div class="hc-title">${c.title}</div>
+    <div class="hc-body">${c.body.replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>').replace(/^/,'<p>').replace(/$/,'</p>')}</div>
+    ${c.code ? `<div class="hc-code">${c.code}</div>` : ''}
+    <div class="hc-tip">${c.tip}</div>`;
+}
+
+function showHelpSection(gi, si) {
+  document.querySelectorAll('.hgi').forEach(el => el.classList.remove('on'));
+  const grps = document.querySelectorAll('.hgrp');
+  const items = grps[gi].querySelectorAll('.hgi');
+  if (items[si]) items[si].classList.add('on');
+  grps.forEach((g,i) => { if(i===gi) g.classList.add('open'); else if(!window.__helpKeepOpen) g.classList.remove('open'); });
+  const g = helpGroups[gi]; const c = g.content;
+  const sectionTitle = g.sections[si];
+  const area = document.getElementById('help-content');
+  if (!area) return;
+  const crumbHtml = `${g.title}<span style="margin:0 .3rem;opacity:.4"> › </span>${sectionTitle}`;
+  area.innerHTML = `
+    <div class="hc-crumb">${crumbHtml}</div>
+    <div class="hc-title">${sectionTitle}</div>
+    <div class="hc-body">${c.body.replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>').replace(/^/,'<p>').replace(/$/,'</p>')}</div>
+    ${c.code ? `<div class="hc-code">${c.code}</div>` : ''}
+    <div class="hc-tip">${c.tip}</div>
+    <p style="margin-top:1rem;font-size:.78rem;color:var(--muted)">Full documentation available inside MyPaiOS at <code style="background:var(--code-bg);border:1px solid var(--border);border-radius:4px;padding:.06rem .35rem;font-family:monospace;color:var(--accent)">localhost:7860/help</code></p>`;
+  area.scrollTop = 0;
+}
+
+function toggleHelpGroup(gi) {
+  const grps = document.querySelectorAll('.hgrp');
+  const isOpen = grps[gi].classList.contains('open');
+  grps.forEach(g => g.classList.remove('open'));
+  if (!isOpen) { grps[gi].classList.add('open'); showHelpContent(gi); }
+}
+
+function exportHelpPDF() {
+  const btn = document.querySelector('[onclick="exportHelpPDF()"]');
+  if (btn) { btn.textContent='Exporting…'; setTimeout(()=>btn.textContent='↓ PDF', 1800); }
+}
+function toggleHelpFs() {
+  const win = document.getElementById('help-win');
+  const bd  = document.getElementById('help-backdrop');
+  const btn = document.getElementById('help-fs-btn');
+  const isFs = win.classList.toggle('fs');
+  bd.classList.toggle('show', isFs);
+  btn.textContent = isFs ? '⊠' : '⤢';
+  btn.title = isFs ? 'Exit fullscreen' : 'Fullscreen';
+  document.body.style.overflow = isFs ? 'hidden' : '';
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') { const w=document.getElementById('help-win'); if(w&&w.classList.contains('fs')) toggleHelpFs(); } });
+
+/* ── Architecture graph ── */
+function switchArch(which) {
+  const ARCH = {
+    domain: { src: 'codebase-graph.html', label: 'codebase-graph.html — layers → domains → files' },
+    file:   { src: 'file-graph.html',     label: 'file-graph.html — top 220 files by connectivity, force-directed, drag & zoom' },
+    call:   { src: 'call-graph.html',     label: 'call-graph.html — top 240 functions by connectivity · 725 call edges · click a node for callers & callees' },
+  };
+  const c = ARCH[which] || ARCH.domain;
+  const iframe = document.getElementById('arch-iframe');
+  if (iframe.getAttribute('src') !== c.src) iframe.src = c.src;
+  document.getElementById('arch-url').textContent = c.label;
+  ['domain','file','call'].forEach(k => {
+    const t = document.getElementById('arch-tab-' + k);
+    if (t) t.classList.toggle('on', k === which);
+  });
+}
+
+buildHelpNav();
+showHelpContent(0);
+
+/* chat block is first — start code typing for it immediately on scroll-into-view */
+</script>
+<script>
+/* bento */
+(function(){
+  var cards = document.querySelectorAll('#everything .bento-lg');
+  if (!cards.length) return;
+  cards.forEach(function(card){
+    card.addEventListener('mousemove', function(e){
+      var r = card.getBoundingClientRect();
+      card.style.setProperty('--bento-x', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--bento-y', (e.clientY - r.top) + 'px');
+    });
+  });
+})();
+
+/* hwfit */
+(function(){
+  var sec = document.getElementById('willitrun');
+  if (!sec) return;
+  var fills = sec.querySelectorAll('.hwfit-fill');
+  if (!fills.length) return;
+  function setWidth(el){
+    var v = parseFloat(el.getAttribute('data-fit'));
+    el.style.width = (isNaN(v) ? 0 : Math.max(0, Math.min(100, v))) + '%';
+  }
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce || !('IntersectionObserver' in window)) {
+    for (var i = 0; i < fills.length; i++) {
+      fills[i].style.transition = 'none';
+      setWidth(fills[i]);
+    }
+    return;
+  }
+  var card = sec.querySelector('.hwfit-card') || sec;
+  var io = new IntersectionObserver(function(entries){
+    for (var e = 0; e < entries.length; e++) {
+      if (!entries[e].isIntersecting) continue;
+      for (var i = 0; i < fills.length; i++) {
+        fills[i].style.transitionDelay = (0.15 + i * 0.08) + 's';
+        setWidth(fills[i]);
+      }
+      io.disconnect();
+      break;
+    }
+  }, { threshold: 0.35 });
+  io.observe(card);
+})();
+
+/* cost */
+(function(){
+  var tick = document.getElementById('cost-tick');
+  if (tick) {
+    var t0 = Date.now();
+    var ratePerSec = 60 / 2592000; /* $60/mo across 3 subs, 30-day month in seconds */
+    setInterval(function(){
+      var d = (Date.now() - t0) / 1000 * ratePerSec;
+      tick.textContent = '$' + d.toFixed(6);
+    }, 50);
+  }
+  var total = document.getElementById('cost-total-num');
+  if (total && 'IntersectionObserver' in window) {
+    var played = false;
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (!e.isIntersecting || played) return;
+        played = true;
+        io.disconnect();
+        var start = null, dur = 1400, target = 3600;
+        var step = function(ts){
+          if (start === null) start = ts;
+          var p = Math.min((ts - start) / dur, 1);
+          var eased = 1 - Math.pow(1 - p, 3);
+          total.textContent = '$' + Math.round(eased * target).toLocaleString('en-US');
+          if (p < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      });
+    }, { threshold: 0.4 });
+    io.observe(total);
+  }
+})();
+
+/* numbers */
+(function(){
+  var nums = document.querySelectorAll('#numbers .numbers-num[data-target]');
+  if(!nums.length) return;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function fmt(n){ return n.toLocaleString('en-US'); }
+  function run(el){
+    if(el.getAttribute('data-done')) return;
+    el.setAttribute('data-done','1');
+    var target = parseInt(el.getAttribute('data-target'), 10);
+    if(isNaN(target)){ return; }
+    var suffix = el.getAttribute('data-suffix') || '';
+    if(reduce){ el.textContent = fmt(target) + suffix; return; }
+    var dur = 1300, start = null;
+    function step(ts){
+      if(start === null) start = ts;
+      var p = Math.min((ts - start) / dur, 1);
+      var e = 1 - Math.pow(1 - p, 3);
+      el.textContent = fmt(Math.round(target * e)) + suffix;
+      if(p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ run(en.target); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.4 });
+    nums.forEach(function(n){ io.observe(n); });
+  } else {
+    nums.forEach(run);
+  }
+})();
+
+/* faq */
+(function(){
+  var items = document.querySelectorAll('#faq .faq-item');
+  if (!items.length) return;
+  function setClosed(item){
+    item.classList.remove('faq-open');
+    var b = item.querySelector('.faq-q');
+    var a = item.querySelector('.faq-a');
+    if (b) b.setAttribute('aria-expanded','false');
+    if (a) a.style.maxHeight = '0px';
+  }
+  function setOpen(item){
+    item.classList.add('faq-open');
+    var b = item.querySelector('.faq-q');
+    var a = item.querySelector('.faq-a');
+    if (b) b.setAttribute('aria-expanded','true');
+    if (a) a.style.maxHeight = a.scrollHeight + 'px';
+  }
+  items.forEach(function(item){
+    var btn = item.querySelector('.faq-q');
+    if (!btn) return;
+    btn.addEventListener('click', function(){
+      var wasOpen = item.classList.contains('faq-open');
+      items.forEach(setClosed);
+      if (!wasOpen) setOpen(item);
+    });
+  });
+  window.addEventListener('resize', function(){
+    items.forEach(function(item){
+      if (!item.classList.contains('faq-open')) return;
+      var a = item.querySelector('.faq-a');
+      if (a) a.style.maxHeight = a.scrollHeight + 'px';
+    });
+  });
+})();
+</script>
+<script>
+/* ── AUTO COLOR CYCLE: palette wave every 5s ── */
+(function(){
+  const PALETTE=[
+    {c:'#14D4BE',a2:'#0DBBA8',glow:'rgba(20,212,190,0.15)'},
+    {c:'#38BAF5',a2:'#1498E2',glow:'rgba(56,186,245,0.15)'},
+    {c:'#9066F5',a2:'#7048E2',glow:'rgba(144,102,245,0.15)'},
+    {c:'#F040B5',a2:'#E01D9E',glow:'rgba(240,64,181,0.15)'},
+    {c:'#F5A623',a2:'#E08B10',glow:'rgba(245,166,35,0.15)'}
+  ];
+  const secIds=['demo','models','arena','everything','daywithpi','willitrun','start','cost','privacy','whyswitch','connect','help','architecture','numbers','faq','opensource','community'];
+  const eyes=secIds.map(id=>document.querySelector('#'+id+' .ey')).filter(Boolean);
+  let offset=0, auto=true;
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) auto=false;
+  function paint(){
+    eyes.forEach((el,i)=>{ el.style.color=PALETTE[(i+offset)%PALETTE.length].c; });
+    const lead=PALETTE[offset%PALETTE.length];
+    const r=document.documentElement;
+    r.style.setProperty('--accent',lead.c);
+    r.style.setProperty('--a2',lead.a2);
+    r.style.setProperty('--glow',lead.glow);
+    document.querySelectorAll('.pswatch').forEach((s,i)=>s.classList.toggle('active',i===offset%PALETTE.length));
+  }
+  setInterval(function(){ if(!auto||document.hidden) return; offset++; paint(); },5000);
+  /* manual palette pick pauses the auto-cycle and restores static section colors */
+  const origApply=window.applyAccent;
+  if(typeof origApply==='function'){
+    window.applyAccent=function(i){ auto=false; eyes.forEach(el=>{ el.style.color=''; }); origApply(i); };
+  }
+})();
+</script>
+<script>
+/* ── HELP GUIDE AUTO-PLAY: advance every 3s until the user takes over ── */
+(function(){
+  const win=document.getElementById('help-win');
+  if(!win || typeof helpGroups==='undefined' || typeof showHelpSection!=='function') return;
+  const seq=[];
+  helpGroups.forEach((g,gi)=>g.sections.forEach((s,si)=>seq.push([gi,si])));
+  let idx=0, stopped=false, visible=false;
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) stopped=true;
+  const io=new IntersectionObserver(es=>es.forEach(e=>{visible=e.isIntersecting;}),{threshold:0.35});
+  io.observe(win);
+  setInterval(function(){
+    if(stopped||document.hidden||!visible) return;
+    idx=(idx+1)%seq.length;
+    showHelpSection(seq[idx][0],seq[idx][1]);
+  },3000);
+  win.addEventListener('click',function(e){
+    if(!e.isTrusted||stopped) return;
+    stopped=true;
+    window.__helpKeepOpen=true;
+    document.querySelectorAll('#help-nav .hgrp').forEach(g=>g.classList.add('open'));
+  },true);
+})();
+</script>
+<script>
+/* ── STORY INTRO: looping hero stage ── */
+(function(){
+  var intro=document.getElementById('intro');
+  if(!intro) return;
+  var reduced=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var slides=[].slice.call(intro.querySelectorAll('.st-slide'));
+  var i=-1, timer=null, DUR=2600, visible=true;
+  function show(n){
+    n=((n%slides.length)+slides.length)%slides.length;
+    if(i>=0) slides[i].classList.remove('on');
+    i=n;
+    slides[i].classList.add('on');
+    arm();
+  }
+  function arm(){
+    clearTimeout(timer);
+    if(reduced) return;
+    timer=setTimeout(function(){
+      if(document.hidden||!visible){ arm(); return; }
+      show(i+1);
+    },DUR);
+  }
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ visible=e.isIntersecting; }); },{threshold:0.25});
+  io.observe(intro);
+  intro.addEventListener('click',function(e){
+    var x=e.clientX/window.innerWidth;
+    show(x<0.25? i-1 : i+1);
+  });
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight') show(i+1);
+    if(e.key==='ArrowLeft') show(i-1);
+  });
+  show(0);
+})();
+</script>
+</body>
+</html>

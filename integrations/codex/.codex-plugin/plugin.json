@@ -1,0 +1,22 @@
+{
+  "name": "paios",
+  "version": "0.1.1",
+  "description": "Connect Codex to a scoped PAIOS instance.",
+  "author": {
+    "name": "PAIOS"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "PAIOS",
+    "shortDescription": "Use scoped PAIOS tools from Codex.",
+    "longDescription": "Connects Codex terminal sessions to PAIOS through user-controlled scoped API tokens. Codex must use /api/codex/* endpoints so PAIOS Settings can enforce tool access.",
+    "developerName": "PAIOS",
+    "category": "Productivity",
+    "capabilities": [
+      "todos",
+      "email",
+      "scoped-api"
+    ],
+    "defaultPrompt": "Use PAIOS only through configured scoped access. Check capabilities before reading or writing data."
+  }
+}

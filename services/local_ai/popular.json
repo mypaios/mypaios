@@ -1,0 +1,356 @@
+[
+  {
+    "name": "qwen2.5vl",
+    "blurb": "Vision-language \u2014 reads images/screenshots",
+    "coding": false,
+    "tags": [
+      "7b",
+      "3b",
+      "32b",
+      "72b"
+    ]
+  },
+  {
+    "name": "qwen3-coder-next",
+    "blurb": "Agentic 80B-A3B coder, native tool-calling (Pi's default coder)",
+    "coding": true,
+    "tags": [
+      "q4_K_M",
+      "q8_0"
+    ]
+  },
+  {
+    "name": "qwen2.5-coder",
+    "blurb": "Top open coding model, many sizes",
+    "coding": true,
+    "tags": [
+      "7b",
+      "14b",
+      "32b",
+      "3b",
+      "1.5b"
+    ]
+  },
+  {
+    "name": "qwen3-coder",
+    "blurb": "Qwen3 coding model (MoE)",
+    "coding": true,
+    "tags": [
+      "30b",
+      "480b"
+    ]
+  },
+  {
+    "name": "deepseek-coder-v2",
+    "blurb": "Strong MoE code model",
+    "coding": true,
+    "tags": [
+      "16b",
+      "236b"
+    ]
+  },
+  {
+    "name": "codellama",
+    "blurb": "Meta Code Llama",
+    "coding": true,
+    "tags": [
+      "7b",
+      "13b",
+      "34b",
+      "70b"
+    ]
+  },
+  {
+    "name": "codegemma",
+    "blurb": "Google code model",
+    "coding": true,
+    "tags": [
+      "7b",
+      "2b"
+    ]
+  },
+  {
+    "name": "starcoder2",
+    "blurb": "BigCode StarCoder 2",
+    "coding": true,
+    "tags": [
+      "7b",
+      "15b",
+      "3b"
+    ]
+  },
+  {
+    "name": "codestral",
+    "blurb": "Mistral code model (22B)",
+    "coding": true,
+    "tags": [
+      "22b"
+    ]
+  },
+  {
+    "name": "devstral",
+    "blurb": "Mistral agentic coding model",
+    "coding": true,
+    "tags": [
+      "24b"
+    ]
+  },
+  {
+    "name": "granite-code",
+    "blurb": "IBM Granite code models",
+    "coding": true,
+    "tags": [
+      "8b",
+      "20b",
+      "34b",
+      "3b"
+    ]
+  },
+  {
+    "name": "deepseek-r1",
+    "blurb": "Reasoning model (think step-by-step)",
+    "coding": false,
+    "tags": [
+      "7b",
+      "8b",
+      "14b",
+      "32b",
+      "70b",
+      "1.5b"
+    ]
+  },
+  {
+    "name": "llama3.3",
+    "blurb": "Meta Llama 3.3, strong 70B general",
+    "coding": false,
+    "tags": [
+      "70b"
+    ]
+  },
+  {
+    "name": "llama3.2",
+    "blurb": "Small, fast Llama for light tasks",
+    "coding": false,
+    "tags": [
+      "3b",
+      "1b"
+    ]
+  },
+  {
+    "name": "llama3.1",
+    "blurb": "Meta Llama 3.1",
+    "coding": false,
+    "tags": [
+      "8b",
+      "70b"
+    ]
+  },
+  {
+    "name": "qwen2.5",
+    "blurb": "Versatile general model, many sizes",
+    "coding": false,
+    "tags": [
+      "7b",
+      "14b",
+      "32b",
+      "72b",
+      "3b"
+    ]
+  },
+  {
+    "name": "qwen3",
+    "blurb": "Latest Qwen (dense + MoE), thinking modes",
+    "coding": false,
+    "tags": [
+      "8b",
+      "14b",
+      "32b",
+      "30b-a3b"
+    ]
+  },
+  {
+    "name": "gemma3",
+    "blurb": "Google Gemma 3, edge to workstation",
+    "coding": false,
+    "tags": [
+      "4b",
+      "12b",
+      "27b",
+      "1b"
+    ]
+  },
+  {
+    "name": "gemma2",
+    "blurb": "Google Gemma 2",
+    "coding": false,
+    "tags": [
+      "9b",
+      "27b",
+      "2b"
+    ]
+  },
+  {
+    "name": "phi4",
+    "blurb": "Microsoft Phi-4, strong small reasoner",
+    "coding": false,
+    "tags": [
+      "14b"
+    ]
+  },
+  {
+    "name": "mistral",
+    "blurb": "Mistral 7B",
+    "coding": false,
+    "tags": [
+      "7b"
+    ]
+  },
+  {
+    "name": "mistral-small",
+    "blurb": "Mistral Small (24B)",
+    "coding": false,
+    "tags": [
+      "24b",
+      "22b"
+    ]
+  },
+  {
+    "name": "mixtral",
+    "blurb": "Mistral MoE",
+    "coding": false,
+    "tags": [
+      "8x7b",
+      "8x22b"
+    ]
+  },
+  {
+    "name": "command-r",
+    "blurb": "Cohere Command R (RAG/tools)",
+    "coding": false,
+    "tags": [
+      "35b"
+    ]
+  },
+  {
+    "name": "command-r-plus",
+    "blurb": "Cohere Command R+ (104B)",
+    "coding": false,
+    "tags": [
+      "104b"
+    ]
+  },
+  {
+    "name": "granite3.3",
+    "blurb": "IBM Granite 3.3 general",
+    "coding": false,
+    "tags": [
+      "8b",
+      "2b"
+    ]
+  },
+  {
+    "name": "hermes3",
+    "blurb": "Nous Hermes 3 \u2014 tool-calling generalist agent model",
+    "coding": false,
+    "tags": [
+      "8b",
+      "70b",
+      "3b",
+      "405b"
+    ]
+  },
+  {
+    "name": "gpt-oss",
+    "blurb": "OpenAI open-weight reasoning model",
+    "coding": false,
+    "tags": [
+      "20b",
+      "120b"
+    ]
+  },
+  {
+    "name": "llava",
+    "blurb": "Vision + language (describe images)",
+    "coding": false,
+    "tags": [
+      "7b",
+      "13b",
+      "34b"
+    ]
+  },
+  {
+    "name": "llama3.2-vision",
+    "blurb": "Llama 3.2 with image understanding",
+    "coding": false,
+    "tags": [
+      "11b",
+      "90b"
+    ]
+  },
+  {
+    "name": "minicpm-v",
+    "blurb": "Compact vision-language model",
+    "coding": false,
+    "tags": [
+      "8b"
+    ]
+  },
+  {
+    "name": "moondream",
+    "blurb": "Tiny vision model",
+    "coding": false,
+    "tags": [
+      "1.8b"
+    ]
+  },
+  {
+    "name": "nomic-embed-text",
+    "blurb": "Text embeddings (for RAG)",
+    "coding": false,
+    "tags": [
+      "latest"
+    ]
+  },
+  {
+    "name": "mxbai-embed-large",
+    "blurb": "Large embedding model (for RAG)",
+    "coding": false,
+    "tags": [
+      "latest"
+    ]
+  },
+  {
+    "name": "phi3.5",
+    "blurb": "Microsoft Phi-3.5 mini",
+    "coding": false,
+    "tags": [
+      "3.8b"
+    ]
+  },
+  {
+    "name": "smollm2",
+    "blurb": "Tiny on-device model",
+    "coding": false,
+    "tags": [
+      "1.7b",
+      "360m",
+      "135m"
+    ]
+  },
+  {
+    "name": "tinyllama",
+    "blurb": "1.1B tiny model",
+    "coding": false,
+    "tags": [
+      "1.1b"
+    ]
+  },
+  {
+    "name": "dolphin3",
+    "blurb": "Uncensored general assistant",
+    "coding": false,
+    "tags": [
+      "8b"
+    ]
+  }
+]

@@ -1,0 +1,68 @@
+React and ReactDOM v18.3.1 — https://github.com/facebook/react
+Vendored at: static/libs/artifacts/react.production.min.js and
+static/libs/artifacts/react-dom.production.min.js
+(UMD production builds; used by the Artifacts preview runtime,
+routes/artifact_routes.py)
+
+MIT License
+
+Copyright (c) Meta Platforms, Inc. and affiliates.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+--------------------------------------------------------------------------
+Provenance (verified 2026-07)
+--------------------------------------------------------------------------
+Both files are byte-identical to the published react@18.3.1 / react-dom@18.3.1
+UMD production builds:
+  react.production.min.js      sha256 d949f1c3687aedadcedac85261865f29b17cd273997e7f6b2bfc53b2f9d4c4dd
+  react-dom.production.min.js  sha256 35f4f974f4b2bcd44da73963347f8952e341f83909e4498227d4e26b98f66f0d
+
+--------------------------------------------------------------------------
+Modernizr 3.0.0pre (Custom Build) — bundled inside react-dom.production.min.js
+https://github.com/Modernizr/Modernizr — MIT License
+--------------------------------------------------------------------------
+ReactDOM's UMD production build embeds a custom Modernizr build for CSS/event
+feature detection. Its banner survives minification and is visible in the
+vendored file:
+
+    /*  Modernizr 3.0.0pre (Custom Build) | MIT  */
+
+Copyright (c) The Modernizr Team — Faruk Ateş, Paul Irish, Alex Sexton,
+Ryan Seddon, Patrick Kettner, Stu Cox, Richard Herrera and contributors.
+(The current upstream LICENSE reads "Copyright (c) 2026 The Modernizr Team";
+the build embedded here predates it, so the team is credited without a year.)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

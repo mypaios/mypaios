@@ -1,0 +1,52 @@
+html2pdf.js ~0.10.2 — https://github.com/eKoopmans/html2pdf.js
+Vendored at: static/lib/html2pdf.bundle.min.js
+  sha256 9edbed630ebd644bc5189b99e8138893041c89a3118a672047fa2b625a12e48c
+  PROVENANCE CAVEAT: this file matches the published html2pdf.js 0.10.2 bundle
+  byte-for-byte EXCEPT for one string inside the bundled jsPDF language table
+  (local "sv-SV":"Swedish (SE)" vs upstream "sv-SV":"Swedish (Sweden)"), so it
+  is a rebuild of ~0.10.2 rather than the published artifact. It arrived with
+  the upstream Odysseus fork and should be re-vendored from a pinned release
+  together with that release's own aggregate notice.
+
+This is a webpack bundle. In addition to html2pdf.js itself it statically
+includes jsPDF, html2canvas, canvg, DOMPurify 2.3.0, core-js / core-js-pure,
+@babel/runtime-corejs3, regenerator-runtime, es6-promise, fflate, omggif,
+performance-now, raf, rgbcolor, stackblur-canvas, svg-pathdata and tslib.
+
+Not all of those are MIT:
+  DOMPurify 2.3.0 — MPL-2.0 OR Apache-2.0 (Cure53 and other contributors).
+                    MyPaiOS uses it under Apache-2.0; it is unmodified, so no
+                    MPL source-disclosure obligation attaches.
+  tslib           — 0BSD (Microsoft Corporation)
+  inside jsPDF    — BSD-3-Clause code from Adobe Systems Incorporated (2008)
+                    and Dominik Homberger (2017)
+  rgbcolor        — banner reads only "@license Use it if you like it"
+
+The COMPLETE, UNEDITED upstream aggregate notice for every bundled package —
+naming all ~20 copyright holders — is reproduced in
+licenses/html2pdf-bundle-LICENSE.txt. That file, not this one, is the
+authoritative notice for the bundle's contents. The html2pdf.js MIT notice
+follows here for convenience.
+
+--------------------------------------------------------------------------
+html2pdf.js — MIT License
+
+Copyright (c) 2017 Erik Koopmans
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

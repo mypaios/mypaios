@@ -1,0 +1,105 @@
+#!/usr/bin/env bash
+# scripts/baton — manual "who's working now" baton for cross-agent handoff
+# between Claude Code and Antigravity/Gemini on this repo.
+#
+# State of truth: ACTIVE_AGENT.md at the repo root (both agents read it as
+# context). This script reads/rewrites it. Source-of-truth line is the
+# `<!-- BATON: holder | since | task -->` comment; the rest is human-readable.
+#
+#   scripts/baton status                           who's working + recent log
+#   scripts/baton on <claude|gemini> ["task"]      claim the baton
+#   scripts/baton off                              release (idle)
+#   scripts/baton handover <claude|gemini> ["task"]  hand to the other agent
+#
+# Convention: before editing, check `status`; claim while you work; release or
+# hand over when done — and pair it with a commit so the next agent sees both
+# the baton state and your diff.
+set -euo pipefail
+
+REPO="$(cd "$(dirname "$0")/.." && pwd)"
+F="$REPO/ACTIVE_AGENT.md"
+
+now() { date -u '+%Y-%m-%d %H:%M UTC'; }
+
+norm() {
+  case "$(printf '%s' "${1:-}" | tr '[:upper:]' '[:lower:]')" in
+    claude|c|cc)            printf 'Claude' ;;
+    gemini|antigravity|g|ag) printf 'Gemini' ;;
+    idle|off|none)          printf 'idle' ;;
+    *)                      printf '%s' "${1:-}" ;;
+  esac
+}
+
+read_state() {  # sets HOLDER / SINCE / TASK from the BATON comment
+  local raw=""
+  [ -f "$F" ] && raw="$(grep -m1 'BATON:' "$F" 2>/dev/null | sed 's/.*BATON://; s/-->.*//' || true)"
+  HOLDER="$(printf '%s' "$raw" | cut -d'|' -f1  | sed 's/^ *//; s/ *$//')"
+  SINCE="$( printf '%s' "$raw" | cut -d'|' -f2  | sed 's/^ *//; s/ *$//')"
+  TASK="$(  printf '%s' "$raw" | cut -d'|' -f3- | sed 's/^ *//; s/ *$//')"
+  [ -n "$HOLDER" ] || HOLDER="idle"
+  return 0
+}
+
+existing_log() { { [ -f "$F" ] && grep -E '^- ' "$F" 2>/dev/null; } || true; }
+
+render() {  # $1 holder  $2 since  $3 task  [$4 new-log-event]
+  local holder="$1" since="$2" task="$3" newev="${4:-}"
+  local log; log="$(existing_log)"
+  [ -n "$newev" ] && log="$(printf -- '- %s\n%s' "$newev" "$log")"
+  log="$(printf '%s\n' "$log" | sed '/^[[:space:]]*$/d' | head -40)"
+  local status_line
+  if [ "$holder" = "idle" ]; then
+    status_line='**⚪ Idle** — no agent currently holds the baton.'
+  else
+    status_line="**🟢 ${holder}** is working — since ${since}${task:+ · ${task}}"
+  fi
+  {
+    printf '# Active Agent — who'\''s working now\n\n'
+    printf '<!-- BATON: %s | %s | %s -->\n\n' "$holder" "$since" "$task"
+    printf '%s\n\n' "$status_line"
+    printf '> Manual cross-agent baton (Claude Code <-> Antigravity/Gemini). Before editing, run `scripts/baton status`; claim with `scripts/baton on <claude|gemini> "task"`; release with `scripts/baton off`; hand over with `scripts/baton handover <to> "task"`. Keep it honest so the other agent knows when it'\''s safe to work.\n\n'
+    printf '## Handover log (newest first)\n'
+    printf '%s\n' "$log"
+  } > "$F"
+}
+
+read_state
+cmd="${1:-status}"; [ $# -gt 0 ] && shift || true
+
+case "$cmd" in
+  status|"")
+    if [ "$HOLDER" = "idle" ]; then
+      echo "⚪ idle — no one holds the baton"
+    else
+      echo "🟢 ${HOLDER} working since ${SINCE}${TASK:+ · ${TASK}}"
+    fi
+    echo "— recent —"; existing_log | head -6
+    ;;
+  on)
+    a="$(norm "${1:-}")"; [ $# -gt 0 ] && shift || true; task="${*:-}"
+    { [ -z "$a" ] || [ "$a" = "idle" ]; } && { echo "usage: baton on <claude|gemini> [task]"; exit 1; }
+    if [ "$HOLDER" != "idle" ] && [ "$HOLDER" != "$a" ]; then
+      echo "⚠️  ${HOLDER} currently holds the baton (since ${SINCE}). Taking over as ${a}."
+    fi
+    ts="$(now)"; render "$a" "$ts" "$task" "${ts} · ${a} ON${task:+ · ${task}}"
+    echo "🟢 ${a} ON${task:+ · ${task}}"
+    ;;
+  off)
+    ts="$(now)"; render "idle" "" "" "${ts} · ${HOLDER} OFF"
+    echo "⚪ released (was ${HOLDER}) — idle"
+    ;;
+  handover|ho)
+    to="$(norm "${1:-}")"; [ $# -gt 0 ] && shift || true; task="${*:-}"
+    { [ -z "$to" ] || [ "$to" = "idle" ]; } && { echo "usage: baton handover <claude|gemini> [task]"; exit 1; }
+    ts="$(now)"; render "$to" "$ts" "$task" "${ts} · ${HOLDER} → ${to}${task:+ · ${task}}"
+    echo "🔄 ${HOLDER} → ${to}${task:+ · ${task}}"
+    ;;
+  *)
+    echo "baton — manual cross-agent work baton"
+    echo "usage:"
+    echo "  scripts/baton status                            who's working + recent log"
+    echo "  scripts/baton on <claude|gemini> [task]         claim the baton"
+    echo "  scripts/baton off                               release (idle)"
+    echo "  scripts/baton handover <claude|gemini> [task]   hand to the other agent"
+    ;;
+esac

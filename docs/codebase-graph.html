@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyPaiOS — Codebase Architecture Graph</title>
+<style>
+:root {
+  --bg:       #07090F;
+  --surf:     #0E1420;
+  --panel:    #131C2E;
+  --border:   rgba(255,255,255,0.08);
+  --head:     #14D4BE;
+  --text:     #C8D4E8;
+  --muted:    #5A6A88;
+  --hover:    #1A2540;
+  --chat:     #FF5758;
+  --research: #14D4BE;
+  --crew:     #9066F5;
+  --media:    #F5A623;
+  --email:    #38BAF5;
+  --docs:     #5ECF8A;
+  --auth:     #FF4FCA;
+  --models:   #F0B866;
+  --system:   #6680A8;
+  --radius:   9px;
+  --transition: 0.18s ease;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
+  font-size: 13px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* ── Header ── */
+.hdr {
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  padding: 0 1.2rem;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  flex-shrink: 0;
+}
+.hdr-logo {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -.01em;
+}
+.hdr-logo .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--head); }
+.hdr-sep { width: 1px; height: 24px; background: var(--border); flex-shrink: 0; }
+.hdr-flows { display: flex; gap: .4rem; }
+.flow-btn {
+  padding: .28rem .7rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.flow-btn:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+.flow-btn.active { color: #fff; }
+.flow-btn[data-flow="chat"].active { background: rgba(255,87,88,0.18); border-color: var(--chat); color: var(--chat); }
+.flow-btn[data-flow="research"].active { background: rgba(20,212,190,0.18); border-color: var(--research); color: var(--research); }
+.flow-btn[data-flow="crew"].active { background: rgba(144,102,245,0.18); border-color: var(--crew); color: var(--crew); }
+.hdr-stats { margin-left: auto; display: flex; gap: 1.2rem; }
+.stat { display: flex; flex-direction: column; align-items: flex-end; }
+.stat-n { font-size: 15px; font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; }
+.stat-l { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+.flow-hint {
+  display: none;
+  font-size: 11px;
+  color: var(--muted);
+  align-items: center;
+  gap: .3rem;
+}
+.flow-hint.show { display: flex; }
+.hint-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── Main layout ── */
+.main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── Graph area ── */
+.graph-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  min-width: 0;
+}
+
+/* ── Layer ── */
+.layer {
+  background: var(--surf);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color var(--transition);
+}
+.layer.flow-active { border-color: rgba(255,255,255,0.16); }
+.layer-head {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .6rem .9rem;
+  border-bottom: 1px solid var(--border);
+  cursor: default;
+  user-select: none;
+}
+.layer-badge {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+.layer-name { font-weight: 600; font-size: 12px; color: var(--text); }
+.layer-path { font-size: 11px; color: var(--muted); font-family: 'SF Mono', 'Fira Code', monospace; }
+.layer-count { margin-left: auto; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.layer-nodes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem;
+  padding: .65rem .9rem;
+}
+
+/* ── Domain node card ── */
+.node {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .32rem .6rem;
+  border-radius: 7px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition);
+  background: var(--hover);
+  user-select: none;
+  position: relative;
+}
+.node:hover {
+  border-color: rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.05);
+}
+.node.selected {
+  border-color: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.07);
+}
+.node-pip { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.node-name { font-size: 12px; font-weight: 500; }
+.node-n { font-size: 10px; color: var(--muted); font-variant-numeric: tabular-nums; margin-left: .1rem; }
+
+/* flow highlight on node */
+.node.flow-step {
+  animation: flowPulse 1.2s ease-in-out infinite;
+}
+@keyframes flowPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+  50% { box-shadow: 0 0 0 3px var(--flow-color, rgba(255,255,255,0.2)); }
+}
+
+/* connector arrow between layers */
+.connector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 18px;
+  color: var(--muted);
+  font-size: 16px;
+  opacity: .45;
+  transition: opacity var(--transition);
+}
+.connector.lit { opacity: .9; }
+
+/* ── Side panel ── */
+.side-panel {
+  width: 0;
+  background: var(--panel);
+  border-left: 1px solid var(--border);
+  overflow: hidden;
+  transition: width 0.22s ease;
+  flex-shrink: 0;
+}
+.side-panel.open { width: 320px; }
+.panel-inner {
+  width: 320px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.panel-top {
+  padding: .9rem 1rem .7rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: .5rem;
+}
+.panel-pip { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+.panel-titles { flex: 1; min-width: 0; }
+.panel-domain { font-weight: 700; font-size: 14px; color: #fff; }
+.panel-layer { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.panel-close {
+  background: none; border: none; color: var(--muted); cursor: pointer;
+  font-size: 16px; line-height: 1; padding: 2px; flex-shrink: 0;
+  transition: color var(--transition);
+}
+.panel-close:hover { color: var(--text); }
+.panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: .8rem 1rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.panel-desc {
+  font-size: 11.5px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: .9rem;
+  padding-bottom: .7rem;
+  border-bottom: 1px solid var(--border);
+}
+.file-list { display: flex; flex-direction: column; gap: .3rem; }
+.file-item {
+  display: flex;
+  flex-direction: column;
+  gap: .12rem;
+  padding: .4rem .5rem;
+  border-radius: 6px;
+  background: var(--hover);
+  border: 1px solid transparent;
+  transition: border-color var(--transition);
+}
+.file-item:hover { border-color: var(--border); }
+.file-name {
+  font-family: 'SF Mono', 'Fira Code', monospace;
+  font-size: 11px;
+  color: var(--head);
+  word-break: break-all;
+}
+.file-desc {
+  font-size: 10.5px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+.panel-section-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  margin: .8rem 0 .35rem;
+}
+
+/* ── Legend ── */
+.legend {
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+  padding: .55rem 1.2rem;
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+.leg-item {
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  font-size: 11px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color var(--transition);
+}
+.leg-item:hover { color: var(--text); }
+.leg-pip { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── Scrollbar ── */
+.graph-area::-webkit-scrollbar { width: 5px; }
+.graph-area::-webkit-scrollbar-track { background: transparent; }
+.graph-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+.panel-body::-webkit-scrollbar { width: 4px; }
+.panel-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-logo">
+    <span class="dot"></span>
+    MyPaiOS — Codebase Graph
+  </div>
+  <div class="hdr-sep"></div>
+  <div class="hdr-flows">
+    <button class="flow-btn" data-flow="chat" onclick="toggleFlow('chat')">Chat → LLM</button>
+    <button class="flow-btn" data-flow="research" onclick="toggleFlow('research')">Deep Research</button>
+    <button class="flow-btn" data-flow="crew" onclick="toggleFlow('crew')">Crew Task</button>
+  </div>
+  <div class="flow-hint" id="flow-hint">
+    <span class="hint-dot" id="hint-dot"></span>
+    <span id="hint-text"></span>
+  </div>
+  <div class="hdr-stats">
+    <div class="stat"><span class="stat-n">1,041</span><span class="stat-l">files</span></div>
+    <div class="stat"><span class="stat-n">6</span><span class="stat-l">layers</span></div>
+    <div class="stat"><span class="stat-n">16</span><span class="stat-l">domains</span></div>
+  </div>
+</header>
+
+<div class="main">
+  <div class="graph-area" id="graph"></div>
+  <div class="side-panel" id="side-panel">
+    <div class="panel-inner">
+      <div class="panel-top" id="panel-top">
+        <div class="panel-pip" id="panel-pip"></div>
+        <div class="panel-titles">
+          <div class="panel-domain" id="panel-domain"></div>
+          <div class="panel-layer" id="panel-layer"></div>
+        </div>
+        <button class="panel-close" onclick="closePanel()">✕</button>
+      </div>
+      <div class="panel-body" id="panel-body"></div>
+    </div>
+  </div>
+</div>
+
+<div class="legend" id="legend">
+  <div class="leg-item" style="cursor:pointer;color:var(--head)" onclick="window.open('file-graph.html','_blank')">
+    → Open the file-level force graph (Obsidian-style)
+  </div>
+  <div class="leg-item" style="cursor:default">
+    Full graph generated locally with <a href="https://github.com/Graphify-Labs/graphify" target="_blank" rel="noopener" style="color:var(--head);text-decoration:none">Graphify</a> (Apache-2.0) — no LLM calls
+  </div>
+</div>
+
+<script>
+const COLORS = {
+  chat: '#FF5758', research: '#14D4BE', crew: '#9066F5',
+  media: '#F5A623', email: '#38BAF5', docs: '#5ECF8A',
+  auth: '#FF4FCA', models: '#F0B866', system: '#6680A8',
+};
+
+const LAYER_COLORS = {
+  browser: '#14D4BE', middleware: '#F0B866', routes: '#9066F5',
+  core: '#FF5758', services: '#5ECF8A', storage: '#38BAF5',
+};
+
+const LAYERS = [
+  {
+    id: 'browser', name: 'Browser · Frontend', path: 'static/js/', count: '60+ JS files',
+    desc: 'Vanilla JS, no framework. Talks to backend via REST + Server-Sent Events (SSE) for streaming. Each panel is an independent JS module.',
+    nodes: [
+      { name: 'Chat', key: 'chat', files: [
+        { name: 'chat.js', desc: 'Main chat panel, message send, conversation management' },
+        { name: 'chatStream.js', desc: 'SSE stream reader; token-by-token rendering to the DOM' },
+        { name: 'chatRenderer.js', desc: 'Markdown → HTML; code blocks; cost badge display' },
+        { name: 'agents.js', desc: 'Agent mode toggle; system-prompt selector' },
+      ]},
+      { name: 'Research', key: 'research', files: [
+        { name: 'research/panel.js', desc: 'Research panel orchestrator' },
+        { name: 'research/jobs.js', desc: 'Async job polling; progress display' },
+        { name: 'researchSynapse.js', desc: 'Deep-research UI mode; goal/rounds controls' },
+      ]},
+      { name: 'Crew', key: 'crew', files: [
+        { name: 'crew.js', desc: 'Crew task builder; agent roster; step output display' },
+        { name: 'agentsHub.js', desc: 'Agent management panel (add/edit/delete agents)' },
+      ]},
+      { name: 'Media', key: 'media', files: [
+        { name: 'videoHub.js', desc: 'Video analysis upload + playback' },
+        { name: 'gallery.js / galleryEditor.js', desc: 'Image gallery; editing UI' },
+        { name: 'voiceMode.js / voiceRecorder.js', desc: 'Voice input + push-to-talk' },
+        { name: 'tts-ai.js', desc: 'TTS playback controls; voice selector' },
+      ]},
+      { name: 'Email', key: 'email', files: [
+        { name: 'emailInbox.js / emailLibrary.js', desc: 'Email reader; thread view' },
+        { name: 'mailGuard.js', desc: 'Spam/threat scan UI' },
+        { name: 'calendar.js', desc: 'Calendar panel' },
+      ]},
+      { name: 'Documents', key: 'docs', files: [
+        { name: 'document.js / documentLibrary.js', desc: 'Document viewer + RAG library' },
+        { name: 'notes.js', desc: 'Notes panel; markdown editor' },
+        { name: 'rag.js', desc: 'RAG query panel; document search' },
+      ]},
+      { name: 'Models', key: 'models', files: [
+        { name: 'models.js / modelPicker.js', desc: 'Model selector; endpoint management' },
+        { name: 'localAI.js', desc: 'Local model download; GGUF management' },
+        { name: 'compare/index.js', desc: 'Side-by-side model comparison' },
+      ]},
+      { name: 'System', key: 'system', files: [
+        { name: 'init.js', desc: 'App bootstrap; SW registration; auth check' },
+        { name: 'panelCoordinator.js', desc: 'Single-active panel manager; z-order; TOOL_IDS registry' },
+        { name: 'ui.js / theme.js', desc: 'Theme toggle; global UI helpers' },
+        { name: 'keyboard-shortcuts.js', desc: 'Global keyboard shortcut registry' },
+        { name: 'platform.js', desc: 'OS/device detection helpers' },
+      ]},
+    ],
+  },
+  {
+    id: 'middleware', name: 'FastAPI + Middleware', path: 'app.py · core/middleware.py', count: 'entry point',
+    desc: 'app.py is the sole entry point. Middleware chain runs on every request, in order: GZip → CORS → Auth → SecurityHeaders → RequestTimeout. All 64 route modules are mounted here.',
+    nodes: [
+      { name: 'GZip', key: 'system', files: [
+        { name: 'GZipMiddleware', desc: 'Compress responses ≥ 1 KB' },
+      ]},
+      { name: 'CORS', key: 'system', files: [
+        { name: 'CORSMiddleware', desc: 'Configurable allow-origins; credentials=True' },
+      ]},
+      { name: 'Auth Middleware', key: 'auth', files: [
+        { name: 'core/middleware.py::AuthMiddleware', desc: 'Session cookie → current_user; public path allowlist' },
+        { name: 'core/auth.py', desc: 'bcrypt verify + TOTP validation; API token lookup' },
+      ]},
+      { name: 'Security Headers', key: 'auth', files: [
+        { name: 'SecurityHeadersMiddleware', desc: 'CSP, HSTS, X-Frame-Options, X-Content-Type-Options on every response' },
+      ]},
+      { name: 'Request Timeout', key: 'system', files: [
+        { name: '_RequestTimeoutMiddleware', desc: '45 s hard timeout on non-streaming requests; streaming bypassed' },
+      ]},
+    ],
+  },
+  {
+    id: 'routes', name: 'Routes · HTTP Handlers', path: 'routes/', count: '64 modules',
+    desc: 'Thin HTTP handlers only. Rule: validate input, call src/ or services/, return response. No business logic here. Each file maps to a feature domain.',
+    nodes: [
+      { name: 'Chat', key: 'chat', files: [
+        { name: 'chat_routes.py', desc: 'POST /api/chat (sync) and /api/stream (SSE streaming)' },
+        { name: 'chat_helpers.py', desc: 'Shared: message persistence, token usage accumulation' },
+      ]},
+      { name: 'Research', key: 'research', files: [
+        { name: 'research_routes.py', desc: '/api/research/* — start, status, result, cancel' },
+        { name: 'search_routes.py', desc: '/api/search/* — live web search endpoints' },
+      ]},
+      { name: 'Crew', key: 'crew', files: [
+        { name: 'crew_routes.py', desc: '/api/crew — run, status, stop crew tasks' },
+        { name: 'agents_hub_routes.py', desc: '/api/agents — CRUD for custom agents' },
+      ]},
+      { name: 'Media', key: 'media', files: [
+        { name: 'video_routes.py', desc: '/api/video — upload, analyze, status' },
+        { name: 'tts_routes.py', desc: '/api/tts — generate speech, voice list' },
+        { name: 'stt_routes.py', desc: '/api/stt — transcribe audio' },
+        { name: 'gallery_routes.py', desc: '/api/gallery/* — image management' },
+      ]},
+      { name: 'Email', key: 'email', files: [
+        { name: 'email_routes.py', desc: '/api/email — IMAP read, send' },
+        { name: 'mailguard_routes.py', desc: '/api/mailguard — scan, results' },
+        { name: 'calendar_routes.py', desc: '/api/calendar — events CRUD' },
+        { name: 'contacts_routes.py', desc: '/api/contacts — contact book' },
+      ]},
+      { name: 'Documents', key: 'docs', files: [
+        { name: 'document_routes.py', desc: '/api/document — upload, index, query, delete' },
+        { name: 'note_routes.py', desc: '/api/notes — CRUD for markdown notes' },
+        { name: 'storage_routes.py', desc: '/api/storage — file upload/download' },
+      ]},
+      { name: 'Auth', key: 'auth', files: [
+        { name: 'auth_routes.py', desc: '/api/auth — login, logout, register, session' },
+        { name: 'vault_routes.py', desc: '/api/vault — encrypted secret storage' },
+        { name: 'api_token_routes.py', desc: '/api/tokens — API key management' },
+      ]},
+      { name: 'Models', key: 'models', files: [
+        { name: 'model_routes.py', desc: '/api (model list, probe, add endpoint)' },
+        { name: 'models_hub_routes.py', desc: '/api/local-ai — Ollama model management' },
+        { name: 'hwfit_routes.py', desc: '/api/hwfit — hardware-fit scoring' },
+        { name: 'cookbook_routes.py', desc: '/api/cookbook — prompt cookbook' },
+      ]},
+      { name: '+20 more', key: 'system', files: [
+        { name: 'mcp_routes.py', desc: '/api/mcp — MCP server CRUD + tool dispatch' },
+        { name: 'task_routes.py', desc: '/api/tasks — scheduled task management' },
+        { name: 'code_routes.py', desc: '/api/code — code execution jobs' },
+        { name: 'shell_routes.py', desc: '/api/shell — sandboxed shell sessions' },
+        { name: 'memory_routes.py', desc: '/api/memory — memory CRUD + search' },
+        { name: 'prefs_routes.py', desc: '/api/prefs — user preferences' },
+        { name: 'backup_routes.py', desc: '/api/backup — DB export/restore' },
+        { name: 'usage_routes.py', desc: '/api/usage — token usage history' },
+        { name: 'activity_routes.py', desc: '/api/activity — activity stop (universal cancel)' },
+        { name: 'artifact_routes.py', desc: '/api/artifacts — output artifact management' },
+        { name: 'assistant_routes.py', desc: '/api/assistant — custom assistant personas' },
+        { name: 'compare_routes.py', desc: '/api/compare — model comparison sessions' },
+        { name: 'diagnostics_routes.py', desc: '/api/diagnostics — health + debug info' },
+        { name: 'embedding_routes.py', desc: '/api/embed — embed text endpoint' },
+        { name: 'personal_routes.py', desc: '/api/personal — personal doc RAG' },
+        { name: 'preset_routes.py', desc: '/api/presets — prompt presets' },
+        { name: 'webhook_routes.py', desc: '/api/webhooks — outbound webhook config' },
+        { name: 'gateway_routes.py', desc: '/api/gateway — provider gateway config' },
+        { name: 'copilot_routes.py', desc: '/api/copilot — coding copilot mode' },
+        { name: 'codex_routes.py', desc: '/api/codex — knowledge codex' },
+      ]},
+    ],
+  },
+  {
+    id: 'core', name: 'Core Logic · src/', path: 'src/', count: '92 modules',
+    desc: 'The intelligence layer. All LLM dispatch, agent loops, research engine, context management, and tool execution live here. Routes call this; services/ is called by this.',
+    nodes: [
+      { name: 'LLM Core', key: 'chat', files: [
+        { name: 'llm_core.py', desc: 'stream_llm(), llm_call_async() — HTTP POST to Ollama/OpenAI-compat. Provider routing, SSE parsing.' },
+        { name: 'endpoint_resolver.py', desc: 'URL + auth header resolution per configured endpoint; provider detection (Ollama/OpenAI/Anthropic/Groq…)' },
+        { name: 'ai_interaction.py', desc: 'chat_with_model(), ask_teacher(), second_opinion() — high-level LLM wrappers' },
+      ]},
+      { name: 'Agent Loop', key: 'crew', files: [
+        { name: 'agent_loop.py', desc: 'stream_agent_loop() — the core tool-use loop driving all agent and crew tasks' },
+        { name: 'tool_execution.py', desc: 'Executes: file read/write, shell, web search, MCP calls, image gen, code run' },
+        { name: 'tool_parsing.py', desc: 'Fenced-block parser for tool calls embedded in LLM output' },
+        { name: 'tool_schemas.py', desc: 'JSON schemas for every tool (injected into system prompt)' },
+        { name: 'tool_security.py', desc: 'Per-owner tool allowlist enforcement' },
+      ]},
+      { name: 'Chat Context', key: 'chat', files: [
+        { name: 'chat_handler.py', desc: 'Assemble request: vision inject, URL fetch, document content' },
+        { name: 'chat_processor.py', desc: 'ContextProcessor — BM25 + ChromaDB hybrid retrieval for memory/docs' },
+        { name: 'context_budget.py', desc: 'Token budget calculator across system + history + injected context' },
+        { name: 'context_compactor.py', desc: 'Long-history summarizer — calls LLM to compress old turns' },
+      ]},
+      { name: 'Research', key: 'research', files: [
+        { name: 'deep_research.py', desc: 'DeepResearcher.research(goal, rounds) — multi-round search+synthesize loop' },
+        { name: 'research_handler.py', desc: 'Async task wrapper; result persistence to disk' },
+        { name: 'visual_report.py', desc: 'Markdown → sanitized HTML report renderer' },
+        { name: 'goal_based_extractor.py', desc: 'Goal-based extraction prompt builder for structured research' },
+      ]},
+      { name: 'Memory & RAG', key: 'docs', files: [
+        { name: 'embeddings.py', desc: 'Ollama/OpenAI-compat or fastembed fallback; unified embedding interface' },
+        { name: 'chroma_client.py', desc: 'ChromaDB HTTP or embedded wrapper' },
+        { name: 'rag_manager.py', desc: 'Document index + query layer over ChromaDB' },
+        { name: 'memory.py', desc: 'Memory read/write operations (key-value + semantic)' },
+        { name: 'memory_provider.py', desc: 'Backend selector: ChromaDB vs SQLite vector' },
+      ]},
+      { name: 'MCP', key: 'system', files: [
+        { name: 'mcp_manager.py', desc: 'stdio/SSE/HTTP server connections; tool call dispatch; server lifecycle' },
+        { name: 'builtin_mcp.py', desc: 'Built-in virtual MCP tools (file ops, search, etc.)' },
+        { name: 'mcp_oauth.py', desc: 'PKCE OAuth2 flow for OAuth-gated MCP servers' },
+      ]},
+      { name: 'Auth & Security', key: 'auth', files: [
+        { name: 'auth_helpers.py', desc: 'get_current_user(), owner_filter() — request-level auth helpers' },
+        { name: 'secret_storage.py', desc: 'Encrypted credential store (AES-GCM)' },
+        { name: 'api_key_manager.py', desc: 'Per-user API key generation and validation' },
+        { name: 'prompt_security.py', desc: 'Prompt injection detection guards' },
+      ]},
+      { name: 'Config', key: 'system', files: [
+        { name: 'config.py', desc: 'env → typed settings object (primary app-wide config)' },
+        { name: 'settings.py', desc: 'get_setting(key)/set_setting(key,val) — DB-backed per-owner preferences' },
+        { name: 'constants.py', desc: 'App-wide string constants' },
+        { name: 'model_context.py', desc: 'Context-length lookup table per model name' },
+      ]},
+    ],
+  },
+  {
+    id: 'services', name: 'Services · services/', path: 'services/', count: '50+ modules',
+    desc: 'Stateful domain services orchestrated by core logic. Never call routes/ directly. Each subdirectory is a self-contained domain service.',
+    nodes: [
+      { name: 'Crew', key: 'crew', files: [
+        { name: 'crew/supervisor.py', desc: 'Multi-agent orchestration — sequential step execution, step state tracking' },
+        { name: 'crew/registry.py', desc: 'AGENTS dict, WORKER_ROLES, get_agent() — the agent catalog' },
+        { name: 'crew/router.py', desc: 'Agent → model routing (maps agent type to appropriate LLM)' },
+        { name: 'crew/store.py', desc: 'Run state + step output persistence to SQLite' },
+      ]},
+      { name: 'Search', key: 'research', files: [
+        { name: 'search/core.py', desc: 'Provider chain orchestration — tries providers in order of availability' },
+        { name: 'search/providers.py', desc: 'SearXNG / Brave / Tavily / Serper / Google adapters' },
+        { name: 'search/content.py', desc: 'Web page fetch + text extract (Readability-style)' },
+        { name: 'search/ranking.py', desc: 'Result re-rank and dedup' },
+        { name: 'search/cache.py', desc: 'TTL-based result cache' },
+      ]},
+      { name: 'Memory', key: 'docs', files: [
+        { name: 'memory/memory.py', desc: 'Core memory operations: store, retrieve, search' },
+        { name: 'memory/memory_extractor.py', desc: 'Automatically extract memories from conversations via LLM' },
+        { name: 'memory/memory_vector.py', desc: 'Vector semantic search over memory store' },
+        { name: 'memory/skills.py', desc: 'Skill catalog CRUD — user-defined skill definitions' },
+      ]},
+      { name: 'Media', key: 'media', files: [
+        { name: 'video/analyzer.py', desc: 'FFmpeg keyframe extract + Whisper STT + vision model → unified digest' },
+        { name: 'tts/tts_service.py', desc: 'Kokoro local TTS — text → audio bytes' },
+        { name: 'stt/stt_service.py', desc: 'Whisper STT — audio bytes → transcript' },
+        { name: 'local_ai/', desc: 'Ollama / LM Studio model discovery and download management' },
+      ]},
+      { name: 'Email', key: 'email', files: [
+        { name: 'mailguard/engine.py', desc: 'Spam and threat classifier (LLM-backed scoring)' },
+        { name: 'mailguard/runner.py', desc: 'Background scan job — watches inbox, scores new mail' },
+        { name: 'gateway/telegram_gateway.py', desc: 'Telegram integration gateway' },
+      ]},
+      { name: 'Hardware', key: 'models', files: [
+        { name: 'hwfit/fit.py', desc: 'Model hardware-fit scoring: given GPU/RAM, score each model 0-100' },
+        { name: 'hwfit/hardware.py', desc: 'GPU / RAM / CPU detection via system calls' },
+        { name: 'hwfit/models.py', desc: 'Model spec DB: context length, VRAM required, quantization levels' },
+        { name: 'pricing/pricebook.py', desc: 'Token pricing lookup per provider/model ($/1M tokens)' },
+      ]},
+      { name: 'Code & Docs', key: 'docs', files: [
+        { name: 'code/jobs.py', desc: 'Server-side code execution jobs — survive client disconnect, reattachable' },
+        { name: 'code/sessions.py', desc: 'Code session lifecycle: create, attach, stop, cleanup' },
+        { name: 'docs/service.py', desc: 'Document indexing + retrieval layer' },
+        { name: 'faces/', desc: 'AI avatar / profile face management' },
+      ]},
+    ],
+  },
+  {
+    id: 'storage', name: 'Storage', path: 'data/', count: 'local-only',
+    desc: 'All data persisted locally. No external database required — SQLite + embedded ChromaDB by default. Set env vars to switch ChromaDB to HTTP mode.',
+    nodes: [
+      { name: 'SQLite', key: 'system', files: [
+        { name: 'data/app.db', desc: 'All sessions, chat messages, documents, model endpoints, MCP servers, task state' },
+        { name: 'core/database.py', desc: 'SQLAlchemy ORM models for all tables; engine + session factory' },
+        { name: 'core/session_manager.py', desc: 'LRU in-memory cache + DB backend for active sessions' },
+      ]},
+      { name: 'ChromaDB', key: 'docs', files: [
+        { name: 'data/chroma/', desc: 'Embedded ChromaDB store (default); contains document + memory vectors' },
+        { name: 'src/chroma_client.py', desc: 'HTTP or embedded mode wrapper; auto-selects based on CHROMA_HOST env' },
+        { name: 'src/rag_manager.py', desc: 'Document index/query layer over ChromaDB' },
+      ]},
+      { name: 'Filesystem', key: 'system', files: [
+        { name: 'data/uploads/', desc: 'Chat file uploads (per-session directories)' },
+        { name: 'data/personal_docs/', desc: 'Personal document RAG source files' },
+        { name: 'data/deep_research/', desc: 'Research job results as {task_id}.json' },
+        { name: 'data/generated_images/', desc: 'Image generation outputs' },
+        { name: 'data/memory_vectors/', desc: 'Memory vector index files' },
+        { name: 'data/backups/', desc: 'DB backup archives' },
+        { name: 'logs/pi-events.jsonl', desc: 'Event log: tool calls, nudges, HTTP, turns (triage log)' },
+      ]},
+    ],
+  },
+];
+
+const FLOWS = {
+  chat: {
+    name: 'Chat → LLM',
+    color: '#FF5758',
+    steps: [
+      { layer: 'browser',     node: 'Chat',          desc: 'chatStream.js POSTs to /api/chat' },
+      { layer: 'middleware',  node: 'Auth Middleware',desc: 'AuthMiddleware validates session' },
+      { layer: 'routes',      node: 'Chat',          desc: 'chat_routes.py receives ChatRequest' },
+      { layer: 'core',        node: 'Chat Context',  desc: 'chat_processor.py builds BM25+vector context' },
+      { layer: 'core',        node: 'LLM Core',      desc: 'stream_llm() POSTs to Ollama' },
+      { layer: 'storage',     node: 'SQLite',        desc: 'session_manager persists turn' },
+    ],
+  },
+  research: {
+    name: 'Deep Research',
+    color: '#14D4BE',
+    steps: [
+      { layer: 'browser',   node: 'Research',  desc: 'research/panel.js triggers research mode' },
+      { layer: 'routes',    node: 'Research',  desc: 'research_routes.py starts async task' },
+      { layer: 'core',      node: 'Research',  desc: 'deep_research.py multi-round loop begins' },
+      { layer: 'services',  node: 'Search',    desc: 'search/core.py queries SearXNG/Brave/Tavily' },
+      { layer: 'core',      node: 'LLM Core',  desc: 'llm_call_async() synthesizes per round' },
+      { layer: 'storage',   node: 'Filesystem', desc: 'Result → data/deep_research/{id}.json' },
+    ],
+  },
+  crew: {
+    name: 'Crew Task',
+    color: '#9066F5',
+    steps: [
+      { layer: 'browser',   node: 'Crew',        desc: 'crew.js POSTs goal + agent roster' },
+      { layer: 'routes',    node: 'Crew',        desc: 'crew_routes.py dispatches to supervisor' },
+      { layer: 'services',  node: 'Crew',        desc: 'supervisor.py orchestrates agents in sequence' },
+      { layer: 'core',      node: 'Agent Loop',  desc: 'agent_loop.py runs each worker with tools' },
+      { layer: 'core',      node: 'LLM Core',    desc: 'stream_llm() calls per agent step' },
+      { layer: 'storage',   node: 'SQLite',      desc: 'crew/store.py persists run state' },
+    ],
+  },
+};
+
+// ── State ──────────────────────────────────────────────
+let selectedNode = null;  // { layerId, nodeName }
+let activeFlow   = null;
+let flowInterval = null;
+let flowStep     = 0;
+
+// ── Build legend ────────────────────────────────────────
+const leg = document.getElementById('legend');
+Object.entries(COLORS).forEach(([key, color]) => {
+  const el = document.createElement('div');
+  el.className = 'leg-item';
+  el.innerHTML = `<span class="leg-pip" style="background:${color}"></span>${key.charAt(0).toUpperCase()+key.slice(1)}`;
+  el.onclick = () => highlightDomain(key);
+  leg.appendChild(el);
+});
+
+// ── Build graph ─────────────────────────────────────────
+const graph = document.getElementById('graph');
+
+LAYERS.forEach((layer, li) => {
+  if (li > 0) {
+    const conn = document.createElement('div');
+    conn.className = 'connector';
+    conn.id = `conn-${li}`;
+    conn.textContent = '↕';
+    graph.appendChild(conn);
+  }
+
+  const el = document.createElement('div');
+  el.className = 'layer';
+  el.id = `layer-${layer.id}`;
+
+  el.innerHTML = `
+    <div class="layer-head">
+      <span class="layer-badge" style="background:${LAYER_COLORS[layer.id]}"></span>
+      <span class="layer-name">${layer.name}</span>
+      <span class="layer-path">${layer.path}</span>
+      <span class="layer-count">${layer.count}</span>
+    </div>
+    <div class="layer-nodes" id="nodes-${layer.id}"></div>
+  `;
+  graph.appendChild(el);
+
+  const nodesEl = el.querySelector(`#nodes-${layer.id}`);
+  layer.nodes.forEach(node => {
+    const nd = document.createElement('div');
+    nd.className = 'node';
+    nd.id = `node-${layer.id}-${node.name.replace(/\s+/g,'-').replace(/[^a-zA-Z0-9-]/g,'_')}`;
+    nd.dataset.layer = layer.id;
+    nd.dataset.node  = node.name;
+    nd.dataset.key   = node.key;
+    nd.style.setProperty('--flow-color', COLORS[node.key] || '#fff');
+    nd.innerHTML = `
+      <span class="node-pip" style="background:${COLORS[node.key]||'#6680A8'}"></span>
+      <span class="node-name">${node.name}</span>
+      <span class="node-n">${node.files.length}</span>
+    `;
+    nd.onclick = () => selectNode(layer, node);
+    nodesEl.appendChild(nd);
+  });
+});
+
+// ── Panel ────────────────────────────────────────────────
+function selectNode(layer, node) {
+  const key = `${layer.id}::${node.name}`;
+  if (selectedNode === key) { closePanel(); return; }
+  selectedNode = key;
+
+  document.querySelectorAll('.node').forEach(n => n.classList.remove('selected'));
+  const nodeEl = document.getElementById(`node-${layer.id}-${node.name.replace(/\s+/g,'-').replace(/[^a-zA-Z0-9-]/g,'_')}`);
+  if (nodeEl) nodeEl.classList.add('selected');
+
+  const pip = document.getElementById('panel-pip');
+  pip.style.background = COLORS[node.key] || '#6680A8';
+  document.getElementById('panel-domain').textContent = node.name;
+  document.getElementById('panel-layer').textContent = layer.name + ' · ' + layer.path;
+
+  const body = document.getElementById('panel-body');
+  const layerDesc = layer.desc;
+  body.innerHTML = `
+    <div class="panel-desc">${layerDesc}</div>
+    <div class="panel-section-title">Files in this domain (${node.files.length})</div>
+    <div class="file-list">
+      ${node.files.map(f => `
+        <div class="file-item">
+          <span class="file-name" style="color:${COLORS[node.key]||'var(--head)'};">${f.name}</span>
+          <span class="file-desc">${f.desc}</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
+
+  document.getElementById('side-panel').classList.add('open');
+}
+
+function closePanel() {
+  selectedNode = null;
+  document.querySelectorAll('.node').forEach(n => n.classList.remove('selected'));
+  document.getElementById('side-panel').classList.remove('open');
+}
+
+// ── Flow animation ───────────────────────────────────────
+function toggleFlow(flowKey) {
+  if (activeFlow === flowKey) {
+    stopFlow();
+    return;
+  }
+  stopFlow();
+  activeFlow = flowKey;
+  flowStep   = 0;
+
+  const flow = FLOWS[flowKey];
+  document.querySelectorAll('.flow-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.flow === flowKey);
+  });
+
+  const hint = document.getElementById('flow-hint');
+  hint.classList.add('show');
+  document.getElementById('hint-dot').style.background = flow.color;
+
+  animateFlowStep();
+  flowInterval = setInterval(animateFlowStep, 1400);
+}
+
+function animateFlowStep() {
+  const flow = FLOWS[activeFlow];
+  const steps = flow.steps;
+
+  document.querySelectorAll('.node.flow-step').forEach(n => n.classList.remove('flow-step'));
+  document.querySelectorAll('.connector.lit').forEach(c => c.classList.remove('lit'));
+
+  const step = steps[flowStep];
+  document.getElementById('hint-text').textContent = `[${flowStep+1}/${steps.length}] ${step.desc}`;
+
+  const layerData = LAYERS.find(l => l.id === step.layer);
+  const nodeData  = layerData?.nodes.find(n => n.name === step.node);
+  if (nodeData) {
+    const id = `node-${step.layer}-${step.node.replace(/\s+/g,'-').replace(/[^a-zA-Z0-9-]/g,'_')}`;
+    const el = document.getElementById(id);
+    if (el) {
+      el.classList.add('flow-step');
+      el.style.setProperty('--flow-color', flow.color);
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+
+  const li = LAYERS.findIndex(l => l.id === step.layer);
+  if (li > 0) {
+    const conn = document.getElementById(`conn-${li}`);
+    if (conn) conn.classList.add('lit');
+  }
+
+  flowStep = (flowStep + 1) % steps.length;
+}
+
+function stopFlow() {
+  if (flowInterval) clearInterval(flowInterval);
+  flowInterval = null;
+  activeFlow   = null;
+  flowStep     = 0;
+  document.querySelectorAll('.flow-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.node.flow-step').forEach(n => n.classList.remove('flow-step'));
+  document.querySelectorAll('.connector.lit').forEach(c => c.classList.remove('lit'));
+  document.getElementById('flow-hint').classList.remove('show');
+}
+
+function highlightDomain(key) {
+  document.querySelectorAll('.node').forEach(n => {
+    if (n.dataset.key === key) {
+      n.style.boxShadow = `0 0 0 2px ${COLORS[key]}44, 0 0 0 1px ${COLORS[key]}`;
+      setTimeout(() => n.style.boxShadow = '', 1800);
+    }
+  });
+}
+
+// close panel on Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closePanel(); stopFlow(); }
+});
+</script>
+</body>
+</html>

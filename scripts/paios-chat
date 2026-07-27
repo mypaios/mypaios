@@ -1,0 +1,270 @@
+#!/usr/bin/env python3
+"""paios-chat — terminal chat interface and endpoint manager.
+
+Allows querying, listing, registering, and deleting LLM endpoints 
+(such as local Ollama, Claude, Gemini, and OpenAI) directly from the CLI.
+
+    paios-chat list
+    paios-chat query [PROMPT] [--model MODEL] [--system SYSTEM_PROMPT] [--temp TEMP]
+    paios-chat register NAME BASE_URL [--api-key API_KEY] [--models MODELS_JSON] [--supports-tools]
+    paios-chat delete ENDPOINT_ID
+"""
+
+from __future__ import annotations
+import sys
+import os
+import argparse
+import json
+import logging
+import asyncio
+
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "_lib"))
+from cli import quiet_logs, emit, fail, common_parser, run, REPO_ROOT as _REPO_ROOT
+quiet_logs()
+
+try:
+    from core.database import SessionLocal, ModelEndpoint
+    from src.llm_core import stream_llm
+    from src.secret_storage import decrypt, encrypt
+    from src.endpoint_resolver import build_headers, resolve_endpoint
+    quiet_logs()
+except ModuleNotFoundError as e:
+    sys.stderr.write(f"error: {e}\nhint: run from repo root with venv active.\n")
+    sys.exit(2)
+
+
+def cmd_list(args):
+    db = SessionLocal()
+    try:
+        eps = db.query(ModelEndpoint).all()
+        rows = []
+        for ep in eps:
+            try:
+                models = json.loads(ep.cached_models) if ep.cached_models else []
+            except Exception:
+                models = []
+            
+            rows.append({
+                "id": ep.id,
+                "name": ep.name,
+                "base_url": ep.base_url,
+                "is_enabled": ep.is_enabled,
+                "models": models,
+                "model_type": ep.model_type,
+            })
+        emit(rows, args)
+    finally:
+        db.close()
+
+
+def cmd_register(args):
+    db = SessionLocal()
+    try:
+        # Generate an ID if it does not exist
+        import uuid
+        ep_id = args.name.lower().replace(" ", "-")
+        # Check if already exists
+        ep = db.get(ModelEndpoint, ep_id)
+        is_new = False
+        if not ep:
+            ep = ModelEndpoint(id=ep_id)
+            is_new = True
+        
+        ep.name = args.name
+        ep.base_url = args.base_url
+        api_key = args.api_key
+        if api_key and api_key.lower().startswith("env:"):
+            env_var_name = api_key[4:]
+            api_key = os.environ.get(env_var_name)
+            if not api_key:
+                fail(f"environment variable {env_var_name} is empty or not set")
+        if api_key:
+            ep.api_key = encrypt(api_key)
+        if args.models:
+            try:
+                # Validate JSON list
+                models_list = json.loads(args.models)
+                if not isinstance(models_list, list):
+                    raise ValueError()
+                ep.cached_models = json.dumps(models_list)
+            except Exception:
+                fail("invalid --models JSON; must be a JSON array of strings e.g. '[\"model-1\"]'")
+        
+        if args.supports_tools is not None:
+            ep.supports_tools = args.supports_tools
+        
+        if is_new:
+            db.add(ep)
+        
+        db.commit()
+        db.refresh(ep)
+        emit({"ok": True, "registered": ep_id, "name": ep.name, "base_url": ep.base_url}, args)
+    finally:
+        db.close()
+
+
+def cmd_delete(args):
+    db = SessionLocal()
+    try:
+        ep = db.get(ModelEndpoint, args.id)
+        if not ep:
+            fail(f"no endpoint with id {args.id!r}")
+        db.delete(ep)
+        db.commit()
+        emit({"ok": True, "deleted": args.id}, args)
+    finally:
+        db.close()
+
+
+async def _run_stream_query(url: str, model: str, messages: list[dict], temp: float, headers: dict | None) -> str:
+    full_response = []
+    try:
+        async for chunk in stream_llm(url, model, messages, temperature=temp, headers=headers):
+            if chunk.startswith("data:"):
+                data_str = chunk[5:].strip()
+                if data_str == "[DONE]":
+                    break
+                try:
+                    val = json.loads(data_str)
+                    if "delta" in val:
+                        delta = val["delta"]
+                        full_response.append(delta)
+                        sys.stdout.write(delta)
+                        sys.stdout.flush()
+                except Exception:
+                    pass
+            elif chunk.startswith("event: error"):
+                # Clean up error message and print
+                data_str = chunk[12:].strip()
+                try:
+                    val = json.loads(data_str)
+                    err = val.get("error", "Unknown error")
+                    sys.stderr.write(f"\n[Error from upstream]: {err}\n")
+                except Exception:
+                    sys.stderr.write(f"\n[Error from upstream]: {chunk}\n")
+                sys.stderr.flush()
+    except Exception as e:
+        sys.stderr.write(f"\n[Connection Error]: {e}\n")
+        sys.stderr.flush()
+    return "".join(full_response)
+
+
+def _resolve_model_endpoint(model_name: str | None) -> tuple[str, str, dict | None]:
+    """Finds which endpoint hosts the model, returning (url, model_name, headers)."""
+    db = SessionLocal()
+    try:
+        if not model_name:
+            # Fall back to default
+            url, resolved_model, headers = resolve_endpoint("default")
+            if not url or not resolved_model:
+                fail("No default endpoint/model configured in database. Register one first.")
+            return url, resolved_model, headers
+
+        # Scan endpoints for this model
+        for ep in db.query(ModelEndpoint).all():
+            if not ep.is_enabled:
+                continue
+            try:
+                models = json.loads(ep.cached_models) if ep.cached_models else []
+            except Exception:
+                models = []
+            
+            if model_name in models:
+                api_key = decrypt(ep.api_key) if ep.api_key else None
+                headers = build_headers(api_key, ep.base_url)
+                return ep.base_url, model_name, headers
+        
+        # If not found in cache, check if any registered endpoint has this model ID directly 
+        # or fallback to global default
+        url, resolved_model, headers = resolve_endpoint("default")
+        print(f"Warning: Model '{model_name}' not found in any endpoint caches. Falling back to default endpoint/model.")
+        return url, resolved_model, headers
+    finally:
+        db.close()
+
+
+async def cmd_query_async(args):
+    # Resolve endpoint
+    base_url, model, headers = _resolve_model_endpoint(args.model)
+    temp = args.temp if args.temp is not None else 0.7
+    
+    # Resolve the full chat completions URL
+    from src.endpoint_resolver import build_chat_url
+    chat_url = build_chat_url(base_url)
+    
+    # Check if interactive mode (no prompt provided on command line)
+    if not args.prompt:
+        print(f"Entering interactive chat loop with model: {model}")
+        print("Type 'exit' or 'quit' to end the session.")
+        print("-" * 60)
+        
+        messages = []
+        if args.system:
+            messages.append({"role": "system", "content": args.system})
+            
+        while True:
+            try:
+                prompt = input("\nYou: ").strip()
+                if not prompt:
+                    continue
+                if prompt.lower() in ("exit", "quit"):
+                    break
+                
+                messages.append({"role": "user", "content": prompt})
+                sys.stdout.write("AI:  ")
+                sys.stdout.flush()
+                
+                response = await _run_stream_query(chat_url, model, messages, temp, headers)
+                print()
+                if response:
+                    messages.append({"role": "assistant", "content": response})
+            except (KeyboardInterrupt, EOFError):
+                print("\nSession ended.")
+                break
+    else:
+        messages = []
+        if args.system:
+            messages.append({"role": "system", "content": args.system})
+        messages.append({"role": "user", "content": args.prompt})
+        
+        await _run_stream_query(chat_url, model, messages, temp, headers)
+        print()
+
+
+def cmd_query(args):
+    asyncio.run(cmd_query_async(args))
+
+
+def _build_parser():
+    common = argparse.ArgumentParser(add_help=False)
+    common.add_argument("--pretty", action="store_true")
+    p = argparse.ArgumentParser(prog="paios-chat", parents=[common])
+    sub = p.add_subparsers(dest="cmd", required=True)
+
+    pl = sub.add_parser("list", parents=[common])
+    pl.set_defaults(func=cmd_list)
+
+    pr = sub.add_parser("register", parents=[common])
+    pr.add_argument("name", help="Display name/ID of endpoint")
+    pr.add_argument("base_url", help="Base URL of API (e.g. https://api.openai.com/v1)")
+    pr.add_argument("--api-key", help="Encrypted key token")
+    pr.add_argument("--models", help="JSON array of model names e.g. '[\"gpt-4\"]'")
+    pr.add_argument("--supports-tools", type=bool, default=None)
+    pr.set_defaults(func=cmd_register)
+
+    pd = sub.add_parser("delete", parents=[common])
+    pd.add_argument("id")
+    pd.set_defaults(func=cmd_delete)
+
+    pq = sub.add_parser("query", parents=[common])
+    pq.add_argument("prompt", nargs="?", help="Prompt query string (omit for interactive REPL mode)")
+    pq.add_argument("--model", help="Specific model ID to search for and use")
+    pq.add_argument("--system", help="Optional system instruction/prompt override")
+    pq.add_argument("--temp", type=float, help="Temperature parameter (default 0.7)")
+    pq.set_defaults(func=cmd_query)
+
+    return p
+
+
+if __name__ == "__main__":
+    sys.exit(run(_build_parser()))

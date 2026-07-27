@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyPaiOS — File Dependency Graph</title>
+<style>
+:root {
+  --bg:       #07090F;
+  --surf:     #0E1420;
+  --panel:    #131C2E;
+  --border:   rgba(255,255,255,0.08);
+  --head:     #14D4BE;
+  --text:     #C8D4E8;
+  --muted:    #5A6A88;
+  --hover:    #1A2540;
+  --chat:     #FF5758;
+  --research: #14D4BE;
+  --crew:     #9066F5;
+  --media:    #F5A623;
+  --email:    #38BAF5;
+  --docs:     #5ECF8A;
+  --auth:     #FF4FCA;
+  --models:   #F0B866;
+  --system:   #6680A8;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+}
+
+.hdr {
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  padding: 0 1.1rem;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  flex-shrink: 0;
+  z-index: 50;
+}
+.hdr-logo { display: flex; align-items: center; gap: .5rem; font-size: 14px; font-weight: 700; color: #fff; white-space: nowrap; }
+.hdr-logo .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--head); }
+.hdr-sep { width: 1px; height: 24px; background: var(--border); flex-shrink: 0; }
+
+.search-wrap { position: relative; flex-shrink: 0; }
+.search-input {
+  width: 220px;
+  background: var(--hover);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: .38rem .6rem .38rem 1.8rem;
+  color: var(--text);
+  font-size: 12px;
+  outline: none;
+  transition: border-color .15s;
+}
+.search-input:focus { border-color: var(--head); }
+.search-icon { position: absolute; left: .55rem; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 11px; pointer-events: none; }
+.search-count { font-size: 10.5px; color: var(--muted); white-space: nowrap; }
+
+.hdr-btn {
+  padding: .32rem .65rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-size: 11.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.hdr-btn:hover { border-color: rgba(255,255,255,.22); color: var(--text); }
+
+.hdr-stats { margin-left: auto; display: flex; gap: 1.1rem; flex-shrink: 0; }
+.stat { display: flex; flex-direction: column; align-items: flex-end; }
+.stat-n { font-size: 14px; font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; }
+.stat-l { font-size: 9.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+
+.main { flex: 1; position: relative; overflow: hidden; min-height: 0; }
+#canvas { display: block; width: 100%; height: 100%; cursor: grab; }
+#canvas.dragging { cursor: grabbing; }
+
+.hint {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  font-size: 10.5px;
+  color: var(--muted);
+  background: rgba(14,20,32,.75);
+  backdrop-filter: blur(6px);
+  padding: .4rem .6rem;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  line-height: 1.6;
+  pointer-events: none;
+  z-index: 20;
+}
+.hint b { color: var(--text); }
+
+/* legend */
+.legend {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: rgba(14,20,32,.8);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: .55rem .7rem;
+  display: flex;
+  flex-direction: column;
+  gap: .32rem;
+  z-index: 20;
+}
+.leg-item {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: 11px;
+  color: var(--muted);
+  cursor: pointer;
+  padding: .1rem .2rem;
+  border-radius: 4px;
+  transition: all .15s;
+  user-select: none;
+}
+.leg-item:hover { background: rgba(255,255,255,.05); color: var(--text); }
+.leg-item.dimmed { opacity: .35; }
+.leg-pip { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.leg-n { margin-left: auto; font-size: 9.5px; color: var(--muted); font-variant-numeric: tabular-nums; padding-left: .5rem; }
+
+/* side panel */
+.side-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 300px;
+  background: rgba(19,28,46,.92);
+  backdrop-filter: blur(10px);
+  border-left: 1px solid var(--border);
+  transform: translateX(100%);
+  transition: transform .22s ease;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.side-panel.open { transform: translateX(0); }
+.panel-top {
+  padding: .9rem 1rem .7rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  gap: .5rem;
+}
+.panel-pip { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.panel-titles { flex: 1; min-width: 0; }
+.panel-name { font-weight: 700; font-size: 14px; color: #fff; font-family: 'SF Mono', 'Fira Code', monospace; word-break: break-all; }
+.panel-dir { font-size: 11px; color: var(--muted); margin-top: 3px; font-family: 'SF Mono', 'Fira Code', monospace; }
+.panel-close { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 16px; padding: 2px; flex-shrink: 0; }
+.panel-close:hover { color: var(--text); }
+.panel-body { flex: 1; overflow-y: auto; padding: .8rem 1rem; scrollbar-width: thin; }
+.panel-meta { display: flex; gap: 1.2rem; margin-bottom: .8rem; padding-bottom: .7rem; border-bottom: 1px solid var(--border); }
+.pm-item { display: flex; flex-direction: column; }
+.pm-n { font-size: 16px; font-weight: 700; color: #fff; font-variant-numeric: tabular-nums; }
+.pm-l { font-size: 9.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+.panel-section-title { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 .4rem; }
+.conn-list { display: flex; flex-direction: column; gap: .28rem; }
+.conn-item {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .34rem .5rem;
+  border-radius: 6px;
+  background: var(--hover);
+  cursor: pointer;
+  transition: background .15s;
+  font-size: 11px;
+}
+.conn-item:hover { background: rgba(255,255,255,.07); }
+.conn-pip { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.conn-name { font-family: 'SF Mono', 'Fira Code', monospace; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+.conn-w { font-size: 9.5px; color: var(--muted); font-variant-numeric: tabular-nums; flex-shrink: 0; }
+.panel-body::-webkit-scrollbar { width: 4px; }
+.panel-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+
+.credit {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  font-size: 10.5px;
+  color: var(--muted);
+  background: rgba(14,20,32,.75);
+  backdrop-filter: blur(6px);
+  padding: .4rem .65rem;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  z-index: 20;
+}
+.credit a { color: var(--head); text-decoration: none; }
+.credit a:hover { text-decoration: underline; }
+
+@media (max-width: 640px) {
+  .legend { display: none; }
+  .search-input { width: 140px; }
+  .side-panel { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-logo"><span class="dot"></span>MyPaiOS · File Graph</div>
+  <div class="hdr-sep"></div>
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input class="search-input" id="search" placeholder="Find a file…" autocomplete="off">
+  </div>
+  <span class="search-count" id="search-count"></span>
+  <button class="hdr-btn" id="resettle-btn">↻ Re-settle</button>
+  <button class="hdr-btn" id="reset-view-btn">⤢ Fit view</button>
+  <div class="hdr-stats">
+    <div class="stat"><span class="stat-n" id="stat-nodes">0</span><span class="stat-l">files</span></div>
+    <div class="stat"><span class="stat-n" id="stat-edges">0</span><span class="stat-l">links</span></div>
+  </div>
+</header>
+
+<div class="main">
+  <canvas id="canvas"></canvas>
+
+  <div class="legend" id="legend"></div>
+
+  <div class="hint"><b>Drag</b> a node to pin it · <b>Scroll</b> to zoom · <b>Drag</b> background to pan · <b>Click</b> a node for details</div>
+
+  <div class="credit">
+    Graph data generated locally with <a href="https://github.com/Graphify-Labs/graphify" target="_blank" rel="noopener">Graphify</a> (tree-sitter AST, Apache-2.0) · no LLM calls
+  </div>
+
+  <div class="side-panel" id="side-panel">
+    <div class="panel-top">
+      <div class="panel-pip" id="panel-pip"></div>
+      <div class="panel-titles">
+        <div class="panel-name" id="panel-name"></div>
+        <div class="panel-dir" id="panel-dir"></div>
+      </div>
+      <button class="panel-close" onclick="closePanel()">✕</button>
+    </div>
+    <div class="panel-body">
+      <div class="panel-meta">
+        <div class="pm-item"><span class="pm-n" id="pm-degree">0</span><span class="pm-l">connections</span></div>
+        <div class="pm-item"><span class="pm-n" id="pm-domain">—</span><span class="pm-l">domain</span></div>
+      </div>
+      <div class="panel-section-title">Connected files</div>
+      <div class="conn-list" id="conn-list"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const COLORS = {
+  chat:'#FF5758', research:'#14D4BE', crew:'#9066F5',
+  media:'#F5A623', email:'#38BAF5', docs:'#5ECF8A',
+  auth:'#FF4FCA', models:'#F0B866', system:'#6680A8',
+};
+const DOMAIN_LABELS = {
+  chat:'Chat & LLM', research:'Research', crew:'Crew / Agents', media:'Media',
+  email:'Email & Calendar', docs:'Docs & Memory', auth:'Auth & Security',
+  models:'Models & Hardware', system:'System / Infra',
+};
+
+const GRAPH = {"nodes":[{"id":"src/llm_core.py","name":"llm_core.py","dir":"src","domain":"chat","deg":183},{"id":"routes/personal_routes.py","name":"personal_routes.py","dir":"routes","domain":"docs","deg":20},{"id":"src/pdf_form_doc.py","name":"pdf_form_doc.py","dir":"src","domain":"docs","deg":39},{"id":"routes/api_token_routes.py","name":"api_token_routes.py","dir":"routes","domain":"auth","deg":13},{"id":"services/search/content.py","name":"content.py","dir":"services/search","domain":"research","deg":27},{"id":"src/user_time.py","name":"user_time.py","dir":"src","domain":"system","deg":28},{"id":"src/chroma_client.py","name":"chroma_client.py","dir":"src","domain":"docs","deg":13},{"id":"static/js/compare/selector.js","name":"selector.js","dir":"static/js/compare","domain":"models","deg":35},{"id":"src/pdf_forms.py","name":"pdf_forms.py","dir":"src","domain":"docs","deg":18},{"id":"src/embeddings.py","name":"embeddings.py","dir":"src","domain":"docs","deg":13},{"id":"src/app_initializer.py","name":"app_initializer.py","dir":"src","domain":"system","deg":47},{"id":"core/atomic_io.py","name":"atomic_io.py","dir":"core","domain":"system","deg":29},{"id":"services/hwfit/fit.py","name":"fit.py","dir":"services/hwfit","domain":"models","deg":22},{"id":"scripts/_code_qa.py","name":"_code_qa.py","dir":"scripts","domain":"system","deg":14},{"id":"services/search/__init__.py","name":"__init__.py","dir":"services/search","domain":"research","deg":22},{"id":"routes/history_routes.py","name":"history_routes.py","dir":"routes","domain":"system","deg":33},{"id":"static/js/editor/layer-panel.js","name":"layer-panel.js","dir":"static/js/editor","domain":"media","deg":14},{"id":"routes/prefs_routes.py","name":"prefs_routes.py","dir":"routes","domain":"system","deg":45},{"id":"src/task_scheduler.py","name":"task_scheduler.py","dir":"src","domain":"system","deg":92},{"id":"src/tool_execution.py","name":"tool_execution.py","dir":"src","domain":"crew","deg":103},{"id":"app.py","name":"app.py","dir":".","domain":"system","deg":233},{"id":"static/js/emailLibrary/utils.js","name":"utils.js","dir":"static/js/emailLibrary","domain":"email","deg":43},{"id":"static/js/ui.js","name":"ui.js","dir":"static/js","domain":"system","deg":171},{"id":"static/js/memory.js","name":"memory.js","dir":"static/js","domain":"docs","deg":37},{"id":"static/js/document.js","name":"document.js","dir":"static/js","domain":"docs","deg":39},{"id":"static/js/cookbookServe.js","name":"cookbookServe.js","dir":"static/js","domain":"models","deg":32},{"id":"static/js/cookbookDownload.js","name":"cookbookDownload.js","dir":"static/js","domain":"models","deg":26},{"id":"routes/research_routes.py","name":"research_routes.py","dir":"routes","domain":"research","deg":28},{"id":"src/mcp_manager.py","name":"mcp_manager.py","dir":"src","domain":"system","deg":16},{"id":"static/js/admin.js","name":"admin.js","dir":"static/js","domain":"system","deg":16},{"id":"src/builtin_actions.py","name":"builtin_actions.py","dir":"src","domain":"system","deg":101},{"id":"core/session_manager.py","name":"session_manager.py","dir":"core","domain":"system","deg":27},{"id":"services/code/repomap.py","name":"repomap.py","dir":"services/code","domain":"system","deg":9},{"id":"src/settings.py","name":"settings.py","dir":"src","domain":"system","deg":145},{"id":"src/bg_jobs.py","name":"bg_jobs.py","dir":"src","domain":"system","deg":14},{"id":"routes/model_routes.py","name":"model_routes.py","dir":"routes","domain":"models","deg":82},{"id":"src/mcp_oauth.py","name":"mcp_oauth.py","dir":"src","domain":"system","deg":11},{"id":"routes/diagnostics_routes.py","name":"diagnostics_routes.py","dir":"routes","domain":"system","deg":13},{"id":"src/rate_limiter.py","name":"rate_limiter.py","dir":"src","domain":"system","deg":11},{"id":"routes/codex_routes.py","name":"codex_routes.py","dir":"routes","domain":"docs","deg":21},{"id":"static/js/workspace.js","name":"workspace.js","dir":"static/js","domain":"system","deg":29},{"id":"src/event_bus.py","name":"event_bus.py","dir":"src","domain":"system","deg":36},{"id":"routes/shell_routes.py","name":"shell_routes.py","dir":"routes","domain":"crew","deg":13},{"id":"src/context_compactor.py","name":"context_compactor.py","dir":"src","domain":"chat","deg":22},{"id":"src/task_endpoint.py","name":"task_endpoint.py","dir":"src","domain":"system","deg":13},{"id":"static/js/storage.js","name":"storage.js","dir":"static/js","domain":"system","deg":87},{"id":"routes/preset_routes.py","name":"preset_routes.py","dir":"routes","domain":"chat","deg":11},{"id":"src/caldav_sync.py","name":"caldav_sync.py","dir":"src","domain":"email","deg":17},{"id":"static/js/compare/stream.js","name":"stream.js","dir":"static/js/compare","domain":"models","deg":27},{"id":"services/hwfit/profiles.py","name":"profiles.py","dir":"services/hwfit","domain":"models","deg":10},{"id":"routes/contacts_routes.py","name":"contacts_routes.py","dir":"routes","domain":"email","deg":21},{"id":"routes/workspace_routes.py","name":"workspace_routes.py","dir":"routes","domain":"system","deg":10},{"id":"routes/compare_routes.py","name":"compare_routes.py","dir":"routes","domain":"system","deg":20},{"id":"services/docs/service.py","name":"service.py","dir":"services/docs","domain":"docs","deg":15},{"id":"routes/embedding_routes.py","name":"embedding_routes.py","dir":"routes","domain":"system","deg":14},{"id":"static/js/chatStream.js","name":"chatStream.js","dir":"static/js","domain":"chat","deg":22},{"id":"routes/cookbook_routes.py","name":"cookbook_routes.py","dir":"routes","domain":"models","deg":93},{"id":"routes/document_helpers.py","name":"document_helpers.py","dir":"routes","domain":"docs","deg":45},{"id":"static/js/escMenuStack.js","name":"escMenuStack.js","dir":"static/js","domain":"system","deg":36},{"id":"src/chat_helpers.py","name":"chat_helpers.py","dir":"src","domain":"chat","deg":11},{"id":"routes/gallery_helpers.py","name":"gallery_helpers.py","dir":"routes","domain":"system","deg":14},{"id":"static/js/modalSnap.js","name":"modalSnap.js","dir":"static/js","domain":"system","deg":25},{"id":"services/mailguard/engine.py","name":"engine.py","dir":"services/mailguard","domain":"email","deg":28},{"id":"routes/copilot_routes.py","name":"copilot_routes.py","dir":"routes","domain":"crew","deg":11},{"id":"src/model_context.py","name":"model_context.py","dir":"src","domain":"system","deg":26},{"id":"services/mailguard/runner.py","name":"runner.py","dir":"services/mailguard","domain":"email","deg":11},{"id":"src/tool_security.py","name":"tool_security.py","dir":"src","domain":"crew","deg":15},{"id":"routes/backup_routes.py","name":"backup_routes.py","dir":"routes","domain":"system","deg":21},{"id":"routes/mailguard_routes.py","name":"mailguard_routes.py","dir":"routes","domain":"email","deg":22},{"id":"services/youtube/youtube_handler.py","name":"youtube_handler.py","dir":"services/youtube","domain":"media","deg":14},{"id":"scripts/paios-mail","name":"paios-mail","dir":"scripts","domain":"email","deg":112},{"id":"routes/calendar_routes.py","name":"calendar_routes.py","dir":"routes","domain":"email","deg":69},{"id":"static/js/group.js","name":"group.js","dir":"static/js","domain":"system","deg":28},{"id":"routes/agents_hub_routes.py","name":"agents_hub_routes.py","dir":"routes","domain":"crew","deg":21},{"id":"services/crew/registry.py","name":"registry.py","dir":"services/crew","domain":"crew","deg":15},{"id":"routes/skills_routes.py","name":"skills_routes.py","dir":"routes","domain":"crew","deg":60},{"id":"routes/note_routes.py","name":"note_routes.py","dir":"routes","domain":"docs","deg":37},{"id":"routes/email_pollers.py","name":"email_pollers.py","dir":"routes","domain":"email","deg":69},{"id":"routes/editor_draft_routes.py","name":"editor_draft_routes.py","dir":"routes","domain":"system","deg":12},{"id":"src/agent_loop.py","name":"agent_loop.py","dir":"src","domain":"crew","deg":105},{"id":"static/js/calendar/utils.js","name":"utils.js","dir":"static/js/calendar","domain":"email","deg":45},{"id":"static/js/theme.js","name":"theme.js","dir":"static/js","domain":"system","deg":45},{"id":"static/js/cookbook-hwfit.js","name":"cookbook-hwfit.js","dir":"static/js","domain":"models","deg":60},{"id":"src/personal_docs.py","name":"personal_docs.py","dir":"src","domain":"docs","deg":24},{"id":"services/memory/skill_format.py","name":"skill_format.py","dir":"services/memory","domain":"docs","deg":22},{"id":"core/platform_compat.py","name":"platform_compat.py","dir":"core","domain":"system","deg":52},{"id":"src/integrations.py","name":"integrations.py","dir":"src","domain":"system","deg":40},{"id":"core/__init__.py","name":"__init__.py","dir":"core","domain":"system","deg":22},{"id":"static/js/cookbookRunning.js","name":"cookbookRunning.js","dir":"static/js","domain":"models","deg":70},{"id":"services/search/cache.py","name":"cache.py","dir":"services/search","domain":"research","deg":13},{"id":"src/memory.py","name":"memory.py","dir":"src","domain":"docs","deg":16},{"id":"services/memory/service.py","name":"service.py","dir":"services/memory","domain":"docs","deg":21},{"id":"services/crew/supervisor.py","name":"supervisor.py","dir":"services/crew","domain":"crew","deg":16},{"id":"src/copilot.py","name":"copilot.py","dir":"src","domain":"crew","deg":13},{"id":"static/js/modelPicker.js","name":"modelPicker.js","dir":"static/js","domain":"models","deg":18},{"id":"static/js/cookbook-diagnosis.js","name":"cookbook-diagnosis.js","dir":"static/js","domain":"models","deg":46},{"id":"static/js/modelSort.js","name":"modelSort.js","dir":"static/js","domain":"models","deg":33},{"id":"routes/cookbook_helpers.py","name":"cookbook_helpers.py","dir":"routes","domain":"models","deg":59},{"id":"core/exceptions.py","name":"exceptions.py","dir":"core","domain":"system","deg":24},{"id":"routes/session_routes.py","name":"session_routes.py","dir":"routes","domain":"system","deg":61},{"id":"static/js/tasks.js","name":"tasks.js","dir":"static/js","domain":"system","deg":22},{"id":"static/js/research/jobs.js","name":"jobs.js","dir":"static/js/research","domain":"research","deg":21},{"id":"services/search/analytics.py","name":"analytics.py","dir":"services/search","domain":"research","deg":23},{"id":"static/js/galleryEditor.js","name":"galleryEditor.js","dir":"static/js","domain":"media","deg":179},{"id":"static/js/markdown.js","name":"markdown.js","dir":"static/js","domain":"system","deg":34},{"id":"static/js/providers.js","name":"providers.js","dir":"static/js","domain":"system","deg":27},{"id":"src/chat_processor.py","name":"chat_processor.py","dir":"src","domain":"chat","deg":17},{"id":"src/webhook_manager.py","name":"webhook_manager.py","dir":"src","domain":"system","deg":17},{"id":"static/js/editor/layer-helpers.js","name":"layer-helpers.js","dir":"static/js/editor","domain":"media","deg":23},{"id":"static/js/presets.js","name":"presets.js","dir":"static/js","domain":"chat","deg":17},{"id":"src/memory_vector.py","name":"memory_vector.py","dir":"src","domain":"docs","deg":15},{"id":"routes/chat_routes.py","name":"chat_routes.py","dir":"routes","domain":"chat","deg":98},{"id":"src/document_processor.py","name":"document_processor.py","dir":"src","domain":"docs","deg":56},{"id":"static/js/documentLibrary.js","name":"documentLibrary.js","dir":"static/js","domain":"docs","deg":35},{"id":"routes/memory_routes.py","name":"memory_routes.py","dir":"routes","domain":"docs","deg":33},{"id":"core/middleware.py","name":"middleware.py","dir":"core","domain":"auth","deg":77},{"id":"static/js/editor/state.js","name":"state.js","dir":"static/js/editor","domain":"media","deg":64},{"id":"routes/webhook_routes.py","name":"webhook_routes.py","dir":"routes","domain":"system","deg":35},{"id":"routes/admin_wipe_routes.py","name":"admin_wipe_routes.py","dir":"routes","domain":"system","deg":19},{"id":"static/app.js","name":"app.js","dir":"static","domain":"system","deg":110},{"id":"static/js/editor/fx/adj-popup.js","name":"adj-popup.js","dir":"static/js/editor/fx","domain":"media","deg":11},{"id":"core/database.py","name":"database.py","dir":"core","domain":"system","deg":404},{"id":"routes/gallery_routes.py","name":"gallery_routes.py","dir":"routes","domain":"media","deg":40},{"id":"src/rag_manager.py","name":"rag_manager.py","dir":"src","domain":"docs","deg":14},{"id":"src/text_helpers.py","name":"text_helpers.py","dir":"src","domain":"system","deg":23},{"id":"static/js/cookbook.js","name":"cookbook.js","dir":"static/js","domain":"models","deg":125},{"id":"src/memory_provider.py","name":"memory_provider.py","dir":"src","domain":"docs","deg":16},{"id":"services/local_ai/status.py","name":"status.py","dir":"services/local_ai","domain":"media","deg":13},{"id":"scripts/paios-contacts","name":"paios-contacts","dir":"scripts","domain":"email","deg":13},{"id":"routes/document_routes.py","name":"document_routes.py","dir":"routes","domain":"docs","deg":82},{"id":"routes/vault_routes.py","name":"vault_routes.py","dir":"routes","domain":"auth","deg":10},{"id":"routes/assistant_routes.py","name":"assistant_routes.py","dir":"routes","domain":"chat","deg":20},{"id":"routes/search_routes.py","name":"search_routes.py","dir":"routes","domain":"research","deg":14},{"id":"static/js/settings.js","name":"settings.js","dir":"static/js","domain":"system","deg":41},{"id":"static/js/colorPicker.js","name":"colorPicker.js","dir":"static/js","domain":"system","deg":14},{"id":"routes/email_helpers.py","name":"email_helpers.py","dir":"routes","domain":"email","deg":174},{"id":"src/tool_index.py","name":"tool_index.py","dir":"src","domain":"crew","deg":11},{"id":"scripts/_code_verify.py","name":"_code_verify.py","dir":"scripts","domain":"system","deg":12},{"id":"routes/gateway_routes.py","name":"gateway_routes.py","dir":"routes","domain":"email","deg":12},{"id":"src/auth_helpers.py","name":"auth_helpers.py","dir":"src","domain":"auth","deg":179},{"id":"src/database.py","name":"database.py","dir":"src","domain":"system","deg":30},{"id":"static/js/editor/canvas-coords.js","name":"canvas-coords.js","dir":"static/js/editor","domain":"media","deg":16},{"id":"services/search/core.py","name":"core.py","dir":"services/search","domain":"research","deg":83},{"id":"src/research_handler.py","name":"research_handler.py","dir":"src","domain":"research","deg":30},{"id":"static/js/emailLibrary.js","name":"emailLibrary.js","dir":"static/js","domain":"email","deg":118},{"id":"services/pricing/pricebook.py","name":"pricebook.py","dir":"services/pricing","domain":"models","deg":13},{"id":"src/rag_vector.py","name":"rag_vector.py","dir":"src","domain":"docs","deg":15},{"id":"static/js/chatRenderer.js","name":"chatRenderer.js","dir":"static/js","domain":"chat","deg":73},{"id":"static/js/windowDrag.js","name":"windowDrag.js","dir":"static/js","domain":"system","deg":43},{"id":"static/js/compare/panes.js","name":"panes.js","dir":"static/js/compare","domain":"models","deg":53},{"id":"services/memory/skills.py","name":"skills.py","dir":"services/memory","domain":"crew","deg":40},{"id":"static/js/compare/icons.js","name":"icons.js","dir":"static/js/compare","domain":"models","deg":11},{"id":"core/models.py","name":"models.py","dir":"core","domain":"system","deg":46},{"id":"src/tool_parsing.py","name":"tool_parsing.py","dir":"src","domain":"crew","deg":10},{"id":"services/memory/memory_extractor.py","name":"memory_extractor.py","dir":"services/memory","domain":"docs","deg":11},{"id":"src/deep_research.py","name":"deep_research.py","dir":"src","domain":"research","deg":24},{"id":"src/request_models.py","name":"request_models.py","dir":"src","domain":"system","deg":15},{"id":"routes/hwfit_routes.py","name":"hwfit_routes.py","dir":"routes","domain":"models","deg":14},{"id":"static/js/compare/probe.js","name":"probe.js","dir":"static/js/compare","domain":"models","deg":17},{"id":"static/js/emailInbox.js","name":"emailInbox.js","dir":"static/js","domain":"email","deg":36},{"id":"core/auth.py","name":"auth.py","dir":"core","domain":"auth","deg":44},{"id":"static/js/chat.js","name":"chat.js","dir":"static/js","domain":"chat","deg":73},{"id":"src/tool_implementations.py","name":"tool_implementations.py","dir":"src","domain":"crew","deg":188},{"id":"src/endpoint_resolver.py","name":"endpoint_resolver.py","dir":"src","domain":"chat","deg":167},{"id":"src/youtube_handler.py","name":"youtube_handler.py","dir":"src","domain":"media","deg":16},{"id":"routes/auth_routes.py","name":"auth_routes.py","dir":"routes","domain":"auth","deg":56},{"id":"services/gateway/telegram_gateway.py","name":"telegram_gateway.py","dir":"services/gateway","domain":"email","deg":13},{"id":"services/search/providers.py","name":"providers.py","dir":"services/search","domain":"research","deg":49},{"id":"src/chat_handler.py","name":"chat_handler.py","dir":"src","domain":"chat","deg":34},{"id":"services/crew/router.py","name":"router.py","dir":"services/crew","domain":"crew","deg":28},{"id":"routes/file_index_routes.py","name":"file_index_routes.py","dir":"routes","domain":"system","deg":9},{"id":"services/video/analyzer.py","name":"analyzer.py","dir":"services/video","domain":"media","deg":12},{"id":"scripts/paios-cookbook","name":"paios-cookbook","dir":"scripts","domain":"models","deg":10},{"id":"static/js/gallery.js","name":"gallery.js","dir":"static/js","domain":"media","deg":28},{"id":"src/agent_tools.py","name":"agent_tools.py","dir":"src","domain":"crew","deg":36},{"id":"companion/routes.py","name":"routes.py","dir":"companion","domain":"system","deg":15},{"id":"static/js/spinner.js","name":"spinner.js","dir":"static/js","domain":"system","deg":67},{"id":"services/search/service.py","name":"service.py","dir":"services/search","domain":"research","deg":13},{"id":"src/upload_handler.py","name":"upload_handler.py","dir":"src","domain":"docs","deg":22},{"id":"routes/task_routes.py","name":"task_routes.py","dir":"routes","domain":"system","deg":47},{"id":"static/js/compare/state.js","name":"state.js","dir":"static/js/compare","domain":"models","deg":16},{"id":"static/js/sessions.js","name":"sessions.js","dir":"static/js","domain":"system","deg":68},{"id":"scripts/paios-personal","name":"paios-personal","dir":"scripts","domain":"docs","deg":14},{"id":"routes/cleanup_routes.py","name":"cleanup_routes.py","dir":"routes","domain":"system","deg":10},{"id":"services/__init__.py","name":"__init__.py","dir":"services","domain":"system","deg":19},{"id":"scripts/paios-chat","name":"paios-chat","dir":"scripts","domain":"system","deg":15},{"id":"src/upload_limits.py","name":"upload_limits.py","dir":"src","domain":"docs","deg":15},{"id":"src/prompt_security.py","name":"prompt_security.py","dir":"src","domain":"auth","deg":12},{"id":"static/js/compare/models.js","name":"models.js","dir":"static/js/compare","domain":"models","deg":40},{"id":"routes/code_routes.py","name":"code_routes.py","dir":"routes","domain":"docs","deg":20},{"id":"scripts/_lib/cli.py","name":"cli.py","dir":"scripts/_lib","domain":"system","deg":22},{"id":"static/js/compare/index.js","name":"index.js","dir":"static/js/compare","domain":"models","deg":98},{"id":"services/research/service.py","name":"service.py","dir":"services/research","domain":"research","deg":13},{"id":"static/js/compare/vote.js","name":"vote.js","dir":"static/js/compare","domain":"models","deg":42},{"id":"static/js/slashCommands.js","name":"slashCommands.js","dir":"static/js","domain":"system","deg":51},{"id":"src/research_utils.py","name":"research_utils.py","dir":"src","domain":"research","deg":28},{"id":"static/js/modalManager.js","name":"modalManager.js","dir":"static/js","domain":"system","deg":38},{"id":"static/js/models.js","name":"models.js","dir":"static/js","domain":"models","deg":32},{"id":"src/ai_interaction.py","name":"ai_interaction.py","dir":"src","domain":"chat","deg":69},{"id":"static/js/compare/scoreboard.js","name":"scoreboard.js","dir":"static/js/compare","domain":"models","deg":18},{"id":"src/secret_storage.py","name":"secret_storage.py","dir":"src","domain":"auth","deg":52},{"id":"static/js/research/panel.js","name":"panel.js","dir":"static/js/research","domain":"research","deg":31},{"id":"src/teacher_escalation.py","name":"teacher_escalation.py","dir":"src","domain":"chat","deg":15},{"id":"src/rag_singleton.py","name":"rag_singleton.py","dir":"src","domain":"system","deg":9},{"id":"routes/upload_routes.py","name":"upload_routes.py","dir":"routes","domain":"docs","deg":14},{"id":"static/js/calendar.js","name":"calendar.js","dir":"static/js","domain":"email","deg":64},{"id":"routes/models_hub_routes.py","name":"models_hub_routes.py","dir":"routes","domain":"models","deg":22},{"id":"routes/mcp_routes.py","name":"mcp_routes.py","dir":"routes","domain":"system","deg":14},{"id":"services/memory/skill_extractor.py","name":"skill_extractor.py","dir":"services/memory","domain":"docs","deg":9},{"id":"scripts/paios-memory","name":"paios-memory","dir":"scripts","domain":"system","deg":9},{"id":"src/caldav_writeback.py","name":"caldav_writeback.py","dir":"src","domain":"email","deg":10},{"id":"services/research/research_handler.py","name":"research_handler.py","dir":"services/research","domain":"research","deg":20},{"id":"services/hwfit/models.py","name":"models.py","dir":"services/hwfit","domain":"models","deg":30},{"id":"static/js/tileManager.js","name":"tileManager.js","dir":"static/js","domain":"system","deg":17},{"id":"static/js/emailLibrary/signatureFold.js","name":"signatureFold.js","dir":"static/js/emailLibrary","domain":"email","deg":25},{"id":"routes/chat_helpers.py","name":"chat_helpers.py","dir":"routes","domain":"chat","deg":103},{"id":"routes/email_routes.py","name":"email_routes.py","dir":"routes","domain":"email","deg":122},{"id":"static/js/notes.js","name":"notes.js","dir":"static/js","domain":"docs","deg":27},{"id":"routes/crew_routes.py","name":"crew_routes.py","dir":"routes","domain":"crew","deg":19},{"id":"routes/signature_routes.py","name":"signature_routes.py","dir":"routes","domain":"docs","deg":10}],"edges":[{"s":"app.py","t":"companion/routes.py","w":1},{"s":"app.py","t":"core/auth.py","w":6},{"s":"app.py","t":"core/database.py","w":22},{"s":"app.py","t":"core/exceptions.py","w":17},{"s":"app.py","t":"core/middleware.py","w":7},{"s":"app.py","t":"routes/admin_wipe_routes.py","w":2},{"s":"app.py","t":"routes/agents_hub_routes.py","w":2},{"s":"app.py","t":"routes/api_token_routes.py","w":2},{"s":"app.py","t":"routes/assistant_routes.py","w":2},{"s":"app.py","t":"routes/auth_routes.py","w":2},{"s":"app.py","t":"routes/backup_routes.py","w":2},{"s":"app.py","t":"routes/calendar_routes.py","w":2},{"s":"app.py","t":"routes/chat_routes.py","w":2},{"s":"app.py","t":"routes/cleanup_routes.py","w":2},{"s":"app.py","t":"routes/code_routes.py","w":2},{"s":"app.py","t":"routes/codex_routes.py","w":3},{"s":"app.py","t":"routes/compare_routes.py","w":2},{"s":"app.py","t":"routes/contacts_routes.py","w":2},{"s":"app.py","t":"routes/cookbook_routes.py","w":2},{"s":"app.py","t":"routes/copilot_routes.py","w":2},{"s":"app.py","t":"routes/crew_routes.py","w":2},{"s":"app.py","t":"routes/diagnostics_routes.py","w":2},{"s":"app.py","t":"routes/document_routes.py","w":2},{"s":"app.py","t":"routes/editor_draft_routes.py","w":2},{"s":"app.py","t":"routes/email_routes.py","w":2},{"s":"app.py","t":"routes/embedding_routes.py","w":2},{"s":"app.py","t":"routes/file_index_routes.py","w":2},{"s":"app.py","t":"routes/gallery_routes.py","w":2},{"s":"app.py","t":"routes/gateway_routes.py","w":2},{"s":"app.py","t":"routes/history_routes.py","w":2},{"s":"app.py","t":"routes/hwfit_routes.py","w":2},{"s":"app.py","t":"routes/mailguard_routes.py","w":2},{"s":"app.py","t":"routes/mcp_routes.py","w":2},{"s":"app.py","t":"routes/memory_routes.py","w":2},{"s":"app.py","t":"routes/model_routes.py","w":2},{"s":"app.py","t":"routes/models_hub_routes.py","w":2},{"s":"app.py","t":"routes/note_routes.py","w":2},{"s":"app.py","t":"routes/personal_routes.py","w":2},{"s":"app.py","t":"routes/prefs_routes.py","w":2},{"s":"app.py","t":"routes/preset_routes.py","w":2},{"s":"app.py","t":"routes/research_routes.py","w":2},{"s":"app.py","t":"routes/search_routes.py","w":2},{"s":"app.py","t":"routes/session_routes.py","w":2},{"s":"app.py","t":"routes/shell_routes.py","w":2},{"s":"app.py","t":"routes/signature_routes.py","w":2},{"s":"app.py","t":"routes/skills_routes.py","w":4},{"s":"app.py","t":"routes/task_routes.py","w":2},{"s":"app.py","t":"routes/upload_routes.py","w":2},{"s":"app.py","t":"routes/vault_routes.py","w":2},{"s":"app.py","t":"routes/webhook_routes.py","w":2},{"s":"app.py","t":"routes/workspace_routes.py","w":2},{"s":"app.py","t":"services/gateway/telegram_gateway.py","w":2},{"s":"app.py","t":"services/mailguard/runner.py","w":2},{"s":"app.py","t":"services/youtube/youtube_handler.py","w":1},{"s":"app.py","t":"src/agent_tools.py","w":2},{"s":"app.py","t":"src/ai_interaction.py","w":4},{"s":"app.py","t":"src/app_initializer.py","w":2},{"s":"app.py","t":"src/auth_helpers.py","w":2},{"s":"app.py","t":"src/event_bus.py","w":2},{"s":"app.py","t":"src/mcp_manager.py","w":5},{"s":"app.py","t":"src/rag_singleton.py","w":2},{"s":"app.py","t":"src/settings.py","w":2},{"s":"app.py","t":"src/task_scheduler.py","w":5},{"s":"app.py","t":"src/tool_index.py","w":1},{"s":"app.py","t":"src/webhook_manager.py","w":5},{"s":"companion/routes.py","t":"core/database.py","w":1},{"s":"companion/routes.py","t":"core/middleware.py","w":3},{"s":"companion/routes.py","t":"src/auth_helpers.py","w":4},{"s":"companion/routes.py","t":"src/endpoint_resolver.py","w":2},{"s":"core/__init__.py","t":"core/auth.py","w":2},{"s":"core/__init__.py","t":"core/exceptions.py","w":5},{"s":"core/__init__.py","t":"core/middleware.py","w":2},{"s":"core/__init__.py","t":"core/models.py","w":3},{"s":"core/__init__.py","t":"core/session_manager.py","w":2},{"s":"core/__init__.py","t":"src/llm_core.py","w":7},{"s":"core/atomic_io.py","t":"core/auth.py","w":2},{"s":"core/atomic_io.py","t":"src/bg_jobs.py","w":3},{"s":"core/atomic_io.py","t":"src/integrations.py","w":3},{"s":"core/atomic_io.py","t":"routes/codex_routes.py","w":2},{"s":"core/atomic_io.py","t":"routes/contacts_routes.py","w":3},{"s":"core/atomic_io.py","t":"routes/cookbook_routes.py","w":2},{"s":"core/atomic_io.py","t":"routes/email_helpers.py","w":2},{"s":"core/atomic_io.py","t":"services/memory/skills.py","w":5},{"s":"core/atomic_io.py","t":"src/builtin_actions.py","w":2},{"s":"core/atomic_io.py","t":"src/settings.py","w":3},{"s":"core/auth.py","t":"core/database.py","w":4},{"s":"core/auth.py","t":"routes/auth_routes.py","w":10},{"s":"core/auth.py","t":"routes/note_routes.py","w":4},{"s":"core/auth.py","t":"routes/task_routes.py","w":4},{"s":"core/auth.py","t":"src/builtin_actions.py","w":4},{"s":"core/auth.py","t":"src/tool_security.py","w":2},{"s":"core/auth.py","t":"src/upload_handler.py","w":3},{"s":"core/auth.py","t":"routes/email_helpers.py","w":1},{"s":"core/auth.py","t":"src/auth_helpers.py","w":1},{"s":"core/auth.py","t":"routes/session_routes.py","w":1},{"s":"core/database.py","t":"src/secret_storage.py","w":11},{"s":"core/database.py","t":"core/session_manager.py","w":9},{"s":"core/database.py","t":"routes/admin_wipe_routes.py","w":13},{"s":"core/database.py","t":"routes/api_token_routes.py","w":5},{"s":"core/database.py","t":"routes/assistant_routes.py","w":12},{"s":"core/database.py","t":"routes/calendar_routes.py","w":10},{"s":"core/database.py","t":"routes/chat_helpers.py","w":20},{"s":"core/database.py","t":"routes/chat_routes.py","w":11},{"s":"core/database.py","t":"routes/compare_routes.py","w":6},{"s":"core/database.py","t":"routes/copilot_routes.py","w":3},{"s":"core/database.py","t":"routes/document_helpers.py","w":14},{"s":"core/database.py","t":"routes/document_routes.py","w":7},{"s":"core/database.py","t":"routes/editor_draft_routes.py","w":7},{"s":"core/database.py","t":"routes/gallery_helpers.py","w":4},{"s":"core/database.py","t":"routes/gallery_routes.py","w":8},{"s":"core/database.py","t":"routes/history_routes.py","w":4},{"s":"core/database.py","t":"routes/mcp_routes.py","w":3},{"s":"core/database.py","t":"routes/memory_routes.py","w":2},{"s":"core/database.py","t":"routes/model_routes.py","w":4},{"s":"core/database.py","t":"routes/note_routes.py","w":9},{"s":"core/database.py","t":"routes/session_routes.py","w":6},{"s":"core/database.py","t":"routes/signature_routes.py","w":5},{"s":"core/database.py","t":"routes/task_routes.py","w":20},{"s":"core/database.py","t":"routes/webhook_routes.py","w":4},{"s":"core/database.py","t":"scripts/paios-chat","w":2},{"s":"core/database.py","t":"scripts/paios-mail","w":1},{"s":"core/database.py","t":"src/database.py","w":29},{"s":"core/database.py","t":"src/endpoint_resolver.py","w":2},{"s":"core/database.py","t":"src/ai_interaction.py","w":3},{"s":"core/database.py","t":"src/tool_implementations.py","w":23},{"s":"core/database.py","t":"routes/email_routes.py","w":7},{"s":"core/database.py","t":"src/task_scheduler.py","w":20},{"s":"core/database.py","t":"src/pdf_form_doc.py","w":4},{"s":"core/database.py","t":"routes/email_helpers.py","w":3},{"s":"core/database.py","t":"routes/email_pollers.py","w":3},{"s":"core/database.py","t":"services/mailguard/engine.py","w":1},{"s":"core/database.py","t":"src/builtin_actions.py","w":15},{"s":"core/database.py","t":"routes/cookbook_routes.py","w":2},{"s":"core/database.py","t":"routes/models_hub_routes.py","w":5},{"s":"core/database.py","t":"services/local_ai/status.py","w":1},{"s":"core/database.py","t":"src/agent_loop.py","w":4},{"s":"core/database.py","t":"src/llm_core.py","w":2},{"s":"core/database.py","t":"src/model_context.py","w":1},{"s":"core/database.py","t":"src/mcp_manager.py","w":1},{"s":"core/database.py","t":"src/mcp_oauth.py","w":2},{"s":"core/database.py","t":"src/webhook_manager.py","w":1},{"s":"core/database.py","t":"src/event_bus.py","w":1},{"s":"core/database.py","t":"src/caldav_sync.py","w":4},{"s":"core/database.py","t":"routes/diagnostics_routes.py","w":2},{"s":"core/database.py","t":"src/chat_handler.py","w":1},{"s":"core/exceptions.py","t":"routes/chat_routes.py","w":2},{"s":"core/middleware.py","t":"routes/admin_wipe_routes.py","w":3},{"s":"core/middleware.py","t":"routes/agents_hub_routes.py","w":2},{"s":"core/middleware.py","t":"routes/api_token_routes.py","w":3},{"s":"core/middleware.py","t":"routes/backup_routes.py","w":3},{"s":"core/middleware.py","t":"routes/code_routes.py","w":2},{"s":"core/middleware.py","t":"routes/contacts_routes.py","w":2},{"s":"core/middleware.py","t":"routes/cookbook_routes.py","w":3},{"s":"core/middleware.py","t":"routes/copilot_routes.py","w":3},{"s":"core/middleware.py","t":"routes/crew_routes.py","w":2},{"s":"core/middleware.py","t":"routes/diagnostics_routes.py","w":3},{"s":"core/middleware.py","t":"routes/embedding_routes.py","w":3},{"s":"core/middleware.py","t":"routes/file_index_routes.py","w":2},{"s":"core/middleware.py","t":"routes/gateway_routes.py","w":2},{"s":"core/middleware.py","t":"routes/mailguard_routes.py","w":2},{"s":"core/middleware.py","t":"routes/mcp_routes.py","w":3},{"s":"core/middleware.py","t":"routes/model_routes.py","w":3},{"s":"core/middleware.py","t":"routes/models_hub_routes.py","w":2},{"s":"core/middleware.py","t":"routes/personal_routes.py","w":2},{"s":"core/middleware.py","t":"routes/preset_routes.py","w":2},{"s":"core/middleware.py","t":"routes/skills_routes.py","w":3},{"s":"core/middleware.py","t":"routes/upload_routes.py","w":3},{"s":"core/middleware.py","t":"routes/vault_routes.py","w":3},{"s":"core/middleware.py","t":"routes/webhook_routes.py","w":3},{"s":"core/middleware.py","t":"routes/session_routes.py","w":2},{"s":"core/models.py","t":"core/session_manager.py","w":6},{"s":"core/models.py","t":"routes/chat_helpers.py","w":7},{"s":"core/models.py","t":"routes/chat_routes.py","w":3},{"s":"core/models.py","t":"routes/history_routes.py","w":3},{"s":"core/models.py","t":"routes/session_routes.py","w":3},{"s":"core/models.py","t":"src/app_initializer.py","w":3},{"s":"core/models.py","t":"src/chat_handler.py","w":4},{"s":"core/models.py","t":"src/context_compactor.py","w":3},{"s":"core/models.py","t":"routes/research_routes.py","w":2},{"s":"core/models.py","t":"routes/webhook_routes.py","w":2},{"s":"core/models.py","t":"src/ai_interaction.py","w":3},{"s":"core/models.py","t":"src/task_scheduler.py","w":2},{"s":"core/platform_compat.py","t":"routes/cookbook_routes.py","w":14},{"s":"core/platform_compat.py","t":"routes/shell_routes.py","w":8},{"s":"core/platform_compat.py","t":"routes/vault_routes.py","w":5},{"s":"core/platform_compat.py","t":"src/bg_jobs.py","w":11},{"s":"core/platform_compat.py","t":"src/builtin_actions.py","w":5},{"s":"core/platform_compat.py","t":"src/integrations.py","w":3},{"s":"core/platform_compat.py","t":"src/secret_storage.py","w":3},{"s":"core/session_manager.py","t":"routes/compare_routes.py","w":3},{"s":"core/session_manager.py","t":"routes/memory_routes.py","w":2},{"s":"core/session_manager.py","t":"routes/session_routes.py","w":2},{"s":"core/session_manager.py","t":"src/app_initializer.py","w":3},{"s":"routes/agents_hub_routes.py","t":"services/crew/router.py","w":4},{"s":"routes/agents_hub_routes.py","t":"src/auth_helpers.py","w":3},{"s":"routes/agents_hub_routes.py","t":"src/llm_core.py","w":2},{"s":"routes/agents_hub_routes.py","t":"src/settings.py","w":4},{"s":"routes/api_token_routes.py","t":"src/auth_helpers.py","w":3},{"s":"routes/assistant_routes.py","t":"src/auth_helpers.py","w":3},{"s":"routes/assistant_routes.py","t":"src/task_scheduler.py","w":3},{"s":"routes/auth_routes.py","t":"routes/prefs_routes.py","w":4},{"s":"routes/auth_routes.py","t":"src/integrations.py","w":17},{"s":"routes/auth_routes.py","t":"src/rate_limiter.py","w":11},{"s":"routes/auth_routes.py","t":"src/settings.py","w":9},{"s":"routes/backup_routes.py","t":"routes/prefs_routes.py","w":4},{"s":"routes/backup_routes.py","t":"src/auth_helpers.py","w":3},{"s":"routes/backup_routes.py","t":"src/settings.py","w":9},{"s":"routes/calendar_routes.py","t":"routes/prefs_routes.py","w":4},{"s":"routes/calendar_routes.py","t":"src/auth_helpers.py","w":3},{"s":"routes/calendar_routes.py","t":"src/caldav_sync.py","w":4},{"s":"routes/calendar_routes.py","t":"src/caldav_writeback.py","w":2},{"s":"routes/calendar_routes.py","t":"src/endpoint_resolver.py","w":2},{"s":"routes/calendar_routes.py","t":"src/llm_core.py","w":2},{"s":"routes/calendar_routes.py","t":"src/secret_storage.py","w":4},{"s":"routes/calendar_routes.py","t":"src/text_helpers.py","w":2},{"s":"routes/calendar_routes.py","t":"src/upload_limits.py","w":3},{"s":"routes/calendar_routes.py","t":"src/user_time.py","w":18},{"s":"routes/calendar_routes.py","t":"src/tool_implementations.py","w":11},{"s":"routes/calendar_routes.py","t":"routes/codex_routes.py","w":2},{"s":"routes/chat_helpers.py","t":"routes/prefs_routes.py","w":3},{"s":"routes/chat_helpers.py","t":"services/memory/memory_extractor.py","w":2},{"s":"routes/chat_helpers.py","t":"services/memory/skill_extractor.py","w":2},{"s":"routes/chat_helpers.py","t":"services/pricing/pricebook.py","w":6},{"s":"routes/chat_helpers.py","t":"src/auth_helpers.py","w":7},{"s":"routes/chat_helpers.py","t":"src/context_compactor.py","w":5},{"s":"routes/chat_helpers.py","t":"src/endpoint_resolver.py","w":14},{"s":"routes/chat_helpers.py","t":"src/event_bus.py","w":2},{"s":"routes/chat_helpers.py","t":"src/llm_core.py","w":7},{"s":"routes/chat_helpers.py","t":"src/prompt_security.py","w":3},{"s":"routes/chat_helpers.py","t":"src/task_endpoint.py","w":3},{"s":"routes/chat_helpers.py","t":"src/text_helpers.py","w":5},{"s":"routes/chat_helpers.py","t":"routes/chat_routes.py","w":15},{"s":"routes/chat_routes.py","t":"routes/document_helpers.py","w":3},{"s":"routes/chat_routes.py","t":"routes/model_routes.py","w":3},{"s":"routes/chat_routes.py","t":"routes/research_routes.py","w":3},{"s":"routes/chat_routes.py","t":"routes/session_routes.py","w":3},{"s":"routes/chat_routes.py","t":"src/agent_loop.py","w":3},{"s":"routes/chat_routes.py","t":"src/ai_interaction.py","w":2},{"s":"routes/chat_routes.py","t":"src/auth_helpers.py","w":7},{"s":"routes/chat_routes.py","t":"src/chat_helpers.py","w":3},{"s":"routes/chat_routes.py","t":"src/endpoint_resolver.py","w":7},{"s":"routes/chat_routes.py","t":"src/llm_core.py","w":7},{"s":"routes/chat_routes.py","t":"src/model_context.py","w":3},{"s":"routes/chat_routes.py","t":"src/prompt_security.py","w":3},{"s":"routes/chat_routes.py","t":"src/request_models.py","w":2},{"s":"routes/chat_routes.py","t":"src/research_utils.py","w":2},{"s":"routes/chat_routes.py","t":"src/settings.py","w":2},{"s":"routes/chat_routes.py","t":"src/tool_implementations.py","w":2},{"s":"routes/chat_routes.py","t":"src/user_time.py","w":6},{"s":"routes/cleanup_routes.py","t":"src/auth_helpers.py","w":3},{"s":"routes/code_routes.py","t":"services/code/repomap.py","w":1},{"s":"routes/code_routes.py","t":"services/crew/registry.py","w":1},{"s":"routes/code_routes.py","t":"services/crew/router.py","w":2},{"s":"routes/code_routes.py","t":"src/agent_loop.py","w":2},{"s":"routes/code_routes.py","t":"src/auth_helpers.py","w":4},{"s":"routes/code_routes.py","t":"src/settings.py","w":3},{"s":"routes/codex_routes.py","t":"routes/cookbook_helpers.py","w":2},{"s":"routes/codex_routes.py","t":"routes/email_helpers.py","w":2},{"s":"routes/codex_routes.py","t":"src/auth_helpers.py","w":5},{"s":"routes/codex_routes.py","t":"src/request_models.py","w":2},{"s":"routes/codex_routes.py","t":"src/tool_implementations.py","w":3},{"s":"routes/compare_routes.py","t":"src/auth_helpers.py","w":5},{"s":"routes/compare_routes.py","t":"src/endpoint_resolver.py","w":4},{"s":"routes/contacts_routes.py","t":"scripts/paios-contacts","w":8},{"s":"routes/contacts_routes.py","t":"src/tool_implementations.py","w":1},{"s":"routes/contacts_routes.py","t":"routes/email_helpers.py","w":2},{"s":"routes/cookbook_helpers.py","t":"routes/cookbook_routes.py","w":55},{"s":"routes/cookbook_helpers.py","t":"routes/shell_routes.py","w":2},{"s":"routes/cookbook_routes.py","t":"routes/model_routes.py","w":2},{"s":"routes/cookbook_routes.py","t":"routes/shell_routes.py","w":1},{"s":"routes/cookbook_routes.py","t":"src/auth_helpers.py","w":4},{"s":"routes/cookbook_routes.py","t":"src/secret_storage.py","w":4},{"s":"routes/copilot_routes.py","t":"src/auth_helpers.py","w":3},{"s":"routes/crew_routes.py","t":"services/crew/registry.py","w":3},{"s":"routes/crew_routes.py","t":"services/crew/router.py","w":1},{"s":"routes/crew_routes.py","t":"services/crew/supervisor.py","w":1},{"s":"routes/crew_routes.py","t":"src/auth_helpers.py","w":5},{"s":"routes/crew_routes.py","t":"src/settings.py","w":3},{"s":"routes/diagnostics_routes.py","t":"services/youtube/youtube_handler.py","w":5},{"s":"routes/document_helpers.py","t":"src/pdf_form_doc.py","w":2},{"s":"routes/document_helpers.py","t":"src/upload_handler.py","w":6},{"s":"routes/document_helpers.py","t":"routes/document_routes.py","w":20},{"s":"routes/document_routes.py","t":"src/auth_helpers.py","w":5},{"s":"routes/document_routes.py","t":"src/document_processor.py","w":8},{"s":"routes/document_routes.py","t":"src/endpoint_resolver.py","w":2},{"s":"routes/document_routes.py","t":"src/event_bus.py","w":2},{"s":"routes/document_routes.py","t":"src/llm_core.py","w":2},{"s":"routes/document_routes.py","t":"src/pdf_form_doc.py","w":14},{"s":"routes/document_routes.py","t":"src/pdf_forms.py","w":10},{"s":"routes/document_routes.py","t":"src/task_endpoint.py","w":2},{"s":"routes/document_routes.py","t":"src/tool_implementations.py","w":6},{"s":"routes/editor_draft_routes.py","t":"src/auth_helpers.py","w":3},{"s":"routes/email_helpers.py","t":"src/auth_helpers.py","w":5},{"s":"routes/email_helpers.py","t":"src/personal_docs.py","w":2},{"s":"routes/email_helpers.py","t":"src/secret_storage.py","w":3},{"s":"routes/email_helpers.py","t":"src/text_helpers.py","w":2},{"s":"routes/email_helpers.py","t":"src/tool_security.py","w":2},{"s":"routes/email_helpers.py","t":"routes/email_pollers.py","w":43},{"s":"routes/email_helpers.py","t":"routes/email_routes.py","w":64},{"s":"routes/email_helpers.py","t":"routes/mailguard_routes.py","w":7},{"s":"routes/email_helpers.py","t":"scripts/paios-mail","w":10},{"s":"routes/email_helpers.py","t":"routes/note_routes.py","w":4},{"s":"routes/email_helpers.py","t":"src/task_scheduler.py","w":4},{"s":"routes/email_helpers.py","t":"services/memory/skill_extractor.py","w":1},{"s":"routes/email_helpers.py","t":"routes/task_routes.py","w":2},{"s":"routes/email_helpers.py","t":"src/builtin_actions.py","w":9},{"s":"routes/email_helpers.py","t":"services/mailguard/engine.py","w":6},{"s":"routes/email_pollers.py","t":"src/endpoint_resolver.py","w":2},{"s":"routes/email_pollers.py","t":"src/llm_core.py","w":7},{"s":"routes/email_pollers.py","t":"src/settings.py","w":2},{"s":"routes/email_pollers.py","t":"src/tool_implementations.py","w":2},{"s":"routes/email_pollers.py","t":"routes/email_routes.py","w":3},{"s":"routes/email_pollers.py","t":"scripts/paios-mail","w":3},{"s":"routes/email_pollers.py","t":"src/builtin_actions.py","w":4},{"s":"routes/email_routes.py","t":"src/auth_helpers.py","w":2},{"s":"routes/email_routes.py","t":"src/endpoint_resolver.py","w":6},{"s":"routes/email_routes.py","t":"src/event_bus.py","w":2},{"s":"routes/email_routes.py","t":"src/llm_core.py","w":11},{"s":"routes/email_routes.py","t":"src/pdf_form_doc.py","w":6},{"s":"routes/email_routes.py","t":"src/pdf_forms.py","w":4},{"s":"routes/email_routes.py","t":"src/secret_storage.py","w":4},{"s":"routes/email_routes.py","t":"src/upload_limits.py","w":3},{"s":"routes/email_routes.py","t":"src/task_scheduler.py","w":2},{"s":"routes/email_routes.py","t":"routes/mailguard_routes.py","w":2},{"s":"routes/email_routes.py","t":"services/mailguard/engine.py","w":2},{"s":"routes/embedding_routes.py","t":"src/chroma_client.py","w":2},{"s":"routes/embedding_routes.py","t":"src/embeddings.py","w":2},{"s":"routes/embedding_routes.py","t":"src/secret_storage.py","w":2},{"s":"routes/file_index_routes.py","t":"src/auth_helpers.py","w":2},{"s":"routes/gallery_helpers.py","t":"routes/gallery_routes.py","w":10},{"s":"routes/gallery_routes.py","t":"src/auth_helpers.py","w":5},{"s":"routes/gallery_routes.py","t":"src/document_processor.py","w":4},{"s":"routes/gallery_routes.py","t":"src/llm_core.py","w":6},{"s":"routes/gallery_routes.py","t":"src/upload_limits.py","w":3},{"s":"routes/gateway_routes.py","t":"services/gateway/telegram_gateway.py","w":1},{"s":"routes/gateway_routes.py","t":"src/auth_helpers.py","w":2},{"s":"routes/gateway_routes.py","t":"src/settings.py","w":5},{"s":"routes/history_routes.py","t":"routes/session_routes.py","w":9},{"s":"routes/history_routes.py","t":"src/auth_helpers.py","w":2},{"s":"routes/history_routes.py","t":"src/endpoint_resolver.py","w":2},{"s":"routes/history_routes.py","t":"src/event_bus.py","w":2},{"s":"routes/history_routes.py","t":"src/llm_core.py","w":2},{"s":"routes/history_routes.py","t":"src/model_context.py","w":4},{"s":"routes/hwfit_routes.py","t":"services/hwfit/fit.py","w":2},{"s":"routes/hwfit_routes.py","t":"services/hwfit/models.py","w":4},{"s":"routes/hwfit_routes.py","t":"services/hwfit/profiles.py","w":2},{"s":"routes/mailguard_routes.py","t":"services/mailguard/engine.py","w":2},{"s":"routes/mailguard_routes.py","t":"services/mailguard/runner.py","w":4},{"s":"routes/mailguard_routes.py","t":"src/settings.py","w":2},{"s":"routes/mcp_routes.py","t":"src/mcp_manager.py","w":3},{"s":"routes/mcp_routes.py","t":"src/mcp_oauth.py","w":2},{"s":"routes/memory_routes.py","t":"services/memory/memory_extractor.py","w":3},{"s":"routes/memory_routes.py","t":"src/auth_helpers.py","w":7},{"s":"routes/memory_routes.py","t":"src/document_processor.py","w":2},{"s":"routes/memory_routes.py","t":"src/endpoint_resolver.py","w":3},{"s":"routes/memory_routes.py","t":"src/event_bus.py","w":2},{"s":"routes/memory_routes.py","t":"src/llm_core.py","w":3},{"s":"routes/memory_routes.py","t":"src/request_models.py","w":3},{"s":"routes/memory_routes.py","t":"src/upload_limits.py","w":3},{"s":"routes/memory_routes.py","t":"src/memory.py","w":1},{"s":"routes/model_routes.py","t":"routes/prefs_routes.py","w":6},{"s":"routes/model_routes.py","t":"services/pricing/pricebook.py","w":2},{"s":"routes/model_routes.py","t":"src/ai_interaction.py","w":2},{"s":"routes/model_routes.py","t":"src/auth_helpers.py","w":7},{"s":"routes/model_routes.py","t":"src/endpoint_resolver.py","w":22},{"s":"routes/model_routes.py","t":"src/llm_core.py","w":20},{"s":"routes/model_routes.py","t":"src/settings.py","w":5},{"s":"routes/models_hub_routes.py","t":"services/local_ai/status.py","w":2},{"s":"routes/models_hub_routes.py","t":"src/auth_helpers.py","w":2},{"s":"routes/models_hub_routes.py","t":"src/settings.py","w":5},{"s":"routes/note_routes.py","t":"src/auth_helpers.py","w":5},{"s":"routes/note_routes.py","t":"src/endpoint_resolver.py","w":2},{"s":"routes/note_routes.py","t":"src/integrations.py","w":2},{"s":"routes/note_routes.py","t":"src/llm_core.py","w":2},{"s":"routes/note_routes.py","t":"src/settings.py","w":2},{"s":"routes/note_routes.py","t":"src/text_helpers.py","w":2},{"s":"routes/note_routes.py","t":"src/builtin_actions.py","w":3},{"s":"routes/personal_routes.py","t":"src/auth_helpers.py","w":4},{"s":"routes/personal_routes.py","t":"src/personal_docs.py","w":2},{"s":"routes/personal_routes.py","t":"src/rag_singleton.py","w":3},{"s":"routes/personal_routes.py","t":"src/request_models.py","w":2},{"s":"routes/personal_routes.py","t":"src/upload_handler.py","w":4},{"s":"routes/prefs_routes.py","t":"src/auth_helpers.py","w":3},{"s":"routes/prefs_routes.py","t":"routes/task_routes.py","w":5},{"s":"routes/prefs_routes.py","t":"src/ai_interaction.py","w":2},{"s":"routes/prefs_routes.py","t":"routes/skills_routes.py","w":2},{"s":"routes/prefs_routes.py","t":"src/agent_loop.py","w":2},{"s":"routes/prefs_routes.py","t":"src/caldav_sync.py","w":2},{"s":"routes/prefs_routes.py","t":"src/caldav_writeback.py","w":2},{"s":"routes/prefs_routes.py","t":"src/settings.py","w":2},{"s":"routes/prefs_routes.py","t":"src/task_scheduler.py","w":2},{"s":"routes/preset_routes.py","t":"src/ai_interaction.py","w":2},{"s":"routes/preset_routes.py","t":"src/llm_core.py","w":2},{"s":"routes/preset_routes.py","t":"src/request_models.py","w":3},{"s":"routes/research_routes.py","t":"src/auth_helpers.py","w":9},{"s":"routes/research_routes.py","t":"src/endpoint_resolver.py","w":10},{"s":"routes/research_routes.py","t":"src/event_bus.py","w":2},{"s":"routes/search_routes.py","t":"services/search/core.py","w":7},{"s":"routes/search_routes.py","t":"services/search/providers.py","w":5},{"s":"routes/session_routes.py","t":"src/auth_helpers.py","w":8},{"s":"routes/session_routes.py","t":"src/endpoint_resolver.py","w":9},{"s":"routes/session_routes.py","t":"src/event_bus.py","w":2},{"s":"routes/session_routes.py","t":"src/llm_core.py","w":6},{"s":"routes/session_routes.py","t":"src/model_context.py","w":2},{"s":"routes/session_routes.py","t":"src/request_models.py","w":3},{"s":"routes/session_routes.py","t":"src/task_endpoint.py","w":3},{"s":"routes/signature_routes.py","t":"src/auth_helpers.py","w":3},{"s":"routes/skills_routes.py","t":"services/memory/skill_format.py","w":5},{"s":"routes/skills_routes.py","t":"services/memory/skills.py","w":6},{"s":"routes/skills_routes.py","t":"src/agent_loop.py","w":5},{"s":"routes/skills_routes.py","t":"src/ai_interaction.py","w":2},{"s":"routes/skills_routes.py","t":"src/auth_helpers.py","w":3},{"s":"routes/skills_routes.py","t":"src/endpoint_resolver.py","w":3},{"s":"routes/skills_routes.py","t":"src/event_bus.py","w":2},{"s":"routes/skills_routes.py","t":"src/llm_core.py","w":8},{"s":"routes/skills_routes.py","t":"src/settings.py","w":7},{"s":"routes/skills_routes.py","t":"src/builtin_actions.py","w":8},{"s":"routes/task_routes.py","t":"src/agent_tools.py","w":2},{"s":"routes/task_routes.py","t":"src/auth_helpers.py","w":3},{"s":"routes/task_routes.py","t":"src/endpoint_resolver.py","w":2},{"s":"routes/task_routes.py","t":"src/llm_core.py","w":2},{"s":"routes/task_routes.py","t":"src/task_scheduler.py","w":3},{"s":"routes/task_routes.py","t":"src/text_helpers.py","w":2},{"s":"routes/upload_routes.py","t":"services/video/analyzer.py","w":1},{"s":"routes/upload_routes.py","t":"src/auth_helpers.py","w":3},{"s":"routes/upload_routes.py","t":"src/document_processor.py","w":2},{"s":"routes/upload_routes.py","t":"src/upload_handler.py","w":3},{"s":"routes/webhook_routes.py","t":"src/auth_helpers.py","w":5},{"s":"routes/webhook_routes.py","t":"src/endpoint_resolver.py","w":8},{"s":"routes/webhook_routes.py","t":"src/llm_core.py","w":2},{"s":"routes/webhook_routes.py","t":"src/webhook_manager.py","w":6},{"s":"routes/workspace_routes.py","t":"src/auth_helpers.py","w":3},{"s":"routes/workspace_routes.py","t":"src/tool_execution.py","w":2},{"s":"routes/workspace_routes.py","t":"src/tool_security.py","w":3},{"s":"scripts/_code_qa.py","t":"services/code/repomap.py","w":2},{"s":"scripts/_code_qa.py","t":"services/crew/registry.py","w":1},{"s":"scripts/_code_qa.py","t":"services/crew/router.py","w":2},{"s":"scripts/_code_qa.py","t":"src/agent_loop.py","w":3},{"s":"scripts/_code_qa.py","t":"src/settings.py","w":3},{"s":"scripts/_code_verify.py","t":"services/code/repomap.py","w":2},{"s":"scripts/_code_verify.py","t":"services/crew/registry.py","w":1},{"s":"scripts/_code_verify.py","t":"services/crew/router.py","w":2},{"s":"scripts/_code_verify.py","t":"src/agent_loop.py","w":3},{"s":"scripts/_code_verify.py","t":"src/settings.py","w":3},{"s":"scripts/_lib/cli.py","t":"scripts/paios-chat","w":1},{"s":"scripts/_lib/cli.py","t":"scripts/paios-contacts","w":1},{"s":"scripts/_lib/cli.py","t":"scripts/paios-cookbook","w":1},{"s":"scripts/_lib/cli.py","t":"scripts/paios-mail","w":1},{"s":"scripts/_lib/cli.py","t":"scripts/paios-memory","w":1},{"s":"scripts/_lib/cli.py","t":"scripts/paios-personal","w":1},{"s":"scripts/paios-chat","t":"src/endpoint_resolver.py","w":4},{"s":"scripts/paios-chat","t":"src/llm_core.py","w":2},{"s":"scripts/paios-chat","t":"src/secret_storage.py","w":3},{"s":"scripts/paios-chat","t":"scripts/paios-mail","w":3},{"s":"scripts/paios-contacts","t":"scripts/paios-mail","w":4},{"s":"scripts/paios-cookbook","t":"scripts/paios-mail","w":9},{"s":"scripts/paios-mail","t":"scripts/paios-memory","w":6},{"s":"scripts/paios-mail","t":"scripts/paios-personal","w":6},{"s":"scripts/paios-mail","t":"static/js/tasks.js","w":1},{"s":"scripts/paios-memory","t":"src/memory.py","w":1},{"s":"scripts/paios-personal","t":"src/personal_docs.py","w":6},{"s":"scripts/paios-personal","t":"services/docs/service.py","w":1},{"s":"services/__init__.py","t":"services/docs/service.py","w":3},{"s":"services/__init__.py","t":"services/memory/service.py","w":2},{"s":"services/__init__.py","t":"services/research/service.py","w":3},{"s":"services/__init__.py","t":"services/search/__init__.py","w":1},{"s":"services/__init__.py","t":"services/search/service.py","w":3},{"s":"services/code/repomap.py","t":"src/chat_processor.py","w":1},{"s":"services/crew/registry.py","t":"services/crew/supervisor.py","w":3},{"s":"services/crew/router.py","t":"src/ai_interaction.py","w":2},{"s":"services/crew/router.py","t":"services/crew/supervisor.py","w":4},{"s":"services/crew/router.py","t":"services/gateway/telegram_gateway.py","w":2},{"s":"services/crew/router.py","t":"services/mailguard/engine.py","w":3},{"s":"services/crew/supervisor.py","t":"src/agent_loop.py","w":3},{"s":"services/docs/service.py","t":"src/rag_manager.py","w":6},{"s":"services/gateway/telegram_gateway.py","t":"src/agent_loop.py","w":2},{"s":"services/gateway/telegram_gateway.py","t":"src/settings.py","w":4},{"s":"services/hwfit/fit.py","t":"services/hwfit/models.py","w":18},{"s":"services/hwfit/models.py","t":"services/hwfit/profiles.py","w":8},{"s":"services/local_ai/status.py","t":"src/settings.py","w":2},{"s":"services/mailguard/engine.py","t":"src/llm_core.py","w":3},{"s":"services/mailguard/engine.py","t":"src/settings.py","w":4},{"s":"services/mailguard/engine.py","t":"services/mailguard/runner.py","w":2},{"s":"services/mailguard/runner.py","t":"src/settings.py","w":3},{"s":"services/memory/memory_extractor.py","t":"src/event_bus.py","w":2},{"s":"services/memory/memory_extractor.py","t":"src/llm_core.py","w":3},{"s":"services/memory/memory_extractor.py","t":"src/memory_vector.py","w":1},{"s":"services/memory/service.py","t":"src/memory_provider.py","w":11},{"s":"services/memory/service.py","t":"src/memory.py","w":1},{"s":"services/memory/service.py","t":"src/memory_vector.py","w":1},{"s":"services/memory/skill_extractor.py","t":"src/event_bus.py","w":2},{"s":"services/memory/skill_extractor.py","t":"src/llm_core.py","w":2},{"s":"services/memory/skill_extractor.py","t":"src/text_helpers.py","w":2},{"s":"services/memory/skill_format.py","t":"services/memory/skills.py","w":13},{"s":"services/memory/skill_format.py","t":"src/tool_implementations.py","w":4},{"s":"services/memory/skills.py","t":"src/app_initializer.py","w":3},{"s":"services/memory/skills.py","t":"src/agent_loop.py","w":4},{"s":"services/memory/skills.py","t":"src/builtin_actions.py","w":5},{"s":"services/memory/skills.py","t":"src/tool_implementations.py","w":2},{"s":"services/research/research_handler.py","t":"src/deep_research.py","w":3},{"s":"services/research/research_handler.py","t":"src/research_utils.py","w":4},{"s":"services/research/research_handler.py","t":"src/settings.py","w":2},{"s":"services/research/research_handler.py","t":"services/research/service.py","w":6},{"s":"services/research/research_handler.py","t":"src/task_scheduler.py","w":1},{"s":"services/research/research_handler.py","t":"services/search/core.py","w":1},{"s":"services/search/__init__.py","t":"services/search/analytics.py","w":6},{"s":"services/search/__init__.py","t":"services/search/content.py","w":2},{"s":"services/search/__init__.py","t":"services/search/core.py","w":6},{"s":"services/search/__init__.py","t":"services/search/providers.py","w":3},{"s":"services/search/__init__.py","t":"services/search/service.py","w":4},{"s":"services/search/analytics.py","t":"services/search/cache.py","w":1},{"s":"services/search/analytics.py","t":"services/search/content.py","w":3},{"s":"services/search/analytics.py","t":"services/search/core.py","w":6},{"s":"services/search/analytics.py","t":"services/search/providers.py","w":6},{"s":"services/search/cache.py","t":"services/search/content.py","w":5},{"s":"services/search/cache.py","t":"services/search/core.py","w":6},{"s":"services/search/content.py","t":"services/search/core.py","w":11},{"s":"services/search/content.py","t":"services/search/service.py","w":2},{"s":"services/search/content.py","t":"src/chat_processor.py","w":1},{"s":"services/search/content.py","t":"src/deep_research.py","w":1},{"s":"services/search/content.py","t":"src/tool_execution.py","w":1},{"s":"services/search/core.py","t":"services/search/providers.py","w":27},{"s":"services/search/core.py","t":"services/search/service.py","w":4},{"s":"services/search/core.py","t":"src/app_initializer.py","w":1},{"s":"services/search/core.py","t":"src/deep_research.py","w":2},{"s":"services/search/core.py","t":"src/chat_processor.py","w":1},{"s":"services/search/core.py","t":"src/research_handler.py","w":1},{"s":"services/search/core.py","t":"src/tool_execution.py","w":1},{"s":"services/search/providers.py","t":"src/settings.py","w":2},{"s":"services/search/providers.py","t":"src/deep_research.py","w":1},{"s":"services/video/analyzer.py","t":"src/document_processor.py","w":7},{"s":"src/agent_loop.py","t":"src/agent_tools.py","w":3},{"s":"src/agent_loop.py","t":"src/context_compactor.py","w":2},{"s":"src/agent_loop.py","t":"src/endpoint_resolver.py","w":2},{"s":"src/agent_loop.py","t":"src/integrations.py","w":2},{"s":"src/agent_loop.py","t":"src/llm_core.py","w":9},{"s":"src/agent_loop.py","t":"src/model_context.py","w":3},{"s":"src/agent_loop.py","t":"src/pdf_form_doc.py","w":2},{"s":"src/agent_loop.py","t":"src/prompt_security.py","w":3},{"s":"src/agent_loop.py","t":"src/settings.py","w":10},{"s":"src/agent_loop.py","t":"src/teacher_escalation.py","w":3},{"s":"src/agent_loop.py","t":"src/tool_index.py","w":4},{"s":"src/agent_loop.py","t":"src/tool_security.py","w":3},{"s":"src/agent_loop.py","t":"src/user_time.py","w":2},{"s":"src/agent_loop.py","t":"src/memory_vector.py","w":1},{"s":"src/agent_loop.py","t":"src/tool_implementations.py","w":2},{"s":"src/agent_loop.py","t":"src/tool_parsing.py","w":2},{"s":"src/agent_loop.py","t":"src/tool_execution.py","w":1},{"s":"src/agent_loop.py","t":"src/task_scheduler.py","w":2},{"s":"src/agent_tools.py","t":"src/tool_execution.py","w":3},{"s":"src/agent_tools.py","t":"src/tool_implementations.py","w":18},{"s":"src/agent_tools.py","t":"src/tool_parsing.py","w":3},{"s":"src/agent_tools.py","t":"src/task_scheduler.py","w":3},{"s":"src/ai_interaction.py","t":"src/auth_helpers.py","w":4},{"s":"src/ai_interaction.py","t":"src/endpoint_resolver.py","w":12},{"s":"src/ai_interaction.py","t":"src/event_bus.py","w":4},{"s":"src/ai_interaction.py","t":"src/llm_core.py","w":9},{"s":"src/ai_interaction.py","t":"src/settings.py","w":4},{"s":"src/ai_interaction.py","t":"src/document_processor.py","w":2},{"s":"src/ai_interaction.py","t":"src/teacher_escalation.py","w":3},{"s":"src/ai_interaction.py","t":"src/tool_execution.py","w":2},{"s":"src/app_initializer.py","t":"src/chat_handler.py","w":3},{"s":"src/app_initializer.py","t":"src/chat_processor.py","w":3},{"s":"src/app_initializer.py","t":"src/memory.py","w":3},{"s":"src/app_initializer.py","t":"src/memory_provider.py","w":5},{"s":"src/app_initializer.py","t":"src/memory_vector.py","w":2},{"s":"src/app_initializer.py","t":"src/personal_docs.py","w":3},{"s":"src/app_initializer.py","t":"src/research_handler.py","w":3},{"s":"src/app_initializer.py","t":"src/upload_handler.py","w":3},{"s":"src/auth_helpers.py","t":"src/builtin_actions.py","w":4},{"s":"src/auth_helpers.py","t":"src/endpoint_resolver.py","w":3},{"s":"src/builtin_actions.py","t":"src/endpoint_resolver.py","w":8},{"s":"src/builtin_actions.py","t":"src/llm_core.py","w":10},{"s":"src/builtin_actions.py","t":"src/memory.py","w":4},{"s":"src/builtin_actions.py","t":"src/settings.py","w":2},{"s":"src/builtin_actions.py","t":"src/text_helpers.py","w":4},{"s":"src/builtin_actions.py","t":"src/task_scheduler.py","w":8},{"s":"src/caldav_sync.py","t":"src/secret_storage.py","w":2},{"s":"src/caldav_sync.py","t":"src/caldav_writeback.py","w":4},{"s":"src/caldav_sync.py","t":"src/task_scheduler.py","w":1},{"s":"src/caldav_writeback.py","t":"src/secret_storage.py","w":2},{"s":"src/chat_handler.py","t":"src/chat_helpers.py","w":5},{"s":"src/chat_handler.py","t":"src/document_processor.py","w":5},{"s":"src/chat_handler.py","t":"src/settings.py","w":2},{"s":"src/chat_handler.py","t":"src/youtube_handler.py","w":13},{"s":"src/chat_helpers.py","t":"src/chat_processor.py","w":3},{"s":"src/chat_processor.py","t":"src/prompt_security.py","w":3},{"s":"src/chat_processor.py","t":"src/user_time.py","w":2},{"s":"src/chat_processor.py","t":"src/youtube_handler.py","w":3},{"s":"src/chroma_client.py","t":"src/memory_vector.py","w":3},{"s":"src/chroma_client.py","t":"src/rag_vector.py","w":3},{"s":"src/chroma_client.py","t":"src/tool_index.py","w":2},{"s":"src/context_compactor.py","t":"src/endpoint_resolver.py","w":3},{"s":"src/context_compactor.py","t":"src/llm_core.py","w":3},{"s":"src/context_compactor.py","t":"src/model_context.py","w":6},{"s":"src/copilot.py","t":"src/llm_core.py","w":9},{"s":"src/copilot.py","t":"src/model_context.py","w":2},{"s":"src/copilot.py","t":"src/endpoint_resolver.py","w":2},{"s":"src/database.py","t":"src/webhook_manager.py","w":1},{"s":"src/deep_research.py","t":"src/llm_core.py","w":2},{"s":"src/deep_research.py","t":"src/research_utils.py","w":6},{"s":"src/deep_research.py","t":"src/research_handler.py","w":5},{"s":"src/deep_research.py","t":"src/task_scheduler.py","w":3},{"s":"src/document_processor.py","t":"src/endpoint_resolver.py","w":2},{"s":"src/document_processor.py","t":"src/llm_core.py","w":3},{"s":"src/document_processor.py","t":"src/pdf_form_doc.py","w":6},{"s":"src/document_processor.py","t":"src/pdf_forms.py","w":4},{"s":"src/document_processor.py","t":"src/personal_docs.py","w":2},{"s":"src/document_processor.py","t":"src/settings.py","w":2},{"s":"src/document_processor.py","t":"src/upload_handler.py","w":1},{"s":"src/embeddings.py","t":"src/secret_storage.py","w":2},{"s":"src/embeddings.py","t":"src/memory_vector.py","w":2},{"s":"src/embeddings.py","t":"src/rag_vector.py","w":2},{"s":"src/embeddings.py","t":"src/tool_index.py","w":2},{"s":"src/endpoint_resolver.py","t":"src/llm_core.py","w":8},{"s":"src/endpoint_resolver.py","t":"src/settings.py","w":8},{"s":"src/endpoint_resolver.py","t":"src/task_endpoint.py","w":3},{"s":"src/endpoint_resolver.py","t":"src/task_scheduler.py","w":10},{"s":"src/event_bus.py","t":"src/tool_implementations.py","w":5},{"s":"src/event_bus.py","t":"src/research_handler.py","w":2},{"s":"src/event_bus.py","t":"src/task_scheduler.py","w":2},{"s":"src/integrations.py","t":"src/secret_storage.py","w":7},{"s":"src/integrations.py","t":"src/task_scheduler.py","w":2},{"s":"src/integrations.py","t":"src/tool_implementations.py","w":4},{"s":"src/llm_core.py","t":"src/model_context.py","w":5},{"s":"src/llm_core.py","t":"src/task_scheduler.py","w":4},{"s":"src/llm_core.py","t":"src/research_handler.py","w":4},{"s":"src/llm_core.py","t":"src/teacher_escalation.py","w":2},{"s":"src/mcp_manager.py","t":"src/mcp_oauth.py","w":7},{"s":"src/pdf_form_doc.py","t":"src/tool_implementations.py","w":3},{"s":"src/pdf_form_doc.py","t":"src/upload_handler.py","w":2},{"s":"src/personal_docs.py","t":"src/rag_vector.py","w":2},{"s":"src/rag_manager.py","t":"src/rag_vector.py","w":4},{"s":"src/rag_singleton.py","t":"src/rag_vector.py","w":2},{"s":"src/research_handler.py","t":"src/research_utils.py","w":9},{"s":"src/research_handler.py","t":"src/settings.py","w":3},{"s":"src/research_handler.py","t":"src/task_scheduler.py","w":1},{"s":"src/research_utils.py","t":"src/text_helpers.py","w":2},{"s":"src/research_utils.py","t":"src/task_scheduler.py","w":2},{"s":"src/settings.py","t":"src/tool_implementations.py","w":6},{"s":"src/settings.py","t":"src/task_scheduler.py","w":2},{"s":"src/settings.py","t":"src/teacher_escalation.py","w":4},{"s":"src/settings.py","t":"src/tool_execution.py","w":2},{"s":"src/task_scheduler.py","t":"src/text_helpers.py","w":2},{"s":"src/task_scheduler.py","t":"src/tool_implementations.py","w":4},{"s":"src/task_scheduler.py","t":"src/tool_index.py","w":2},{"s":"src/teacher_escalation.py","t":"src/tool_implementations.py","w":3},{"s":"src/tool_execution.py","t":"src/tool_implementations.py","w":76},{"s":"src/tool_execution.py","t":"src/tool_security.py","w":5},{"s":"src/tool_implementations.py","t":"src/webhook_manager.py","w":4},{"s":"static/app.js","t":"static/js/admin.js","w":2},{"s":"static/app.js","t":"static/js/calendar.js","w":2},{"s":"static/app.js","t":"static/js/chat.js","w":2},{"s":"static/app.js","t":"static/js/chatRenderer.js","w":2},{"s":"static/app.js","t":"static/js/compare/index.js","w":2},{"s":"static/app.js","t":"static/js/cookbook.js","w":2},{"s":"static/app.js","t":"static/js/document.js","w":2},{"s":"static/app.js","t":"static/js/gallery.js","w":2},{"s":"static/app.js","t":"static/js/group.js","w":3},{"s":"static/app.js","t":"static/js/markdown.js","w":2},{"s":"static/app.js","t":"static/js/memory.js","w":2},{"s":"static/app.js","t":"static/js/modalManager.js","w":3},{"s":"static/app.js","t":"static/js/models.js","w":2},{"s":"static/app.js","t":"static/js/notes.js","w":2},{"s":"static/app.js","t":"static/js/presets.js","w":2},{"s":"static/app.js","t":"static/js/research/panel.js","w":1},{"s":"static/app.js","t":"static/js/sessions.js","w":2},{"s":"static/app.js","t":"static/js/settings.js","w":2},{"s":"static/app.js","t":"static/js/spinner.js","w":2},{"s":"static/app.js","t":"static/js/storage.js","w":6},{"s":"static/app.js","t":"static/js/tasks.js","w":2},{"s":"static/app.js","t":"static/js/theme.js","w":2},{"s":"static/app.js","t":"static/js/tileManager.js","w":1},{"s":"static/app.js","t":"static/js/ui.js","w":2},{"s":"static/app.js","t":"static/js/windowDrag.js","w":3},{"s":"static/app.js","t":"static/js/workspace.js","w":1},{"s":"static/js/admin.js","t":"static/js/modelSort.js","w":4},{"s":"static/js/admin.js","t":"static/js/providers.js","w":3},{"s":"static/js/admin.js","t":"static/js/settings.js","w":2},{"s":"static/js/admin.js","t":"static/js/ui.js","w":2},{"s":"static/js/admin.js","t":"static/js/spinner.js","w":2},{"s":"static/js/admin.js","t":"static/js/modalManager.js","w":1},{"s":"static/js/calendar.js","t":"static/js/calendar/utils.js","w":43},{"s":"static/js/calendar.js","t":"static/js/colorPicker.js","w":3},{"s":"static/js/calendar.js","t":"static/js/escMenuStack.js","w":3},{"s":"static/js/calendar.js","t":"static/js/modalManager.js","w":1},{"s":"static/js/calendar.js","t":"static/js/spinner.js","w":3},{"s":"static/js/calendar.js","t":"static/js/ui.js","w":2},{"s":"static/js/calendar.js","t":"static/js/windowDrag.js","w":3},{"s":"static/js/calendar.js","t":"static/js/theme.js","w":1},{"s":"static/js/calendar/utils.js","t":"static/js/tasks.js","w":1},{"s":"static/js/chat.js","t":"static/js/chatRenderer.js","w":16},{"s":"static/js/chat.js","t":"static/js/chatStream.js","w":3},{"s":"static/js/chat.js","t":"static/js/document.js","w":2},{"s":"static/js/chat.js","t":"static/js/emailInbox.js","w":1},{"s":"static/js/chat.js","t":"static/js/markdown.js","w":4},{"s":"static/js/chat.js","t":"static/js/presets.js","w":2},{"s":"static/js/chat.js","t":"static/js/sessions.js","w":2},{"s":"static/js/chat.js","t":"static/js/slashCommands.js","w":16},{"s":"static/js/chat.js","t":"static/js/spinner.js","w":2},{"s":"static/js/chat.js","t":"static/js/storage.js","w":3},{"s":"static/js/chat.js","t":"static/js/ui.js","w":5},{"s":"static/js/chat.js","t":"static/js/galleryEditor.js","w":1},{"s":"static/js/chatRenderer.js","t":"static/js/escMenuStack.js","w":6},{"s":"static/js/chatRenderer.js","t":"static/js/markdown.js","w":2},{"s":"static/js/chatRenderer.js","t":"static/js/providers.js","w":5},{"s":"static/js/chatRenderer.js","t":"static/js/settings.js","w":2},{"s":"static/js/chatRenderer.js","t":"static/js/spinner.js","w":2},{"s":"static/js/chatRenderer.js","t":"static/js/ui.js","w":2},{"s":"static/js/chatRenderer.js","t":"static/js/compare/stream.js","w":5},{"s":"static/js/chatRenderer.js","t":"static/js/compare/vote.js","w":3},{"s":"static/js/chatRenderer.js","t":"static/js/cookbookServe.js","w":3},{"s":"static/js/chatRenderer.js","t":"static/js/group.js","w":6},{"s":"static/js/chatRenderer.js","t":"static/js/models.js","w":3},{"s":"static/js/chatRenderer.js","t":"static/js/sessions.js","w":3},{"s":"static/js/chatRenderer.js","t":"static/js/slashCommands.js","w":2},{"s":"static/js/chatRenderer.js","t":"static/js/gallery.js","w":1},{"s":"static/js/chatRenderer.js","t":"static/js/galleryEditor.js","w":1},{"s":"static/js/chatStream.js","t":"static/js/markdown.js","w":2},{"s":"static/js/chatStream.js","t":"static/js/sessions.js","w":3},{"s":"static/js/chatStream.js","t":"static/js/storage.js","w":3},{"s":"static/js/chatStream.js","t":"static/js/theme.js","w":2},{"s":"static/js/chatStream.js","t":"static/js/ui.js","w":2},{"s":"static/js/chatStream.js","t":"static/js/cookbook.js","w":1},{"s":"static/js/chatStream.js","t":"static/js/documentLibrary.js","w":1},{"s":"static/js/chatStream.js","t":"static/js/emailInbox.js","w":1},{"s":"static/js/chatStream.js","t":"static/js/emailLibrary.js","w":1},{"s":"static/js/chatStream.js","t":"static/js/gallery.js","w":1},{"s":"static/js/chatStream.js","t":"static/js/notes.js","w":1},{"s":"static/js/chatStream.js","t":"static/js/research/jobs.js","w":1},{"s":"static/js/colorPicker.js","t":"static/js/galleryEditor.js","w":3},{"s":"static/js/colorPicker.js","t":"static/js/notes.js","w":3},{"s":"static/js/colorPicker.js","t":"static/js/theme.js","w":5},{"s":"static/js/compare/icons.js","t":"static/js/compare/index.js","w":3},{"s":"static/js/compare/icons.js","t":"static/js/compare/panes.js","w":1},{"s":"static/js/compare/icons.js","t":"static/js/compare/probe.js","w":2},{"s":"static/js/compare/icons.js","t":"static/js/compare/scoreboard.js","w":1},{"s":"static/js/compare/icons.js","t":"static/js/compare/selector.js","w":2},{"s":"static/js/compare/icons.js","t":"static/js/compare/vote.js","w":1},{"s":"static/js/compare/icons.js","t":"static/js/slashCommands.js","w":1},{"s":"static/js/compare/index.js","t":"static/js/compare/models.js","w":12},{"s":"static/js/compare/index.js","t":"static/js/compare/panes.js","w":27},{"s":"static/js/compare/index.js","t":"static/js/compare/probe.js","w":4},{"s":"static/js/compare/index.js","t":"static/js/compare/scoreboard.js","w":2},{"s":"static/js/compare/index.js","t":"static/js/compare/selector.js","w":9},{"s":"static/js/compare/index.js","t":"static/js/compare/state.js","w":2},{"s":"static/js/compare/index.js","t":"static/js/compare/stream.js","w":9},{"s":"static/js/compare/index.js","t":"static/js/compare/vote.js","w":10},{"s":"static/js/compare/index.js","t":"static/js/markdown.js","w":2},{"s":"static/js/compare/index.js","t":"static/js/presets.js","w":2},{"s":"static/js/compare/index.js","t":"static/js/sessions.js","w":2},{"s":"static/js/compare/index.js","t":"static/js/spinner.js","w":2},{"s":"static/js/compare/index.js","t":"static/js/storage.js","w":5},{"s":"static/js/compare/index.js","t":"static/js/theme.js","w":2},{"s":"static/js/compare/index.js","t":"static/js/ui.js","w":2},{"s":"static/js/compare/index.js","t":"static/js/slashCommands.js","w":1},{"s":"static/js/compare/models.js","t":"static/js/compare/state.js","w":2},{"s":"static/js/compare/models.js","t":"static/js/modelSort.js","w":3},{"s":"static/js/compare/models.js","t":"static/js/storage.js","w":5},{"s":"static/js/compare/models.js","t":"static/js/ui.js","w":2},{"s":"static/js/compare/models.js","t":"static/js/compare/panes.js","w":5},{"s":"static/js/compare/models.js","t":"static/js/compare/selector.js","w":7},{"s":"static/js/compare/models.js","t":"static/js/compare/vote.js","w":4},{"s":"static/js/compare/panes.js","t":"static/js/compare/probe.js","w":2},{"s":"static/js/compare/panes.js","t":"static/js/compare/state.js","w":2},{"s":"static/js/compare/panes.js","t":"static/js/compare/vote.js","w":6},{"s":"static/js/compare/panes.js","t":"static/js/escMenuStack.js","w":4},{"s":"static/js/compare/panes.js","t":"static/js/spinner.js","w":2},{"s":"static/js/compare/panes.js","t":"static/js/storage.js","w":2},{"s":"static/js/compare/panes.js","t":"static/js/ui.js","w":2},{"s":"static/js/compare/probe.js","t":"static/js/compare/state.js","w":2},{"s":"static/js/compare/probe.js","t":"static/js/spinner.js","w":2},{"s":"static/js/compare/probe.js","t":"static/js/ui.js","w":2},{"s":"static/js/compare/probe.js","t":"static/js/compare/selector.js","w":3},{"s":"static/js/compare/scoreboard.js","t":"static/js/compare/state.js","w":2},{"s":"static/js/compare/scoreboard.js","t":"static/js/storage.js","w":3},{"s":"static/js/compare/scoreboard.js","t":"static/js/theme.js","w":2},{"s":"static/js/compare/scoreboard.js","t":"static/js/ui.js","w":2},{"s":"static/js/compare/scoreboard.js","t":"static/js/compare/selector.js","w":3},{"s":"static/js/compare/scoreboard.js","t":"static/js/compare/vote.js","w":3},{"s":"static/js/compare/selector.js","t":"static/js/compare/state.js","w":2},{"s":"static/js/compare/selector.js","t":"static/js/spinner.js","w":2},{"s":"static/js/compare/selector.js","t":"static/js/storage.js","w":3},{"s":"static/js/compare/selector.js","t":"static/js/theme.js","w":2},{"s":"static/js/compare/selector.js","t":"static/js/ui.js","w":2},{"s":"static/js/compare/state.js","t":"static/js/compare/stream.js","w":2},{"s":"static/js/compare/state.js","t":"static/js/compare/vote.js","w":2},{"s":"static/js/compare/stream.js","t":"static/js/compare/vote.js","w":3},{"s":"static/js/compare/stream.js","t":"static/js/markdown.js","w":2},{"s":"static/js/compare/stream.js","t":"static/js/presets.js","w":2},{"s":"static/js/compare/stream.js","t":"static/js/spinner.js","w":2},{"s":"static/js/compare/stream.js","t":"static/js/ui.js","w":2},{"s":"static/js/compare/vote.js","t":"static/js/storage.js","w":3},{"s":"static/js/compare/vote.js","t":"static/js/ui.js","w":2},{"s":"static/js/compare/vote.js","t":"static/js/notes.js","w":5},{"s":"static/js/cookbook-diagnosis.js","t":"static/js/cookbook.js","w":12},{"s":"static/js/cookbook-diagnosis.js","t":"static/js/cookbookDownload.js","w":10},{"s":"static/js/cookbook-diagnosis.js","t":"static/js/cookbookRunning.js","w":20},{"s":"static/js/cookbook-diagnosis.js","t":"static/js/spinner.js","w":2},{"s":"static/js/cookbook-diagnosis.js","t":"static/js/ui.js","w":2},{"s":"static/js/cookbook-hwfit.js","t":"static/js/cookbook.js","w":39},{"s":"static/js/cookbook-hwfit.js","t":"static/js/cookbookDownload.js","w":6},{"s":"static/js/cookbook-hwfit.js","t":"static/js/cookbookRunning.js","w":5},{"s":"static/js/cookbook-hwfit.js","t":"static/js/spinner.js","w":2},{"s":"static/js/cookbook-hwfit.js","t":"static/js/ui.js","w":7},{"s":"static/js/cookbook-hwfit.js","t":"static/js/cookbookServe.js","w":1},{"s":"static/js/cookbook.js","t":"static/js/cookbookDownload.js","w":8},{"s":"static/js/cookbook.js","t":"static/js/cookbookRunning.js","w":33},{"s":"static/js/cookbook.js","t":"static/js/cookbookServe.js","w":11},{"s":"static/js/cookbook.js","t":"static/js/modalManager.js","w":1},{"s":"static/js/cookbook.js","t":"static/js/providers.js","w":3},{"s":"static/js/cookbook.js","t":"static/js/spinner.js","w":3},{"s":"static/js/cookbook.js","t":"static/js/ui.js","w":7},{"s":"static/js/cookbook.js","t":"static/js/windowDrag.js","w":3},{"s":"static/js/cookbook.js","t":"static/js/slashCommands.js","w":2},{"s":"static/js/cookbookDownload.js","t":"static/js/ui.js","w":2},{"s":"static/js/cookbookRunning.js","t":"static/js/escMenuStack.js","w":3},{"s":"static/js/cookbookRunning.js","t":"static/js/ui.js","w":4},{"s":"static/js/cookbookRunning.js","t":"static/js/cookbookServe.js","w":2},{"s":"static/js/cookbookServe.js","t":"static/js/escMenuStack.js","w":5},{"s":"static/js/cookbookServe.js","t":"static/js/providers.js","w":3},{"s":"static/js/cookbookServe.js","t":"static/js/spinner.js","w":2},{"s":"static/js/cookbookServe.js","t":"static/js/ui.js","w":4},{"s":"static/js/cookbookServe.js","t":"static/js/slashCommands.js","w":1},{"s":"static/js/document.js","t":"static/js/documentLibrary.js","w":9},{"s":"static/js/document.js","t":"static/js/markdown.js","w":2},{"s":"static/js/document.js","t":"static/js/modalManager.js","w":2},{"s":"static/js/document.js","t":"static/js/sessions.js","w":2},{"s":"static/js/document.js","t":"static/js/spinner.js","w":3},{"s":"static/js/document.js","t":"static/js/ui.js","w":3},{"s":"static/js/document.js","t":"static/js/emailLibrary.js","w":2},{"s":"static/js/document.js","t":"static/js/slashCommands.js","w":2},{"s":"static/js/documentLibrary.js","t":"static/js/escMenuStack.js","w":7},{"s":"static/js/documentLibrary.js","t":"static/js/markdown.js","w":2},{"s":"static/js/documentLibrary.js","t":"static/js/sessions.js","w":5},{"s":"static/js/documentLibrary.js","t":"static/js/spinner.js","w":2},{"s":"static/js/documentLibrary.js","t":"static/js/ui.js","w":3},{"s":"static/js/documentLibrary.js","t":"static/js/windowDrag.js","w":3},{"s":"static/js/editor/canvas-coords.js","t":"static/js/galleryEditor.js","w":2},{"s":"static/js/editor/fx/adj-popup.js","t":"static/js/editor/layer-helpers.js","w":4},{"s":"static/js/editor/fx/adj-popup.js","t":"static/js/editor/state.js","w":2},{"s":"static/js/editor/fx/adj-popup.js","t":"static/js/modalManager.js","w":1},{"s":"static/js/editor/fx/adj-popup.js","t":"static/js/galleryEditor.js","w":2},{"s":"static/js/editor/layer-helpers.js","t":"static/js/editor/layer-panel.js","w":6},{"s":"static/js/editor/layer-helpers.js","t":"static/js/galleryEditor.js","w":11},{"s":"static/js/editor/layer-panel.js","t":"static/js/editor/state.js","w":2},{"s":"static/js/editor/layer-panel.js","t":"static/js/galleryEditor.js","w":2},{"s":"static/js/editor/state.js","t":"static/js/galleryEditor.js","w":2},{"s":"static/js/emailInbox.js","t":"static/js/emailLibrary.js","w":16},{"s":"static/js/emailInbox.js","t":"static/js/modalManager.js","w":1},{"s":"static/js/emailInbox.js","t":"static/js/modalSnap.js","w":4},{"s":"static/js/emailInbox.js","t":"static/js/sessions.js","w":2},{"s":"static/js/emailInbox.js","t":"static/js/spinner.js","w":2},{"s":"static/js/emailInbox.js","t":"static/js/ui.js","w":6},{"s":"static/js/emailLibrary.js","t":"static/js/emailLibrary/signatureFold.js","w":24},{"s":"static/js/emailLibrary.js","t":"static/js/emailLibrary/utils.js","w":42},{"s":"static/js/emailLibrary.js","t":"static/js/modalManager.js","w":1},{"s":"static/js/emailLibrary.js","t":"static/js/settings.js","w":2},{"s":"static/js/emailLibrary.js","t":"static/js/spinner.js","w":2},{"s":"static/js/emailLibrary.js","t":"static/js/ui.js","w":23},{"s":"static/js/emailLibrary.js","t":"static/js/windowDrag.js","w":3},{"s":"static/js/emailLibrary/signatureFold.js","t":"static/js/emailLibrary/utils.js","w":1},{"s":"static/js/escMenuStack.js","t":"static/js/modalManager.js","w":2},{"s":"static/js/escMenuStack.js","t":"static/js/ui.js","w":6},{"s":"static/js/gallery.js","t":"static/js/galleryEditor.js","w":12},{"s":"static/js/gallery.js","t":"static/js/modalManager.js","w":1},{"s":"static/js/gallery.js","t":"static/js/spinner.js","w":2},{"s":"static/js/gallery.js","t":"static/js/ui.js","w":2},{"s":"static/js/gallery.js","t":"static/js/windowDrag.js","w":3},{"s":"static/js/gallery.js","t":"static/js/settings.js","w":1},{"s":"static/js/galleryEditor.js","t":"static/js/modalManager.js","w":3},{"s":"static/js/galleryEditor.js","t":"static/js/spinner.js","w":2},{"s":"static/js/galleryEditor.js","t":"static/js/ui.js","w":2},{"s":"static/js/galleryEditor.js","t":"static/js/tasks.js","w":1},{"s":"static/js/group.js","t":"static/js/markdown.js","w":2},{"s":"static/js/group.js","t":"static/js/modelSort.js","w":3},{"s":"static/js/group.js","t":"static/js/presets.js","w":4},{"s":"static/js/group.js","t":"static/js/providers.js","w":3},{"s":"static/js/group.js","t":"static/js/spinner.js","w":2},{"s":"static/js/group.js","t":"static/js/storage.js","w":3},{"s":"static/js/group.js","t":"static/js/ui.js","w":2},{"s":"static/js/markdown.js","t":"static/js/ui.js","w":2},{"s":"static/js/markdown.js","t":"static/js/sessions.js","w":2},{"s":"static/js/markdown.js","t":"static/js/tasks.js","w":2},{"s":"static/js/memory.js","t":"static/js/sessions.js","w":2},{"s":"static/js/memory.js","t":"static/js/spinner.js","w":2},{"s":"static/js/memory.js","t":"static/js/tileManager.js","w":3},{"s":"static/js/memory.js","t":"static/js/ui.js","w":24},{"s":"static/js/memory.js","t":"static/js/windowDrag.js","w":3},{"s":"static/js/memory.js","t":"static/js/presets.js","w":1},{"s":"static/js/modalManager.js","t":"static/js/modalSnap.js","w":9},{"s":"static/js/modalManager.js","t":"static/js/tileManager.js","w":7},{"s":"static/js/modalManager.js","t":"static/js/notes.js","w":1},{"s":"static/js/modalManager.js","t":"static/js/ui.js","w":1},{"s":"static/js/modalManager.js","t":"static/js/models.js","w":1},{"s":"static/js/modalSnap.js","t":"static/js/notes.js","w":5},{"s":"static/js/modalSnap.js","t":"static/js/settings.js","w":3},{"s":"static/js/modalSnap.js","t":"static/js/windowDrag.js","w":4},{"s":"static/js/modelPicker.js","t":"static/js/modelSort.js","w":3},{"s":"static/js/modelPicker.js","t":"static/js/providers.js","w":4},{"s":"static/js/modelPicker.js","t":"static/js/settings.js","w":2},{"s":"static/js/modelPicker.js","t":"static/js/ui.js","w":2},{"s":"static/js/modelPicker.js","t":"static/js/sessions.js","w":7},{"s":"static/js/modelSort.js","t":"static/js/models.js","w":3},{"s":"static/js/modelSort.js","t":"static/js/research/panel.js","w":3},{"s":"static/js/modelSort.js","t":"static/js/settings.js","w":6},{"s":"static/js/modelSort.js","t":"static/js/tasks.js","w":3},{"s":"static/js/models.js","t":"static/js/providers.js","w":3},{"s":"static/js/models.js","t":"static/js/sessions.js","w":2},{"s":"static/js/models.js","t":"static/js/spinner.js","w":2},{"s":"static/js/models.js","t":"static/js/storage.js","w":10},{"s":"static/js/models.js","t":"static/js/ui.js","w":2},{"s":"static/js/models.js","t":"static/js/slashCommands.js","w":2},{"s":"static/js/notes.js","t":"static/js/tileManager.js","w":3},{"s":"static/js/notes.js","t":"static/js/ui.js","w":3},{"s":"static/js/notes.js","t":"static/js/windowDrag.js","w":3},{"s":"static/js/presets.js","t":"static/js/sessions.js","w":3},{"s":"static/js/presets.js","t":"static/js/spinner.js","w":1},{"s":"static/js/providers.js","t":"static/js/sessions.js","w":3},{"s":"static/js/research/jobs.js","t":"static/js/research/panel.js","w":20},{"s":"static/js/research/panel.js","t":"static/js/spinner.js","w":2},{"s":"static/js/research/panel.js","t":"static/js/theme.js","w":2},{"s":"static/js/sessions.js","t":"static/js/spinner.js","w":3},{"s":"static/js/sessions.js","t":"static/js/storage.js","w":11},{"s":"static/js/sessions.js","t":"static/js/theme.js","w":2},{"s":"static/js/sessions.js","t":"static/js/ui.js","w":5},{"s":"static/js/sessions.js","t":"static/js/slashCommands.js","w":2},{"s":"static/js/settings.js","t":"static/js/ui.js","w":2},{"s":"static/js/settings.js","t":"static/js/windowDrag.js","w":3},{"s":"static/js/settings.js","t":"static/js/slashCommands.js","w":2},{"s":"static/js/settings.js","t":"static/js/theme.js","w":1},{"s":"static/js/settings.js","t":"static/js/spinner.js","w":2},{"s":"static/js/settings.js","t":"static/js/tasks.js","w":1},{"s":"static/js/slashCommands.js","t":"static/js/spinner.js","w":2},{"s":"static/js/slashCommands.js","t":"static/js/storage.js","w":7},{"s":"static/js/slashCommands.js","t":"static/js/theme.js","w":2},{"s":"static/js/slashCommands.js","t":"static/js/ui.js","w":2},{"s":"static/js/slashCommands.js","t":"static/js/workspace.js","w":1},{"s":"static/js/spinner.js","t":"static/js/tasks.js","w":1},{"s":"static/js/spinner.js","t":"static/js/ui.js","w":2},{"s":"static/js/storage.js","t":"static/js/theme.js","w":8},{"s":"static/js/storage.js","t":"static/js/workspace.js","w":5},{"s":"static/js/tasks.js","t":"static/js/ui.js","w":2},{"s":"static/js/tasks.js","t":"static/js/windowDrag.js","w":3},{"s":"static/js/theme.js","t":"static/js/tileManager.js","w":3},{"s":"static/js/theme.js","t":"static/js/ui.js","w":3},{"s":"static/js/theme.js","t":"static/js/windowDrag.js","w":3},{"s":"static/js/ui.js","t":"static/js/workspace.js","w":2},{"s":"static/js/windowDrag.js","t":"static/js/workspace.js","w":3}]};
+
+// ── Build adjacency ─────────────────────────────────────
+const nodeById = {};
+GRAPH.nodes.forEach(n => { nodeById[n.id] = n; n.neighbors = []; });
+GRAPH.edges.forEach(e => {
+  const s = nodeById[e.s], t = nodeById[e.t];
+  if (!s || !t) return;
+  s.neighbors.push({ id: e.t, w: e.w });
+  t.neighbors.push({ id: e.s, w: e.w });
+});
+
+const maxDeg = Math.max(...GRAPH.nodes.map(n => n.deg));
+GRAPH.nodes.forEach(n => {
+  n.r = 3.2 + Math.sqrt(n.deg / maxDeg) * 15;
+  n.x = (Math.random() - 0.5) * 900;
+  n.y = (Math.random() - 0.5) * 900;
+  n.vx = 0; n.vy = 0;
+  n.fixed = false;
+});
+
+document.getElementById('stat-nodes').textContent = GRAPH.nodes.length;
+document.getElementById('stat-edges').textContent = GRAPH.edges.length;
+
+// ── Legend ──────────────────────────────────────────────
+const legendEl = document.getElementById('legend');
+const domainCounts = {};
+GRAPH.nodes.forEach(n => { domainCounts[n.domain] = (domainCounts[n.domain]||0) + 1; });
+let dimmedDomains = new Set();
+
+Object.keys(COLORS).forEach(key => {
+  if (!domainCounts[key]) return;
+  const el = document.createElement('div');
+  el.className = 'leg-item';
+  el.dataset.domain = key;
+  el.innerHTML = `<span class="leg-pip" style="background:${COLORS[key]}"></span>${DOMAIN_LABELS[key]}<span class="leg-n">${domainCounts[key]}</span>`;
+  el.onclick = () => {
+    if (dimmedDomains.has(key)) dimmedDomains.delete(key); else dimmedDomains.add(key);
+    el.classList.toggle('dimmed');
+  };
+  legendEl.appendChild(el);
+});
+
+// ── Canvas setup ─────────────────────────────────────────
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let W, H, DPR;
+function resize() {
+  DPR = window.devicePixelRatio || 1;
+  W = canvas.clientWidth; H = canvas.clientHeight;
+  canvas.width = W * DPR; canvas.height = H * DPR;
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+window.addEventListener('resize', resize);
+resize();
+
+let camX = 0, camY = 0, camScale = 1;
+
+function worldToScreen(x, y) { return [ (x - camX) * camScale + W/2, (y - camY) * camScale + H/2 ]; }
+function screenToWorld(x, y) { return [ (x - W/2) / camScale + camX, (y - H/2) / camScale + camY ]; }
+
+// ── Physics ──────────────────────────────────────────────
+let simTicks = 0;
+const MAX_TICKS = 480;
+let simActive = true;
+
+function step() {
+  if (!simActive) return;
+  const nodes = GRAPH.nodes;
+  const REPEL = 2600;
+  const CENTER_K = 0.0009;
+  const LINK_K = 0.045;
+
+  for (let i = 0; i < nodes.length; i++) {
+    const a = nodes[i];
+    if (a.fixed) continue;
+    let fx = -a.x * CENTER_K, fy = -a.y * CENTER_K;
+    for (let j = 0; j < nodes.length; j++) {
+      if (i === j) continue;
+      const b = nodes[j];
+      let dx = a.x - b.x, dy = a.y - b.y;
+      let d2 = dx*dx + dy*dy;
+      if (d2 < 1) d2 = 1;
+      const d = Math.sqrt(d2);
+      const f = REPEL / d2;
+      fx += (dx/d) * f;
+      fy += (dy/d) * f;
+    }
+    a.fx = fx; a.fy = fy;
+  }
+
+  GRAPH.edges.forEach(e => {
+    const a = nodeById[e.s], b = nodeById[e.t];
+    if (!a || !b) return;
+    const rest = 70 - Math.min(e.w, 20) * 1.6;
+    let dx = b.x - a.x, dy = b.y - a.y;
+    const d = Math.sqrt(dx*dx + dy*dy) || 1;
+    const f = (d - Math.max(rest, 18)) * LINK_K;
+    const fx = (dx/d) * f, fy = (dy/d) * f;
+    if (!a.fixed) { a.fx += fx; a.fy += fy; }
+    if (!b.fixed) { b.fx -= fx; b.fy -= fy; }
+  });
+
+  const damping = 0.82;
+  nodes.forEach(n => {
+    if (n.fixed) { n.vx = 0; n.vy = 0; return; }
+    n.vx = (n.vx + n.fx * 0.02) * damping;
+    n.vy = (n.vy + n.fy * 0.02) * damping;
+    n.x += n.vx;
+    n.y += n.vy;
+  });
+
+  simTicks++;
+  if (simTicks > MAX_TICKS) simActive = false;
+}
+
+// ── Rendering ─────────────────────────────────────────────
+let hoveredNode = null;
+let selectedNode = null;
+let searchMatches = new Set();
+
+function highlightSet() {
+  if (hoveredNode) {
+    const s = new Set([hoveredNode.id]);
+    hoveredNode.neighbors.forEach(nb => s.add(nb.id));
+    return s;
+  }
+  if (selectedNode) {
+    const s = new Set([selectedNode.id]);
+    selectedNode.neighbors.forEach(nb => s.add(nb.id));
+    return s;
+  }
+  return null;
+}
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#07090F';
+  ctx.fillRect(0, 0, W, H);
+
+  const hl = highlightSet();
+  const searching = searchMatches.size > 0;
+
+  // edges
+  GRAPH.edges.forEach(e => {
+    const a = nodeById[e.s], b = nodeById[e.t];
+    if (!a || !b) return;
+    const dimByDomain = dimmedDomains.has(a.domain) || dimmedDomains.has(b.domain);
+    const dimByHl = hl && !(hl.has(a.id) && hl.has(b.id));
+    const dimBySearch = searching && !(searchMatches.has(a.id) && searchMatches.has(b.id));
+    const dim = dimByDomain || dimByHl || dimBySearch;
+
+    const [ax, ay] = worldToScreen(a.x, a.y);
+    const [bx, by] = worldToScreen(b.x, b.y);
+    const alpha = dim ? 0.03 : Math.min(0.08 + e.w * 0.025, 0.55);
+    ctx.strokeStyle = `rgba(150,170,210,${alpha})`;
+    ctx.lineWidth = Math.min(0.4 + e.w * 0.12, 2.6) * (dim ? 0.6 : 1);
+    ctx.beginPath();
+    ctx.moveTo(ax, ay);
+    ctx.lineTo(bx, by);
+    ctx.stroke();
+  });
+
+  // nodes
+  GRAPH.nodes.forEach(n => {
+    const dimByDomain = dimmedDomains.has(n.domain);
+    const dimByHl = hl && !hl.has(n.id);
+    const dimBySearch = searching && !searchMatches.has(n.id);
+    const dim = dimByDomain || dimByHl || dimBySearch;
+
+    const [sx, sy] = worldToScreen(n.x, n.y);
+    if (sx < -40 || sx > W+40 || sy < -40 || sy > H+40) return;
+    const r = n.r * camScale;
+    const color = COLORS[n.domain] || '#6680A8';
+
+    ctx.globalAlpha = dim ? 0.12 : 1;
+    ctx.beginPath();
+    ctx.arc(sx, sy, Math.max(r, 1.6), 0, Math.PI*2);
+    ctx.fillStyle = color;
+    ctx.fill();
+
+    if (n === selectedNode || n === hoveredNode) {
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = '#fff';
+      ctx.stroke();
+    }
+
+    if (!dim && (r > 7 || n === hoveredNode || n === selectedNode) && camScale > 0.35) {
+      ctx.globalAlpha = 1;
+      ctx.font = `${Math.min(11, 9 + r*0.15)}px -apple-system, sans-serif`;
+      ctx.fillStyle = 'rgba(255,255,255,0.88)';
+      ctx.textAlign = 'center';
+      ctx.fillText(n.name, sx, sy - r - 5);
+    }
+    ctx.globalAlpha = 1;
+  });
+}
+
+function loop() {
+  step();
+  draw();
+  requestAnimationFrame(loop);
+}
+loop();
+
+// ── Interaction ──────────────────────────────────────────
+function nodeAtScreen(sx, sy) {
+  let best = null, bestD = Infinity;
+  for (const n of GRAPH.nodes) {
+    const [x, y] = worldToScreen(n.x, n.y);
+    const d = Math.hypot(x - sx, y - sy);
+    const r = Math.max(n.r * camScale, 5);
+    if (d < r && d < bestD) { best = n; bestD = d; }
+  }
+  return best;
+}
+
+let dragging = null, panning = false, lastMouse = [0,0], moved = false;
+
+canvas.addEventListener('mousedown', e => {
+  const rect = canvas.getBoundingClientRect();
+  const sx = e.clientX - rect.left, sy = e.clientY - rect.top;
+  const n = nodeAtScreen(sx, sy);
+  moved = false;
+  if (n) {
+    dragging = n;
+    n.fixed = true;
+    simActive = true; simTicks = Math.max(simTicks, MAX_TICKS - 60);
+  } else {
+    panning = true;
+    canvas.classList.add('dragging');
+  }
+  lastMouse = [e.clientX, e.clientY];
+});
+
+window.addEventListener('mousemove', e => {
+  const rect = canvas.getBoundingClientRect();
+  const sx = e.clientX - rect.left, sy = e.clientY - rect.top;
+  const dx = e.clientX - lastMouse[0], dy = e.clientY - lastMouse[1];
+  if (Math.abs(dx) > 2 || Math.abs(dy) > 2) moved = true;
+
+  if (dragging) {
+    const [wx, wy] = screenToWorld(sx, sy);
+    dragging.x = wx; dragging.y = wy;
+  } else if (panning) {
+    camX -= dx / camScale;
+    camY -= dy / camScale;
+  } else {
+    const n = nodeAtScreen(sx, sy);
+    if (n !== hoveredNode) { hoveredNode = n; canvas.style.cursor = n ? 'pointer' : 'grab'; }
+  }
+  lastMouse = [e.clientX, e.clientY];
+});
+
+window.addEventListener('mouseup', () => {
+  dragging = null;
+  panning = false;
+  canvas.classList.remove('dragging');
+});
+
+canvas.addEventListener('click', e => {
+  if (moved) return;
+  const rect = canvas.getBoundingClientRect();
+  const sx = e.clientX - rect.left, sy = e.clientY - rect.top;
+  const n = nodeAtScreen(sx, sy);
+  if (n) selectNode(n); else closePanel();
+});
+
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  const sx = e.clientX - rect.left, sy = e.clientY - rect.top;
+  const [wx, wy] = screenToWorld(sx, sy);
+  const delta = -e.deltaY * 0.0011;
+  camScale = Math.min(4, Math.max(0.08, camScale * (1 + delta)));
+  const [nx, ny] = screenToWorld(sx, sy);
+  camX += (wx - nx);
+  camY += (wy - ny);
+}, { passive: false });
+
+// ── Side panel ───────────────────────────────────────────
+function selectNode(n) {
+  selectedNode = n;
+  document.getElementById('panel-pip').style.background = COLORS[n.domain] || '#6680A8';
+  document.getElementById('panel-name').textContent = n.name;
+  document.getElementById('panel-dir').textContent = n.id;
+  document.getElementById('pm-degree').textContent = n.deg;
+  document.getElementById('pm-domain').textContent = DOMAIN_LABELS[n.domain] || n.domain;
+
+  const list = document.getElementById('conn-list');
+  const sorted = [...n.neighbors].sort((a,b) => b.w - a.w).slice(0, 40);
+  list.innerHTML = sorted.map(nb => {
+    const target = nodeById[nb.id];
+    if (!target) return '';
+    return `<div class="conn-item" data-id="${nb.id}">
+      <span class="conn-pip" style="background:${COLORS[target.domain]||'#6680A8'}"></span>
+      <span class="conn-name">${target.id}</span>
+      <span class="conn-w">${nb.w}</span>
+    </div>`;
+  }).join('');
+  list.querySelectorAll('.conn-item').forEach(el => {
+    el.onclick = () => { const t = nodeById[el.dataset.id]; if (t) selectNode(t); };
+  });
+
+  document.getElementById('side-panel').classList.add('open');
+}
+function closePanel() {
+  selectedNode = null;
+  document.getElementById('side-panel').classList.remove('open');
+}
+
+// ── Search ────────────────────────────────────────────────
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim().toLowerCase();
+  if (!q) { searchMatches = new Set(); document.getElementById('search-count').textContent = ''; return; }
+  searchMatches = new Set(GRAPH.nodes.filter(n => n.name.toLowerCase().includes(q) || n.id.toLowerCase().includes(q)).map(n => n.id));
+  document.getElementById('search-count').textContent = searchMatches.size + ' match' + (searchMatches.size===1?'':'es');
+});
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && searchMatches.size) {
+    const first = GRAPH.nodes.find(n => searchMatches.has(n.id));
+    if (first) { selectNode(first); camX = first.x; camY = first.y; camScale = Math.max(camScale, 1.1); }
+  }
+});
+
+// ── Buttons ──────────────────────────────────────────────
+document.getElementById('resettle-btn').onclick = () => {
+  GRAPH.nodes.forEach(n => {
+    n.fixed = false;
+    n.x = (Math.random()-0.5) * 900;
+    n.y = (Math.random()-0.5) * 900;
+    n.vx = 0; n.vy = 0;
+  });
+  simTicks = 0; simActive = true;
+};
+document.getElementById('reset-view-btn').onclick = () => { camX = 0; camY = 0; camScale = 0.55; };
+camScale = 0.55;
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
+</script>
+</body>
+</html>

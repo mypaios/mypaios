@@ -1,0 +1,36 @@
+@babel/standalone v7.26.4 — https://github.com/babel/babel
+Vendored at: static/libs/artifacts/babel.min.js
+(in-browser JSX/ES transpilation for the Artifacts preview runtime,
+routes/artifact_routes.py)
+  Byte-identical to https://cdn.jsdelivr.net/npm/@babel/standalone@7.26.4/babel.min.js
+  sha256 a12872ea8da3d29b2a296c51bfac7c482e81419c755f2207a49ad9b77200f4ea
+  (verified 2026-07; unmodified upstream build)
+
+This is a webpack bundle of the @babel/* packages (all MIT) plus their
+dependencies, which are MIT or ISC — notably semver and picocolors are ISC.
+No CC-BY-licensed caniuse-lite data is present in the bundle. Upstream
+@babel/standalone ships a single MIT LICENSE and no per-dependency notice
+sidecar; that MIT notice is reproduced below.
+
+MIT License
+
+Copyright (c) 2014-present Sebastian McKenzie and other contributors
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

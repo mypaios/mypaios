@@ -1,0 +1,4590 @@
+{
+"_meta": {
+"source": "litellm model_prices_and_context_window.json",
+"filtered": true,
+"unit": "USD per 1M tokens",
+"fetched_at": "2026-07-18"
+},
+"models": {
+"chatgpt-4o-latest": {
+"in_per_m": 5.0,
+"out_per_m": 15.0,
+"provider": "openai",
+"context": 128000
+},
+"claude-haiku-4-5-20251001": {
+"in_per_m": 1.0,
+"out_per_m": 5.0,
+"cache_read_per_m": 0.1,
+"cache_write_per_m": 1.25,
+"provider": "anthropic",
+"context": 200000
+},
+"claude-haiku-4-5": {
+"in_per_m": 1.0,
+"out_per_m": 5.0,
+"cache_read_per_m": 0.1,
+"cache_write_per_m": 1.25,
+"provider": "anthropic",
+"context": 200000
+},
+"claude-3-7-sonnet-20250219": {
+"in_per_m": 3.0,
+"out_per_m": 15.0,
+"cache_read_per_m": 0.3,
+"cache_write_per_m": 3.75,
+"provider": "anthropic",
+"context": 200000
+},
+"claude-3-haiku-20240307": {
+"in_per_m": 0.25,
+"out_per_m": 1.25,
+"cache_read_per_m": 0.03,
+"cache_write_per_m": 0.3,
+"provider": "anthropic",
+"context": 200000
+},
+"claude-3-opus-20240229": {
+"in_per_m": 15.0,
+"out_per_m": 75.0,
+"cache_read_per_m": 1.5,
+"cache_write_per_m": 18.75,
+"provider": "anthropic",
+"context": 200000
+},
+"claude-4-opus-20250514": {
+"in_per_m": 15.0,
+"out_per_m": 75.0,
+"cache_read_per_m": 1.5,
+"cache_write_per_m": 18.75,
+"provider": "anthropic",
+"context": 200000
+},
+"claude-4-sonnet-20250514": {
+"in_per_m": 3.0,
+"out_per_m": 15.0,
+"cache_read_per_m": 0.3,
+"cache_write_per_m": 3.75,
+"provider": "anthropic",
+"context": 1000000
+},
+"claude-sonnet-4-5": {
+"in_per_m": 3.0,
+"out_per_m": 15.0,
+"cache_read_per_m": 0.3,
+"cache_write_per_m": 3.75,
+"provider": "anthropic",
+"context": 200000
+},
+"claude-sonnet-4-5-20250929": {
+"in_per_m": 3.0,
+"out_per_m": 15.0,
+"cache_read_per_m": 0.3,
+"cache_write_per_m": 3.75,
+"provider": "anthropic",
+"context": 200000
+},
+"claude-sonnet-5": {
+"in_per_m": 2.0,
+"out_per_m": 10.0,
+"cache_read_per_m": 0.2,
+"cache_write_per_m": 2.5,
+"provider": "anthropic",
+"context": 1000000
+},
+"claude-sonnet-4-6": {
+"in_per_m": 3.0,
+"out_per_m": 15.0,
+"cache_read_per_m": 0.3,
+"cache_write_per_m": 3.75,
+"provider": "anthropic",
+"context": 1000000
+},
+"claude-opus-4-1": {
+"in_per_m": 15.0,
+"out_per_m": 75.0,
+"cache_read_per_m": 1.5,
+"cache_write_per_m": 18.75,
+"provider": "anthropic",
+"context": 200000
+},
+"claude-opus-4-1-20250805": {
+"in_per_m": 15.0,
+"out_per_m": 75.0,
+"cache_read_per_m": 1.5,
+"cache_write_per_m": 18.75,
+"provider": "anthropic",
+"context": 200000
+},
+"claude-opus-4-20250514": {
+"in_per_m": 15.0,
+"out_per_m": 75.0,
+"cache_read_per_m": 1.5,
+"cache_write_per_m": 18.75,
+"provider": "anthropic",
+"context": 200000
+},
+"claude-opus-4-5-20251101": {
+"in_per_m": 5.0,
+"out_per_m": 25.0,
+"cache_read_per_m": 0.5,
+"cache_write_per_m": 6.25,
+"provider": "anthropic",
+"context": 200000
+},
+"claude-opus-4-5": {
+"in_per_m": 5.0,
+"out_per_m": 25.0,
+"cache_read_per_m": 0.5,
+"cache_write_per_m": 6.25,
+"provider": "anthropic",
+"context": 200000
+},
+"claude-opus-4-6": {
+"in_per_m": 5.0,
+"out_per_m": 25.0,
+"cache_read_per_m": 0.5,
+"cache_write_per_m": 6.25,
+"provider": "anthropic",
+"context": 1000000
+},
+"claude-opus-4-6-20260205": {
+"in_per_m": 5.0,
+"out_per_m": 25.0,
+"cache_read_per_m": 0.5,
+"cache_write_per_m": 6.25,
+"provider": "anthropic",
+"context": 1000000
+},
+"claude-opus-4-7": {
+"in_per_m": 5.0,
+"out_per_m": 25.0,
+"cache_read_per_m": 0.5,
+"cache_write_per_m": 6.25,
+"provider": "anthropic",
+"context": 1000000
+},
+"claude-opus-4-7-20260416": {
+"in_per_m": 5.0,
+"out_per_m": 25.0,
+"cache_read_per_m": 0.5,
+"cache_write_per_m": 6.25,
+"provider": "anthropic",
+"context": 1000000
+},
+"claude-fable-5": {
+"in_per_m": 10.0,
+"out_per_m": 50.0,
+"cache_read_per_m": 1.0,
+"cache_write_per_m": 12.5,
+"provider": "anthropic",
+"context": 1000000
+},
+"claude-opus-4-8": {
+"in_per_m": 5.0,
+"out_per_m": 25.0,
+"cache_read_per_m": 0.5,
+"cache_write_per_m": 6.25,
+"provider": "anthropic",
+"context": 1000000
+},
+"claude-sonnet-4-20250514": {
+"in_per_m": 3.0,
+"out_per_m": 15.0,
+"cache_read_per_m": 0.3,
+"cache_write_per_m": 3.75,
+"provider": "anthropic",
+"context": 1000000
+},
+"codex-mini-latest": {
+"in_per_m": 1.5,
+"out_per_m": 6.0,
+"cache_read_per_m": 0.375,
+"provider": "openai",
+"context": 200000
+},
+"deepseek-chat": {
+"in_per_m": 0.28,
+"out_per_m": 0.42,
+"cache_read_per_m": 0.028,
+"provider": "deepseek",
+"context": 131072
+},
+"deepseek-reasoner": {
+"in_per_m": 0.28,
+"out_per_m": 0.42,
+"cache_read_per_m": 0.028,
+"provider": "deepseek",
+"context": 131072
+},
+"deepseek/deepseek-chat": {
+"in_per_m": 0.28,
+"out_per_m": 0.42,
+"cache_read_per_m": 0.028,
+"provider": "deepseek",
+"context": 131072
+},
+"deepseek/deepseek-coder": {
+"in_per_m": 0.14,
+"out_per_m": 0.28,
+"provider": "deepseek",
+"context": 128000
+},
+"deepseek/deepseek-r1": {
+"in_per_m": 0.55,
+"out_per_m": 2.19,
+"provider": "deepseek",
+"context": 65536
+},
+"deepseek/deepseek-reasoner": {
+"in_per_m": 0.28,
+"out_per_m": 0.42,
+"cache_read_per_m": 0.028,
+"provider": "deepseek",
+"context": 131072
+},
+"deepseek/deepseek-v3": {
+"in_per_m": 0.27,
+"out_per_m": 1.1,
+"cache_read_per_m": 0.07,
+"provider": "deepseek",
+"context": 65536
+},
+"deepseek/deepseek-v3.2": {
+"in_per_m": 0.28,
+"out_per_m": 0.4,
+"provider": "deepseek",
+"context": 163840
+},
+"fireworks-ai-4.1b-to-16b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai"
+},
+"fireworks-ai-56b-to-176b": {
+"in_per_m": 1.2,
+"out_per_m": 1.2,
+"provider": "fireworks_ai"
+},
+"fireworks-ai-above-16b": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai"
+},
+"fireworks-ai-moe-up-to-56b": {
+"in_per_m": 0.5,
+"out_per_m": 0.5,
+"provider": "fireworks_ai"
+},
+"fireworks-ai-up-to-4b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai"
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-coder-v2-instruct": {
+"in_per_m": 1.2,
+"out_per_m": 1.2,
+"provider": "fireworks_ai",
+"context": 65536
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-r1": {
+"in_per_m": 3.0,
+"out_per_m": 8.0,
+"provider": "fireworks_ai",
+"context": 128000
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-r1-0528": {
+"in_per_m": 3.0,
+"out_per_m": 8.0,
+"provider": "fireworks_ai",
+"context": 160000
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-r1-basic": {
+"in_per_m": 0.55,
+"out_per_m": 2.19,
+"provider": "fireworks_ai",
+"context": 128000
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-v3": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 128000
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-v3-0324": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 163840
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-v3p1": {
+"in_per_m": 0.56,
+"out_per_m": 1.68,
+"provider": "fireworks_ai",
+"context": 128000
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-v3p1-terminus": {
+"in_per_m": 0.56,
+"out_per_m": 1.68,
+"provider": "fireworks_ai",
+"context": 128000
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-v3p2": {
+"in_per_m": 0.56,
+"out_per_m": 1.68,
+"provider": "fireworks_ai",
+"context": 163840
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-v4-flash": {
+"in_per_m": 0.14,
+"out_per_m": 0.28,
+"cache_read_per_m": 0.028,
+"provider": "fireworks_ai",
+"context": 1048576
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-v4-pro": {
+"in_per_m": 1.74,
+"out_per_m": 3.48,
+"cache_read_per_m": 0.145,
+"provider": "fireworks_ai",
+"context": 1048576
+},
+"fireworks_ai/accounts/fireworks/models/firefunction-v2": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 8192
+},
+"fireworks_ai/accounts/fireworks/models/glm-4p5": {
+"in_per_m": 0.55,
+"out_per_m": 2.19,
+"provider": "fireworks_ai",
+"context": 128000
+},
+"fireworks_ai/accounts/fireworks/models/glm-4p5-air": {
+"in_per_m": 0.22,
+"out_per_m": 0.88,
+"provider": "fireworks_ai",
+"context": 128000
+},
+"fireworks_ai/accounts/fireworks/models/glm-4p6": {
+"in_per_m": 0.55,
+"out_per_m": 2.19,
+"provider": "fireworks_ai",
+"context": 202800
+},
+"fireworks_ai/accounts/fireworks/models/glm-4p7": {
+"in_per_m": 0.6,
+"out_per_m": 2.2,
+"cache_read_per_m": 0.3,
+"provider": "fireworks_ai",
+"context": 202800
+},
+"fireworks_ai/accounts/fireworks/models/glm-5p1": {
+"in_per_m": 1.4,
+"out_per_m": 4.4,
+"cache_read_per_m": 0.26,
+"provider": "fireworks_ai",
+"context": 202800
+},
+"fireworks_ai/accounts/fireworks/models/glm-5p2": {
+"in_per_m": 1.4,
+"out_per_m": 4.4,
+"cache_read_per_m": 0.26,
+"provider": "fireworks_ai",
+"context": 1048576
+},
+"fireworks_ai/accounts/fireworks/models/gpt-oss-120b": {
+"in_per_m": 0.15,
+"out_per_m": 0.6,
+"cache_read_per_m": 0.015,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/gpt-oss-20b": {
+"in_per_m": 0.07,
+"out_per_m": 0.3,
+"cache_read_per_m": 0.035,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/kimi-k2-instruct": {
+"in_per_m": 0.6,
+"out_per_m": 2.5,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/kimi-k2-instruct-0905": {
+"in_per_m": 0.6,
+"out_per_m": 2.5,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/accounts/fireworks/models/kimi-k2-thinking": {
+"in_per_m": 0.6,
+"out_per_m": 2.5,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/accounts/fireworks/models/kimi-k2p5": {
+"in_per_m": 0.6,
+"out_per_m": 3.0,
+"cache_read_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/accounts/fireworks/models/kimi-k2p6": {
+"in_per_m": 0.95,
+"out_per_m": 4.0,
+"cache_read_per_m": 0.16,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/accounts/fireworks/models/kimi-k2p7-code": {
+"in_per_m": 0.95,
+"out_per_m": 4.0,
+"cache_read_per_m": 0.19,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/accounts/fireworks/models/llama-v3p1-405b-instruct": {
+"in_per_m": 3.0,
+"out_per_m": 3.0,
+"provider": "fireworks_ai",
+"context": 128000
+},
+"fireworks_ai/accounts/fireworks/models/llama-v3p1-8b-instruct": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/llama-v3p2-11b-vision-instruct": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/llama-v3p2-1b-instruct": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/llama-v3p2-3b-instruct": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/llama-v3p2-90b-vision-instruct": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/llama4-maverick-instruct-basic": {
+"in_per_m": 0.22,
+"out_per_m": 0.88,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/llama4-scout-instruct-basic": {
+"in_per_m": 0.15,
+"out_per_m": 0.6,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/minimax-m2p1": {
+"in_per_m": 0.3,
+"out_per_m": 1.2,
+"cache_read_per_m": 0.03,
+"provider": "fireworks_ai",
+"context": 204800
+},
+"fireworks_ai/accounts/fireworks/models/minimax-m2p7": {
+"in_per_m": 0.3,
+"out_per_m": 1.2,
+"cache_read_per_m": 0.06,
+"provider": "fireworks_ai",
+"context": 196608
+},
+"fireworks_ai/accounts/fireworks/models/minimax-m3": {
+"in_per_m": 0.3,
+"out_per_m": 1.2,
+"cache_read_per_m": 0.06,
+"provider": "fireworks_ai",
+"context": 512000
+},
+"fireworks_ai/accounts/fireworks/models/mixtral-8x22b-instruct-hf": {
+"in_per_m": 1.2,
+"out_per_m": 1.2,
+"provider": "fireworks_ai",
+"context": 65536
+},
+"fireworks_ai/accounts/fireworks/models/qwen2-72b-instruct": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-coder-32b-instruct": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/yi-large": {
+"in_per_m": 3.0,
+"out_per_m": 3.0,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/deepseek-v4-flash": {
+"in_per_m": 0.14,
+"out_per_m": 0.28,
+"cache_read_per_m": 0.028,
+"provider": "fireworks_ai",
+"context": 1048576
+},
+"fireworks_ai/deepseek-v4-pro": {
+"in_per_m": 1.74,
+"out_per_m": 3.48,
+"cache_read_per_m": 0.145,
+"provider": "fireworks_ai",
+"context": 1048576
+},
+"fireworks_ai/glm-4p7": {
+"in_per_m": 0.6,
+"out_per_m": 2.2,
+"cache_read_per_m": 0.3,
+"provider": "fireworks_ai",
+"context": 202800
+},
+"fireworks_ai/glm-5p1": {
+"in_per_m": 1.4,
+"out_per_m": 4.4,
+"cache_read_per_m": 0.26,
+"provider": "fireworks_ai",
+"context": 202800
+},
+"fireworks_ai/glm-5p1-fast": {
+"in_per_m": 2.8,
+"out_per_m": 8.8,
+"cache_read_per_m": 0.52,
+"provider": "fireworks_ai",
+"context": 202800
+},
+"fireworks_ai/glm-5p2": {
+"in_per_m": 1.4,
+"out_per_m": 4.4,
+"cache_read_per_m": 0.26,
+"provider": "fireworks_ai",
+"context": 1048576
+},
+"fireworks_ai/gpt-oss-120b": {
+"in_per_m": 0.15,
+"out_per_m": 0.6,
+"cache_read_per_m": 0.015,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/gpt-oss-20b": {
+"in_per_m": 0.07,
+"out_per_m": 0.3,
+"cache_read_per_m": 0.035,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/kimi-k2p5": {
+"in_per_m": 0.6,
+"out_per_m": 3.0,
+"cache_read_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/kimi-k2p6": {
+"in_per_m": 0.95,
+"out_per_m": 4.0,
+"cache_read_per_m": 0.16,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/kimi-k2p6-fast": {
+"in_per_m": 2.0,
+"out_per_m": 8.0,
+"cache_read_per_m": 0.3,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/kimi-k2p7-code": {
+"in_per_m": 0.95,
+"out_per_m": 4.0,
+"cache_read_per_m": 0.19,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/kimi-k2p7-code-fast": {
+"in_per_m": 1.9,
+"out_per_m": 8.0,
+"cache_read_per_m": 0.38,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/minimax-m2p1": {
+"in_per_m": 0.3,
+"out_per_m": 1.2,
+"cache_read_per_m": 0.03,
+"provider": "fireworks_ai",
+"context": 204800
+},
+"fireworks_ai/minimax-m2p7": {
+"in_per_m": 0.3,
+"out_per_m": 1.2,
+"cache_read_per_m": 0.06,
+"provider": "fireworks_ai",
+"context": 196608
+},
+"fireworks_ai/minimax-m3": {
+"in_per_m": 0.3,
+"out_per_m": 1.2,
+"cache_read_per_m": 0.06,
+"provider": "fireworks_ai",
+"context": 512000
+},
+"fireworks_ai/qwen3p7-plus": {
+"in_per_m": 0.4,
+"out_per_m": 1.6,
+"cache_read_per_m": 0.08,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"ft:gpt-3.5-turbo": {
+"in_per_m": 3.0,
+"out_per_m": 6.0,
+"provider": "openai",
+"context": 16385
+},
+"ft:gpt-3.5-turbo-0125": {
+"in_per_m": 3.0,
+"out_per_m": 6.0,
+"provider": "openai",
+"context": 16385
+},
+"ft:gpt-3.5-turbo-0613": {
+"in_per_m": 3.0,
+"out_per_m": 6.0,
+"provider": "openai",
+"context": 4096
+},
+"ft:gpt-3.5-turbo-1106": {
+"in_per_m": 3.0,
+"out_per_m": 6.0,
+"provider": "openai",
+"context": 16385
+},
+"ft:gpt-4-0613": {
+"in_per_m": 30.0,
+"out_per_m": 60.0,
+"provider": "openai",
+"context": 8192
+},
+"ft:gpt-4o-2024-08-06": {
+"in_per_m": 3.75,
+"out_per_m": 15.0,
+"cache_read_per_m": 1.875,
+"provider": "openai",
+"context": 128000
+},
+"ft:gpt-4o-2024-11-20": {
+"in_per_m": 3.75,
+"out_per_m": 15.0,
+"cache_write_per_m": 1.875,
+"provider": "openai",
+"context": 128000
+},
+"ft:gpt-4o-mini-2024-07-18": {
+"in_per_m": 0.3,
+"out_per_m": 1.2,
+"cache_read_per_m": 0.15,
+"provider": "openai",
+"context": 128000
+},
+"ft:gpt-4.1-2025-04-14": {
+"in_per_m": 3.0,
+"out_per_m": 12.0,
+"cache_read_per_m": 0.75,
+"provider": "openai",
+"context": 1047576
+},
+"ft:gpt-4.1-mini-2025-04-14": {
+"in_per_m": 0.8,
+"out_per_m": 3.2,
+"cache_read_per_m": 0.2,
+"provider": "openai",
+"context": 1047576
+},
+"ft:gpt-4.1-nano-2025-04-14": {
+"in_per_m": 0.2,
+"out_per_m": 0.8,
+"cache_read_per_m": 0.05,
+"provider": "openai",
+"context": 1047576
+},
+"ft:o4-mini-2025-04-16": {
+"in_per_m": 4.0,
+"out_per_m": 16.0,
+"cache_read_per_m": 1.0,
+"provider": "openai",
+"context": 200000
+},
+"gemini/gemini-robotics-er-1.5-preview": {
+"in_per_m": 0.3,
+"out_per_m": 2.5,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-2.0-flash": {
+"in_per_m": 0.1,
+"out_per_m": 0.4,
+"cache_read_per_m": 0.025,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-2.0-flash-001": {
+"in_per_m": 0.1,
+"out_per_m": 0.4,
+"cache_read_per_m": 0.025,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-2.0-flash-lite": {
+"in_per_m": 0.075,
+"out_per_m": 0.3,
+"cache_read_per_m": 0.01875,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-2.5-flash": {
+"in_per_m": 0.3,
+"out_per_m": 2.5,
+"cache_read_per_m": 0.03,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-2.5-flash-lite": {
+"in_per_m": 0.1,
+"out_per_m": 0.4,
+"cache_read_per_m": 0.01,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-2.5-flash-lite-preview-09-2025": {
+"in_per_m": 0.1,
+"out_per_m": 0.4,
+"cache_read_per_m": 0.01,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-2.5-flash-preview-09-2025": {
+"in_per_m": 0.3,
+"out_per_m": 2.5,
+"cache_read_per_m": 0.075,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-flash-latest": {
+"in_per_m": 0.3,
+"out_per_m": 2.5,
+"cache_read_per_m": 0.075,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-flash-lite-latest": {
+"in_per_m": 0.1,
+"out_per_m": 0.4,
+"cache_read_per_m": 0.025,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-2.5-flash-lite-preview-06-17": {
+"in_per_m": 0.1,
+"out_per_m": 0.4,
+"cache_read_per_m": 0.025,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-2.5-pro": {
+"in_per_m": 1.25,
+"out_per_m": 10.0,
+"cache_read_per_m": 0.125,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-2.5-computer-use-preview-10-2025": {
+"in_per_m": 1.25,
+"out_per_m": 10.0,
+"provider": "gemini",
+"context": 128000
+},
+"gemini/gemini-3-pro-preview": {
+"in_per_m": 2.0,
+"out_per_m": 12.0,
+"cache_read_per_m": 0.2,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-3.1-flash-lite-preview": {
+"in_per_m": 0.25,
+"out_per_m": 1.5,
+"cache_read_per_m": 0.025,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-3.1-flash-lite": {
+"in_per_m": 0.25,
+"out_per_m": 1.5,
+"cache_read_per_m": 0.025,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-3-flash-preview": {
+"in_per_m": 0.5,
+"out_per_m": 3.0,
+"cache_read_per_m": 0.05,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-3.5-flash": {
+"in_per_m": 1.5,
+"out_per_m": 9.0,
+"cache_read_per_m": 0.15,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-omni-flash-preview": {
+"in_per_m": 1.5,
+"out_per_m": 9.0,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-3.1-pro-preview": {
+"in_per_m": 2.0,
+"out_per_m": 12.0,
+"cache_read_per_m": 0.2,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-3.1-pro-preview-customtools": {
+"in_per_m": 2.0,
+"out_per_m": 12.0,
+"cache_read_per_m": 0.2,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-2.5-pro-preview-tts": {
+"in_per_m": 1.25,
+"out_per_m": 10.0,
+"cache_read_per_m": 0.125,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-gemma-2-27b-it": {
+"in_per_m": 0.35,
+"out_per_m": 1.05,
+"provider": "gemini"
+},
+"gemini/gemini-gemma-2-9b-it": {
+"in_per_m": 0.35,
+"out_per_m": 1.05,
+"provider": "gemini"
+},
+"gpt-3.5-turbo": {
+"in_per_m": 0.5,
+"out_per_m": 1.5,
+"provider": "openai",
+"context": 16385
+},
+"gpt-3.5-turbo-0125": {
+"in_per_m": 0.5,
+"out_per_m": 1.5,
+"provider": "openai",
+"context": 16385
+},
+"gpt-3.5-turbo-1106": {
+"in_per_m": 1.0,
+"out_per_m": 2.0,
+"provider": "openai",
+"context": 16385
+},
+"gpt-3.5-turbo-16k": {
+"in_per_m": 3.0,
+"out_per_m": 4.0,
+"provider": "openai",
+"context": 16385
+},
+"gpt-4": {
+"in_per_m": 30.0,
+"out_per_m": 60.0,
+"provider": "openai",
+"context": 8192
+},
+"gpt-4-0125-preview": {
+"in_per_m": 10.0,
+"out_per_m": 30.0,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4-0314": {
+"in_per_m": 30.0,
+"out_per_m": 60.0,
+"provider": "openai",
+"context": 8192
+},
+"gpt-4-0613": {
+"in_per_m": 30.0,
+"out_per_m": 60.0,
+"provider": "openai",
+"context": 8192
+},
+"gpt-4-1106-preview": {
+"in_per_m": 10.0,
+"out_per_m": 30.0,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4-turbo": {
+"in_per_m": 10.0,
+"out_per_m": 30.0,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4-turbo-2024-04-09": {
+"in_per_m": 10.0,
+"out_per_m": 30.0,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4-turbo-preview": {
+"in_per_m": 10.0,
+"out_per_m": 30.0,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4.1": {
+"in_per_m": 2.0,
+"out_per_m": 8.0,
+"cache_read_per_m": 0.5,
+"provider": "openai",
+"context": 1047576
+},
+"gpt-4.1-2025-04-14": {
+"in_per_m": 2.0,
+"out_per_m": 8.0,
+"cache_read_per_m": 0.5,
+"provider": "openai",
+"context": 1047576
+},
+"gpt-4.1-mini": {
+"in_per_m": 0.4,
+"out_per_m": 1.6,
+"cache_read_per_m": 0.1,
+"provider": "openai",
+"context": 1047576
+},
+"gpt-4.1-mini-2025-04-14": {
+"in_per_m": 0.4,
+"out_per_m": 1.6,
+"cache_read_per_m": 0.1,
+"provider": "openai",
+"context": 1047576
+},
+"gpt-4.1-nano": {
+"in_per_m": 0.1,
+"out_per_m": 0.4,
+"cache_read_per_m": 0.025,
+"provider": "openai",
+"context": 1047576
+},
+"gpt-4.1-nano-2025-04-14": {
+"in_per_m": 0.1,
+"out_per_m": 0.4,
+"cache_read_per_m": 0.025,
+"provider": "openai",
+"context": 1047576
+},
+"gpt-4o": {
+"in_per_m": 2.5,
+"out_per_m": 10.0,
+"cache_read_per_m": 1.25,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4o-2024-05-13": {
+"in_per_m": 5.0,
+"out_per_m": 15.0,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4o-2024-08-06": {
+"in_per_m": 2.5,
+"out_per_m": 10.0,
+"cache_read_per_m": 1.25,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4o-2024-11-20": {
+"in_per_m": 2.5,
+"out_per_m": 10.0,
+"cache_read_per_m": 1.25,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4o-audio-preview": {
+"in_per_m": 2.5,
+"out_per_m": 10.0,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4o-audio-preview-2024-12-17": {
+"in_per_m": 2.5,
+"out_per_m": 10.0,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4o-audio-preview-2025-06-03": {
+"in_per_m": 2.5,
+"out_per_m": 10.0,
+"provider": "openai",
+"context": 128000
+},
+"gpt-audio": {
+"in_per_m": 2.5,
+"out_per_m": 10.0,
+"provider": "openai",
+"context": 128000
+},
+"gpt-audio-1.5": {
+"in_per_m": 2.5,
+"out_per_m": 10.0,
+"provider": "openai",
+"context": 128000
+},
+"gpt-audio-2025-08-28": {
+"in_per_m": 2.5,
+"out_per_m": 10.0,
+"provider": "openai",
+"context": 128000
+},
+"gpt-audio-mini": {
+"in_per_m": 0.6,
+"out_per_m": 2.4,
+"provider": "openai",
+"context": 128000
+},
+"gpt-audio-mini-2025-10-06": {
+"in_per_m": 0.6,
+"out_per_m": 2.4,
+"provider": "openai",
+"context": 128000
+},
+"gpt-audio-mini-2025-12-15": {
+"in_per_m": 0.6,
+"out_per_m": 2.4,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4o-mini": {
+"in_per_m": 0.15,
+"out_per_m": 0.6,
+"cache_read_per_m": 0.075,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4o-mini-2024-07-18": {
+"in_per_m": 0.15,
+"out_per_m": 0.6,
+"cache_read_per_m": 0.075,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4o-mini-audio-preview": {
+"in_per_m": 0.15,
+"out_per_m": 0.6,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4o-mini-audio-preview-2024-12-17": {
+"in_per_m": 0.15,
+"out_per_m": 0.6,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4o-mini-realtime-preview": {
+"in_per_m": 0.6,
+"out_per_m": 2.4,
+"cache_read_per_m": 0.3,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4o-mini-realtime-preview-2024-12-17": {
+"in_per_m": 0.6,
+"out_per_m": 2.4,
+"cache_read_per_m": 0.3,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4o-mini-search-preview": {
+"in_per_m": 0.15,
+"out_per_m": 0.6,
+"cache_read_per_m": 0.075,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4o-mini-search-preview-2025-03-11": {
+"in_per_m": 0.15,
+"out_per_m": 0.6,
+"cache_read_per_m": 0.075,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4o-realtime-preview": {
+"in_per_m": 5.0,
+"out_per_m": 20.0,
+"cache_read_per_m": 2.5,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4o-realtime-preview-2024-12-17": {
+"in_per_m": 5.0,
+"out_per_m": 20.0,
+"cache_read_per_m": 2.5,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4o-realtime-preview-2025-06-03": {
+"in_per_m": 5.0,
+"out_per_m": 20.0,
+"cache_read_per_m": 2.5,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4o-search-preview": {
+"in_per_m": 2.5,
+"out_per_m": 10.0,
+"cache_read_per_m": 1.25,
+"provider": "openai",
+"context": 128000
+},
+"gpt-4o-search-preview-2025-03-11": {
+"in_per_m": 2.5,
+"out_per_m": 10.0,
+"cache_read_per_m": 1.25,
+"provider": "openai",
+"context": 128000
+},
+"gpt-5": {
+"in_per_m": 1.25,
+"out_per_m": 10.0,
+"cache_read_per_m": 0.125,
+"provider": "openai",
+"context": 272000
+},
+"gpt-5.1": {
+"in_per_m": 1.25,
+"out_per_m": 10.0,
+"cache_read_per_m": 0.125,
+"provider": "openai",
+"context": 272000
+},
+"gpt-5.1-2025-11-13": {
+"in_per_m": 1.25,
+"out_per_m": 10.0,
+"cache_read_per_m": 0.125,
+"provider": "openai",
+"context": 272000
+},
+"gpt-5.1-chat-latest": {
+"in_per_m": 1.25,
+"out_per_m": 10.0,
+"cache_read_per_m": 0.125,
+"provider": "openai",
+"context": 128000
+},
+"gpt-5.2": {
+"in_per_m": 1.75,
+"out_per_m": 14.0,
+"cache_read_per_m": 0.175,
+"provider": "openai",
+"context": 272000
+},
+"gpt-5.2-2025-12-11": {
+"in_per_m": 1.75,
+"out_per_m": 14.0,
+"cache_read_per_m": 0.175,
+"provider": "openai",
+"context": 272000
+},
+"gpt-5.2-chat-latest": {
+"in_per_m": 1.75,
+"out_per_m": 14.0,
+"cache_read_per_m": 0.175,
+"provider": "openai",
+"context": 128000
+},
+"gpt-5.3-chat-latest": {
+"in_per_m": 1.75,
+"out_per_m": 14.0,
+"cache_read_per_m": 0.175,
+"provider": "openai",
+"context": 128000
+},
+"gpt-5.2-pro": {
+"in_per_m": 21.0,
+"out_per_m": 168.0,
+"provider": "openai",
+"context": 272000
+},
+"gpt-5.2-pro-2025-12-11": {
+"in_per_m": 21.0,
+"out_per_m": 168.0,
+"provider": "openai",
+"context": 272000
+},
+"gpt-5.6": {
+"in_per_m": 5.0,
+"out_per_m": 30.0,
+"cache_read_per_m": 0.5,
+"cache_write_per_m": 6.25,
+"provider": "openai",
+"context": 1050000
+},
+"gpt-5.6-sol": {
+"in_per_m": 5.0,
+"out_per_m": 30.0,
+"cache_read_per_m": 0.5,
+"cache_write_per_m": 6.25,
+"provider": "openai",
+"context": 1050000
+},
+"gpt-5.6-terra": {
+"in_per_m": 2.5,
+"out_per_m": 15.0,
+"cache_read_per_m": 0.25,
+"cache_write_per_m": 3.125,
+"provider": "openai",
+"context": 1050000
+},
+"gpt-5.6-luna": {
+"in_per_m": 1.0,
+"out_per_m": 6.0,
+"cache_read_per_m": 0.1,
+"cache_write_per_m": 1.25,
+"provider": "openai",
+"context": 1050000
+},
+"gpt-5.5": {
+"in_per_m": 5.0,
+"out_per_m": 30.0,
+"cache_read_per_m": 0.5,
+"provider": "openai",
+"context": 1050000
+},
+"gpt-5.5-2026-04-23": {
+"in_per_m": 5.0,
+"out_per_m": 30.0,
+"cache_read_per_m": 0.5,
+"provider": "openai",
+"context": 1050000
+},
+"gpt-5.5-pro": {
+"in_per_m": 30.0,
+"out_per_m": 180.0,
+"cache_read_per_m": 3.0,
+"provider": "openai",
+"context": 1050000
+},
+"gpt-5.5-pro-2026-04-23": {
+"in_per_m": 30.0,
+"out_per_m": 180.0,
+"cache_read_per_m": 3.0,
+"provider": "openai",
+"context": 1050000
+},
+"gpt-5.4": {
+"in_per_m": 2.5,
+"out_per_m": 15.0,
+"cache_read_per_m": 0.25,
+"provider": "openai",
+"context": 1050000
+},
+"gpt-5.4-2026-03-05": {
+"in_per_m": 2.5,
+"out_per_m": 15.0,
+"cache_read_per_m": 0.25,
+"provider": "openai",
+"context": 1050000
+},
+"gpt-5.4-pro": {
+"in_per_m": 30.0,
+"out_per_m": 180.0,
+"cache_read_per_m": 3.0,
+"provider": "openai",
+"context": 1050000
+},
+"gpt-5.4-pro-2026-03-05": {
+"in_per_m": 30.0,
+"out_per_m": 180.0,
+"cache_read_per_m": 3.0,
+"provider": "openai",
+"context": 1050000
+},
+"gpt-5.4-mini": {
+"in_per_m": 0.75,
+"out_per_m": 4.5,
+"cache_read_per_m": 0.075,
+"provider": "openai",
+"context": 1050000
+},
+"gpt-5.4-mini-2026-03-17": {
+"in_per_m": 0.75,
+"out_per_m": 4.5,
+"cache_read_per_m": 0.075,
+"provider": "openai",
+"context": 1050000
+},
+"gpt-5.4-nano": {
+"in_per_m": 0.2,
+"out_per_m": 1.25,
+"cache_read_per_m": 0.02,
+"provider": "openai",
+"context": 1050000
+},
+"gpt-5.4-nano-2026-03-17": {
+"in_per_m": 0.2,
+"out_per_m": 1.25,
+"cache_read_per_m": 0.02,
+"provider": "openai",
+"context": 1050000
+},
+"gpt-5-pro": {
+"in_per_m": 15.0,
+"out_per_m": 120.0,
+"provider": "openai",
+"context": 400000
+},
+"gpt-5-pro-2025-10-06": {
+"in_per_m": 15.0,
+"out_per_m": 120.0,
+"provider": "openai",
+"context": 400000
+},
+"gpt-5-2025-08-07": {
+"in_per_m": 1.25,
+"out_per_m": 10.0,
+"cache_read_per_m": 0.125,
+"provider": "openai",
+"context": 272000
+},
+"gpt-5-chat": {
+"in_per_m": 1.25,
+"out_per_m": 10.0,
+"cache_read_per_m": 0.125,
+"provider": "openai",
+"context": 128000
+},
+"gpt-5-chat-latest": {
+"in_per_m": 1.25,
+"out_per_m": 10.0,
+"cache_read_per_m": 0.125,
+"provider": "openai",
+"context": 128000
+},
+"gpt-5-codex": {
+"in_per_m": 1.25,
+"out_per_m": 10.0,
+"cache_read_per_m": 0.125,
+"provider": "openai",
+"context": 272000
+},
+"gpt-5.1-codex": {
+"in_per_m": 1.25,
+"out_per_m": 10.0,
+"cache_read_per_m": 0.125,
+"provider": "openai",
+"context": 272000
+},
+"gpt-5.1-codex-max": {
+"in_per_m": 1.25,
+"out_per_m": 10.0,
+"cache_read_per_m": 0.125,
+"provider": "openai",
+"context": 272000
+},
+"gpt-5.1-codex-mini": {
+"in_per_m": 0.25,
+"out_per_m": 2.0,
+"cache_read_per_m": 0.025,
+"provider": "openai",
+"context": 272000
+},
+"gpt-5.2-codex": {
+"in_per_m": 1.75,
+"out_per_m": 14.0,
+"cache_read_per_m": 0.175,
+"provider": "openai",
+"context": 272000
+},
+"gpt-5.3-codex": {
+"in_per_m": 1.75,
+"out_per_m": 14.0,
+"cache_read_per_m": 0.175,
+"provider": "openai",
+"context": 272000
+},
+"gpt-5-mini": {
+"in_per_m": 0.25,
+"out_per_m": 2.0,
+"cache_read_per_m": 0.025,
+"provider": "openai",
+"context": 272000
+},
+"gpt-5-mini-2025-08-07": {
+"in_per_m": 0.25,
+"out_per_m": 2.0,
+"cache_read_per_m": 0.025,
+"provider": "openai",
+"context": 272000
+},
+"gpt-5-nano": {
+"in_per_m": 0.05,
+"out_per_m": 0.4,
+"cache_read_per_m": 0.005,
+"provider": "openai",
+"context": 272000
+},
+"gpt-5-nano-2025-08-07": {
+"in_per_m": 0.05,
+"out_per_m": 0.4,
+"cache_read_per_m": 0.005,
+"provider": "openai",
+"context": 272000
+},
+"gpt-realtime": {
+"in_per_m": 4.0,
+"out_per_m": 16.0,
+"cache_read_per_m": 0.4,
+"provider": "openai",
+"context": 32000
+},
+"gpt-realtime-1.5": {
+"in_per_m": 4.0,
+"out_per_m": 16.0,
+"cache_read_per_m": 0.4,
+"provider": "openai",
+"context": 32000
+},
+"gpt-realtime-2": {
+"in_per_m": 4.0,
+"out_per_m": 16.0,
+"cache_read_per_m": 0.4,
+"provider": "openai",
+"context": 32000
+},
+"gpt-realtime-2.1": {
+"in_per_m": 4.0,
+"out_per_m": 24.0,
+"cache_read_per_m": 0.4,
+"provider": "openai",
+"context": 128000
+},
+"gpt-realtime-2.1-mini": {
+"in_per_m": 0.6,
+"out_per_m": 2.4,
+"cache_read_per_m": 0.06,
+"provider": "openai",
+"context": 128000
+},
+"gpt-realtime-mini": {
+"in_per_m": 0.6,
+"out_per_m": 2.4,
+"provider": "openai",
+"context": 128000
+},
+"gpt-realtime-2025-08-28": {
+"in_per_m": 4.0,
+"out_per_m": 16.0,
+"cache_read_per_m": 0.4,
+"provider": "openai",
+"context": 32000
+},
+"groq/llama-3.1-8b-instant": {
+"in_per_m": 0.05,
+"out_per_m": 0.08,
+"provider": "groq",
+"context": 128000
+},
+"groq/llama-3.3-70b-versatile": {
+"in_per_m": 0.59,
+"out_per_m": 0.79,
+"provider": "groq",
+"context": 128000
+},
+"groq/gemma-7b-it": {
+"in_per_m": 0.05,
+"out_per_m": 0.08,
+"provider": "groq",
+"context": 8192
+},
+"groq/meta-llama/llama-guard-4-12b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "groq",
+"context": 8192
+},
+"groq/meta-llama/llama-4-maverick-17b-128e-instruct": {
+"in_per_m": 0.2,
+"out_per_m": 0.6,
+"provider": "groq",
+"context": 131072
+},
+"groq/meta-llama/llama-4-scout-17b-16e-instruct": {
+"in_per_m": 0.11,
+"out_per_m": 0.34,
+"provider": "groq",
+"context": 131072
+},
+"groq/moonshotai/kimi-k2-instruct-0905": {
+"in_per_m": 1.0,
+"out_per_m": 3.0,
+"cache_read_per_m": 0.5,
+"provider": "groq",
+"context": 262144
+},
+"groq/openai/gpt-oss-120b": {
+"in_per_m": 0.15,
+"out_per_m": 0.6,
+"cache_read_per_m": 0.075,
+"provider": "groq",
+"context": 131072
+},
+"groq/openai/gpt-oss-20b": {
+"in_per_m": 0.075,
+"out_per_m": 0.3,
+"cache_read_per_m": 0.0375,
+"provider": "groq",
+"context": 131072
+},
+"groq/openai/gpt-oss-safeguard-20b": {
+"in_per_m": 0.075,
+"out_per_m": 0.3,
+"cache_read_per_m": 0.037,
+"provider": "groq",
+"context": 131072
+},
+"groq/qwen/qwen3-32b": {
+"in_per_m": 0.29,
+"out_per_m": 0.59,
+"provider": "groq",
+"context": 131000
+},
+"mistral/codestral-2405": {
+"in_per_m": 1.0,
+"out_per_m": 3.0,
+"provider": "mistral",
+"context": 32000
+},
+"mistral/codestral-2508": {
+"in_per_m": 0.3,
+"out_per_m": 0.9,
+"provider": "mistral",
+"context": 256000
+},
+"mistral/codestral-latest": {
+"in_per_m": 1.0,
+"out_per_m": 3.0,
+"provider": "mistral",
+"context": 32000
+},
+"mistral/codestral-mamba-latest": {
+"in_per_m": 0.25,
+"out_per_m": 0.25,
+"provider": "mistral",
+"context": 256000
+},
+"mistral/devstral-medium-2507": {
+"in_per_m": 0.4,
+"out_per_m": 2.0,
+"provider": "mistral",
+"context": 128000
+},
+"mistral/devstral-small-2505": {
+"in_per_m": 0.1,
+"out_per_m": 0.3,
+"provider": "mistral",
+"context": 128000
+},
+"mistral/devstral-small-2507": {
+"in_per_m": 0.1,
+"out_per_m": 0.3,
+"provider": "mistral",
+"context": 128000
+},
+"mistral/devstral-small-latest": {
+"in_per_m": 0.1,
+"out_per_m": 0.3,
+"provider": "mistral",
+"context": 256000
+},
+"mistral/labs-devstral-small-2512": {
+"in_per_m": 0.1,
+"out_per_m": 0.3,
+"provider": "mistral",
+"context": 256000
+},
+"mistral/devstral-latest": {
+"in_per_m": 0.4,
+"out_per_m": 2.0,
+"provider": "mistral",
+"context": 256000
+},
+"mistral/devstral-medium-latest": {
+"in_per_m": 0.4,
+"out_per_m": 2.0,
+"provider": "mistral",
+"context": 256000
+},
+"mistral/devstral-2512": {
+"in_per_m": 0.4,
+"out_per_m": 2.0,
+"provider": "mistral",
+"context": 256000
+},
+"mistral/magistral-medium-2506": {
+"in_per_m": 2.0,
+"out_per_m": 5.0,
+"provider": "mistral",
+"context": 40000
+},
+"mistral/magistral-medium-2509": {
+"in_per_m": 2.0,
+"out_per_m": 5.0,
+"provider": "mistral",
+"context": 40000
+},
+"mistral/magistral-medium-1-2-2509": {
+"in_per_m": 2.0,
+"out_per_m": 5.0,
+"provider": "mistral",
+"context": 40000
+},
+"mistral/magistral-medium-latest": {
+"in_per_m": 2.0,
+"out_per_m": 5.0,
+"provider": "mistral",
+"context": 40000
+},
+"mistral/magistral-small-2506": {
+"in_per_m": 0.5,
+"out_per_m": 1.5,
+"provider": "mistral",
+"context": 40000
+},
+"mistral/magistral-small-latest": {
+"in_per_m": 0.5,
+"out_per_m": 1.5,
+"provider": "mistral",
+"context": 40000
+},
+"mistral/magistral-small-1-2-2509": {
+"in_per_m": 0.5,
+"out_per_m": 1.5,
+"provider": "mistral",
+"context": 40000
+},
+"mistral/mistral-large-2402": {
+"in_per_m": 4.0,
+"out_per_m": 12.0,
+"provider": "mistral",
+"context": 32000
+},
+"mistral/mistral-large-2407": {
+"in_per_m": 3.0,
+"out_per_m": 9.0,
+"provider": "mistral",
+"context": 128000
+},
+"mistral/mistral-large-2411": {
+"in_per_m": 2.0,
+"out_per_m": 6.0,
+"provider": "mistral",
+"context": 128000
+},
+"mistral/mistral-large-latest": {
+"in_per_m": 0.5,
+"out_per_m": 1.5,
+"provider": "mistral",
+"context": 262144
+},
+"mistral/mistral-large-3": {
+"in_per_m": 0.5,
+"out_per_m": 1.5,
+"provider": "mistral",
+"context": 262144
+},
+"mistral/mistral-large-2512": {
+"in_per_m": 0.5,
+"out_per_m": 1.5,
+"provider": "mistral",
+"context": 262144
+},
+"mistral/mistral-medium": {
+"in_per_m": 2.7,
+"out_per_m": 8.1,
+"provider": "mistral",
+"context": 32000
+},
+"mistral/mistral-medium-2312": {
+"in_per_m": 2.7,
+"out_per_m": 8.1,
+"provider": "mistral",
+"context": 32000
+},
+"mistral/mistral-medium-2505": {
+"in_per_m": 0.4,
+"out_per_m": 2.0,
+"provider": "mistral",
+"context": 131072
+},
+"mistral/mistral-medium-2508": {
+"in_per_m": 0.4,
+"out_per_m": 2.0,
+"provider": "mistral",
+"context": 131072
+},
+"mistral/mistral-medium-2604": {
+"in_per_m": 1.5,
+"out_per_m": 7.5,
+"provider": "mistral",
+"context": 262144
+},
+"mistral/mistral-medium-latest": {
+"in_per_m": 1.5,
+"out_per_m": 7.5,
+"provider": "mistral",
+"context": 262144
+},
+"mistral/mistral-medium-3-1-2508": {
+"in_per_m": 0.4,
+"out_per_m": 2.0,
+"provider": "mistral",
+"context": 131072
+},
+"mistral/mistral-medium-3-5": {
+"in_per_m": 1.5,
+"out_per_m": 7.5,
+"provider": "mistral",
+"context": 262144
+},
+"mistral/mistral-small": {
+"in_per_m": 0.1,
+"out_per_m": 0.3,
+"provider": "mistral",
+"context": 32000
+},
+"mistral/mistral-small-latest": {
+"in_per_m": 0.06,
+"out_per_m": 0.18,
+"provider": "mistral",
+"context": 131072
+},
+"mistral/mistral-small-3-2-2506": {
+"in_per_m": 0.06,
+"out_per_m": 0.18,
+"provider": "mistral",
+"context": 131072
+},
+"mistral/ministral-3-3b-2512": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "mistral",
+"context": 131072
+},
+"mistral/ministral-3-8b-2512": {
+"in_per_m": 0.15,
+"out_per_m": 0.15,
+"provider": "mistral",
+"context": 262144
+},
+"mistral/ministral-3-14b-2512": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "mistral",
+"context": 262144
+},
+"mistral/ministral-8b-2512": {
+"in_per_m": 0.15,
+"out_per_m": 0.15,
+"provider": "mistral",
+"context": 262144
+},
+"mistral/ministral-8b-latest": {
+"in_per_m": 0.15,
+"out_per_m": 0.15,
+"provider": "mistral",
+"context": 262144
+},
+"mistral/mistral-tiny": {
+"in_per_m": 0.25,
+"out_per_m": 0.25,
+"provider": "mistral",
+"context": 32000
+},
+"mistral/open-codestral-mamba": {
+"in_per_m": 0.25,
+"out_per_m": 0.25,
+"provider": "mistral",
+"context": 256000
+},
+"mistral/open-mistral-7b": {
+"in_per_m": 0.25,
+"out_per_m": 0.25,
+"provider": "mistral",
+"context": 32000
+},
+"mistral/open-mistral-nemo": {
+"in_per_m": 0.3,
+"out_per_m": 0.3,
+"provider": "mistral",
+"context": 128000
+},
+"mistral/open-mistral-nemo-2407": {
+"in_per_m": 0.3,
+"out_per_m": 0.3,
+"provider": "mistral",
+"context": 128000
+},
+"mistral/open-mixtral-8x22b": {
+"in_per_m": 2.0,
+"out_per_m": 6.0,
+"provider": "mistral",
+"context": 65336
+},
+"mistral/open-mixtral-8x7b": {
+"in_per_m": 0.7,
+"out_per_m": 0.7,
+"provider": "mistral",
+"context": 32000
+},
+"mistral/pixtral-12b-2409": {
+"in_per_m": 0.15,
+"out_per_m": 0.15,
+"provider": "mistral",
+"context": 128000
+},
+"mistral/pixtral-large-2411": {
+"in_per_m": 2.0,
+"out_per_m": 6.0,
+"provider": "mistral",
+"context": 128000
+},
+"mistral/pixtral-large-latest": {
+"in_per_m": 2.0,
+"out_per_m": 6.0,
+"provider": "mistral",
+"context": 128000
+},
+"o1": {
+"in_per_m": 15.0,
+"out_per_m": 60.0,
+"cache_read_per_m": 7.5,
+"provider": "openai",
+"context": 200000
+},
+"o1-2024-12-17": {
+"in_per_m": 15.0,
+"out_per_m": 60.0,
+"cache_read_per_m": 7.5,
+"provider": "openai",
+"context": 200000
+},
+"o1-pro": {
+"in_per_m": 150.0,
+"out_per_m": 600.0,
+"provider": "openai",
+"context": 200000
+},
+"o1-pro-2025-03-19": {
+"in_per_m": 150.0,
+"out_per_m": 600.0,
+"provider": "openai",
+"context": 200000
+},
+"o3": {
+"in_per_m": 2.0,
+"out_per_m": 8.0,
+"cache_read_per_m": 0.5,
+"provider": "openai",
+"context": 200000
+},
+"o3-2025-04-16": {
+"in_per_m": 2.0,
+"out_per_m": 8.0,
+"cache_read_per_m": 0.5,
+"provider": "openai",
+"context": 200000
+},
+"o3-deep-research": {
+"in_per_m": 10.0,
+"out_per_m": 40.0,
+"cache_read_per_m": 2.5,
+"provider": "openai",
+"context": 200000
+},
+"o3-deep-research-2025-06-26": {
+"in_per_m": 10.0,
+"out_per_m": 40.0,
+"cache_read_per_m": 2.5,
+"provider": "openai",
+"context": 200000
+},
+"o3-mini": {
+"in_per_m": 1.1,
+"out_per_m": 4.4,
+"cache_read_per_m": 0.55,
+"provider": "openai",
+"context": 200000
+},
+"o3-mini-2025-01-31": {
+"in_per_m": 1.1,
+"out_per_m": 4.4,
+"cache_read_per_m": 0.55,
+"provider": "openai",
+"context": 200000
+},
+"o3-pro": {
+"in_per_m": 20.0,
+"out_per_m": 80.0,
+"provider": "openai",
+"context": 200000
+},
+"o3-pro-2025-06-10": {
+"in_per_m": 20.0,
+"out_per_m": 80.0,
+"provider": "openai",
+"context": 200000
+},
+"o4-mini": {
+"in_per_m": 1.1,
+"out_per_m": 4.4,
+"cache_read_per_m": 0.275,
+"provider": "openai",
+"context": 200000
+},
+"o4-mini-2025-04-16": {
+"in_per_m": 1.1,
+"out_per_m": 4.4,
+"cache_read_per_m": 0.275,
+"provider": "openai",
+"context": 200000
+},
+"o4-mini-deep-research": {
+"in_per_m": 2.0,
+"out_per_m": 8.0,
+"cache_read_per_m": 0.5,
+"provider": "openai",
+"context": 200000
+},
+"o4-mini-deep-research-2025-06-26": {
+"in_per_m": 2.0,
+"out_per_m": 8.0,
+"cache_read_per_m": 0.5,
+"provider": "openai",
+"context": 200000
+},
+"openrouter/anthropic/claude-3-haiku": {
+"in_per_m": 0.25,
+"out_per_m": 1.25,
+"provider": "openrouter",
+"context": 200000
+},
+"openrouter/anthropic/claude-3.5-sonnet": {
+"in_per_m": 3.0,
+"out_per_m": 15.0,
+"provider": "openrouter",
+"context": 200000
+},
+"openrouter/anthropic/claude-3.7-sonnet": {
+"in_per_m": 3.0,
+"out_per_m": 15.0,
+"provider": "openrouter",
+"context": 200000
+},
+"openrouter/anthropic/claude-opus-4": {
+"in_per_m": 15.0,
+"out_per_m": 75.0,
+"cache_read_per_m": 1.5,
+"cache_write_per_m": 18.75,
+"provider": "openrouter",
+"context": 200000
+},
+"openrouter/anthropic/claude-opus-4.1": {
+"in_per_m": 15.0,
+"out_per_m": 75.0,
+"cache_read_per_m": 1.5,
+"cache_write_per_m": 18.75,
+"provider": "openrouter",
+"context": 200000
+},
+"openrouter/anthropic/claude-sonnet-4": {
+"in_per_m": 3.0,
+"out_per_m": 15.0,
+"cache_read_per_m": 0.3,
+"cache_write_per_m": 3.75,
+"provider": "openrouter",
+"context": 1000000
+},
+"openrouter/anthropic/claude-sonnet-4.6": {
+"in_per_m": 3.0,
+"out_per_m": 15.0,
+"cache_read_per_m": 0.3,
+"cache_write_per_m": 3.75,
+"provider": "openrouter",
+"context": 1000000
+},
+"openrouter/anthropic/claude-opus-4.5": {
+"in_per_m": 5.0,
+"out_per_m": 25.0,
+"cache_read_per_m": 0.5,
+"cache_write_per_m": 6.25,
+"provider": "openrouter",
+"context": 200000
+},
+"openrouter/anthropic/claude-opus-4.6": {
+"in_per_m": 5.0,
+"out_per_m": 25.0,
+"cache_read_per_m": 0.5,
+"cache_write_per_m": 6.25,
+"provider": "openrouter",
+"context": 1000000
+},
+"openrouter/anthropic/claude-sonnet-4.5": {
+"in_per_m": 3.0,
+"out_per_m": 15.0,
+"cache_read_per_m": 0.3,
+"cache_write_per_m": 3.75,
+"provider": "openrouter",
+"context": 1000000
+},
+"openrouter/anthropic/claude-haiku-4.5": {
+"in_per_m": 1.0,
+"out_per_m": 5.0,
+"cache_read_per_m": 0.1,
+"cache_write_per_m": 1.25,
+"provider": "openrouter",
+"context": 200000
+},
+"openrouter/anthropic/claude-opus-4.7": {
+"in_per_m": 5.0,
+"out_per_m": 25.0,
+"cache_read_per_m": 0.5,
+"cache_write_per_m": 6.25,
+"provider": "openrouter",
+"context": 1000000
+},
+"openrouter/bytedance/ui-tars-1.5-7b": {
+"in_per_m": 0.1,
+"out_per_m": 0.2,
+"provider": "openrouter",
+"context": 131072
+},
+"openrouter/deepseek/deepseek-chat": {
+"in_per_m": 0.14,
+"out_per_m": 0.28,
+"provider": "openrouter",
+"context": 65536
+},
+"openrouter/deepseek/deepseek-chat-v3-0324": {
+"in_per_m": 0.14,
+"out_per_m": 0.28,
+"provider": "openrouter",
+"context": 65536
+},
+"openrouter/deepseek/deepseek-chat-v3.1": {
+"in_per_m": 0.2,
+"out_per_m": 0.8,
+"provider": "openrouter",
+"context": 163840
+},
+"openrouter/deepseek/deepseek-v3.2": {
+"in_per_m": 0.28,
+"out_per_m": 0.4,
+"provider": "openrouter",
+"context": 163840
+},
+"openrouter/deepseek/deepseek-v3.2-exp": {
+"in_per_m": 0.2,
+"out_per_m": 0.4,
+"provider": "openrouter",
+"context": 163840
+},
+"openrouter/deepseek/deepseek-r1": {
+"in_per_m": 0.55,
+"out_per_m": 2.19,
+"provider": "openrouter",
+"context": 65336
+},
+"openrouter/deepseek/deepseek-r1-0528": {
+"in_per_m": 0.5,
+"out_per_m": 2.15,
+"provider": "openrouter",
+"context": 65336
+},
+"openrouter/google/gemini-2.0-flash-001": {
+"in_per_m": 0.1,
+"out_per_m": 0.4,
+"provider": "openrouter",
+"context": 1048576
+},
+"openrouter/google/gemini-2.5-flash": {
+"in_per_m": 0.3,
+"out_per_m": 2.5,
+"provider": "openrouter",
+"context": 1048576
+},
+"openrouter/google/gemini-2.5-pro": {
+"in_per_m": 1.25,
+"out_per_m": 10.0,
+"provider": "openrouter",
+"context": 1048576
+},
+"openrouter/google/gemini-3-pro-preview": {
+"in_per_m": 2.0,
+"out_per_m": 12.0,
+"cache_read_per_m": 0.2,
+"provider": "openrouter",
+"context": 1048576
+},
+"openrouter/google/gemini-3-flash-preview": {
+"in_per_m": 0.5,
+"out_per_m": 3.0,
+"cache_read_per_m": 0.05,
+"provider": "openrouter",
+"context": 1048576
+},
+"openrouter/google/gemini-3.1-flash-lite-preview": {
+"in_per_m": 0.25,
+"out_per_m": 1.5,
+"cache_read_per_m": 0.025,
+"provider": "openrouter",
+"context": 1048576
+},
+"openrouter/google/gemini-3.1-flash-lite": {
+"in_per_m": 0.25,
+"out_per_m": 1.5,
+"cache_read_per_m": 0.025,
+"provider": "openrouter",
+"context": 1048576
+},
+"openrouter/google/gemini-3.1-pro-preview": {
+"in_per_m": 2.0,
+"out_per_m": 12.0,
+"cache_read_per_m": 0.2,
+"provider": "openrouter",
+"context": 1048576
+},
+"openrouter/gryphe/mythomax-l2-13b": {
+"in_per_m": 1.875,
+"out_per_m": 1.875,
+"provider": "openrouter"
+},
+"openrouter/mancer/weaver": {
+"in_per_m": 5.625,
+"out_per_m": 5.625,
+"provider": "openrouter",
+"context": 8000
+},
+"openrouter/meta-llama/llama-3-70b-instruct": {
+"in_per_m": 0.59,
+"out_per_m": 0.79,
+"provider": "openrouter",
+"context": 8192
+},
+"openrouter/minimax/minimax-m2": {
+"in_per_m": 0.255,
+"out_per_m": 1.02,
+"provider": "openrouter",
+"context": 204800
+},
+"openrouter/mistralai/devstral-2512": {
+"in_per_m": 0.15,
+"out_per_m": 0.6,
+"provider": "openrouter",
+"context": 262144
+},
+"openrouter/mistralai/ministral-3b-2512": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "openrouter",
+"context": 131072
+},
+"openrouter/mistralai/ministral-8b-2512": {
+"in_per_m": 0.15,
+"out_per_m": 0.15,
+"provider": "openrouter",
+"context": 262144
+},
+"openrouter/mistralai/ministral-14b-2512": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "openrouter",
+"context": 262144
+},
+"openrouter/mistralai/mistral-large-2512": {
+"in_per_m": 0.5,
+"out_per_m": 1.5,
+"provider": "openrouter",
+"context": 262144
+},
+"openrouter/mistralai/mistral-7b-instruct": {
+"in_per_m": 0.13,
+"out_per_m": 0.13,
+"provider": "openrouter",
+"context": 32768
+},
+"openrouter/mistralai/mistral-large": {
+"in_per_m": 8.0,
+"out_per_m": 24.0,
+"provider": "openrouter",
+"context": 128000
+},
+"openrouter/mistralai/mistral-small-3.1-24b-instruct": {
+"in_per_m": 0.1,
+"out_per_m": 0.3,
+"provider": "openrouter",
+"context": 131072
+},
+"openrouter/mistralai/mistral-small-3.2-24b-instruct": {
+"in_per_m": 0.1,
+"out_per_m": 0.3,
+"provider": "openrouter",
+"context": 128000
+},
+"openrouter/mistralai/mixtral-8x22b-instruct": {
+"in_per_m": 0.65,
+"out_per_m": 0.65,
+"provider": "openrouter",
+"context": 65536
+},
+"openrouter/moonshotai/kimi-k2.5": {
+"in_per_m": 0.6,
+"out_per_m": 3.0,
+"cache_read_per_m": 0.1,
+"provider": "openrouter",
+"context": 262144
+},
+"openrouter/openai/gpt-3.5-turbo": {
+"in_per_m": 1.5,
+"out_per_m": 2.0,
+"provider": "openrouter",
+"context": 16385
+},
+"openrouter/openai/gpt-3.5-turbo-16k": {
+"in_per_m": 3.0,
+"out_per_m": 4.0,
+"provider": "openrouter",
+"context": 16385
+},
+"openrouter/openai/gpt-4": {
+"in_per_m": 30.0,
+"out_per_m": 60.0,
+"provider": "openrouter",
+"context": 8191
+},
+"openrouter/openai/gpt-4.1": {
+"in_per_m": 2.0,
+"out_per_m": 8.0,
+"cache_read_per_m": 0.5,
+"provider": "openrouter",
+"context": 1047576
+},
+"openrouter/openai/gpt-4.1-mini": {
+"in_per_m": 0.4,
+"out_per_m": 1.6,
+"cache_read_per_m": 0.1,
+"provider": "openrouter",
+"context": 1047576
+},
+"openrouter/openai/gpt-4.1-nano": {
+"in_per_m": 0.1,
+"out_per_m": 0.4,
+"cache_read_per_m": 0.025,
+"provider": "openrouter",
+"context": 1047576
+},
+"openrouter/openai/gpt-4o": {
+"in_per_m": 2.5,
+"out_per_m": 10.0,
+"provider": "openrouter",
+"context": 128000
+},
+"openrouter/openai/gpt-4o-2024-05-13": {
+"in_per_m": 5.0,
+"out_per_m": 15.0,
+"provider": "openrouter",
+"context": 128000
+},
+"openrouter/openai/gpt-5-chat": {
+"in_per_m": 1.25,
+"out_per_m": 10.0,
+"cache_read_per_m": 0.125,
+"provider": "openrouter",
+"context": 128000
+},
+"openrouter/openai/gpt-5-codex": {
+"in_per_m": 1.25,
+"out_per_m": 10.0,
+"cache_read_per_m": 0.125,
+"provider": "openrouter",
+"context": 272000
+},
+"openrouter/openai/gpt-5.2-codex": {
+"in_per_m": 1.75,
+"out_per_m": 14.0,
+"cache_read_per_m": 0.175,
+"provider": "openrouter",
+"context": 272000
+},
+"openrouter/openai/gpt-5": {
+"in_per_m": 1.25,
+"out_per_m": 10.0,
+"cache_read_per_m": 0.125,
+"provider": "openrouter",
+"context": 272000
+},
+"openrouter/openai/gpt-5-mini": {
+"in_per_m": 0.25,
+"out_per_m": 2.0,
+"cache_read_per_m": 0.025,
+"provider": "openrouter",
+"context": 272000
+},
+"openrouter/openai/gpt-5-nano": {
+"in_per_m": 0.05,
+"out_per_m": 0.4,
+"cache_read_per_m": 0.005,
+"provider": "openrouter",
+"context": 272000
+},
+"openrouter/openai/gpt-5.1-codex-max": {
+"in_per_m": 1.25,
+"out_per_m": 10.0,
+"cache_read_per_m": 0.125,
+"provider": "openrouter",
+"context": 400000
+},
+"openrouter/openai/gpt-5.2": {
+"in_per_m": 1.75,
+"out_per_m": 14.0,
+"cache_read_per_m": 0.175,
+"provider": "openrouter",
+"context": 272000
+},
+"openrouter/openai/gpt-5.2-chat": {
+"in_per_m": 1.75,
+"out_per_m": 14.0,
+"cache_read_per_m": 0.175,
+"provider": "openrouter",
+"context": 128000
+},
+"openrouter/openai/gpt-5.2-pro": {
+"in_per_m": 21.0,
+"out_per_m": 168.0,
+"provider": "openrouter",
+"context": 272000
+},
+"openrouter/openai/gpt-oss-120b": {
+"in_per_m": 0.18,
+"out_per_m": 0.8,
+"provider": "openrouter",
+"context": 131072
+},
+"openrouter/openai/gpt-oss-20b": {
+"in_per_m": 0.02,
+"out_per_m": 0.1,
+"provider": "openrouter",
+"context": 131072
+},
+"openrouter/openai/o1": {
+"in_per_m": 15.0,
+"out_per_m": 60.0,
+"cache_read_per_m": 7.5,
+"provider": "openrouter",
+"context": 200000
+},
+"openrouter/openai/o3-mini": {
+"in_per_m": 1.1,
+"out_per_m": 4.4,
+"provider": "openrouter",
+"context": 128000
+},
+"openrouter/openai/o3-mini-high": {
+"in_per_m": 1.1,
+"out_per_m": 4.4,
+"provider": "openrouter",
+"context": 128000
+},
+"openrouter/qwen/qwen-2.5-coder-32b-instruct": {
+"in_per_m": 0.18,
+"out_per_m": 0.18,
+"provider": "openrouter",
+"context": 33792
+},
+"openrouter/qwen/qwen-vl-plus": {
+"in_per_m": 0.21,
+"out_per_m": 0.63,
+"provider": "openrouter",
+"context": 8192
+},
+"openrouter/qwen/qwen3-coder": {
+"in_per_m": 0.22,
+"out_per_m": 0.95,
+"provider": "openrouter",
+"context": 262100
+},
+"openrouter/qwen/qwen3-coder-plus": {
+"in_per_m": 1.0,
+"out_per_m": 5.0,
+"provider": "openrouter",
+"context": 997952
+},
+"openrouter/qwen/qwen3-235b-a22b-2507": {
+"in_per_m": 0.071,
+"out_per_m": 0.1,
+"provider": "openrouter",
+"context": 262144
+},
+"openrouter/qwen/qwen3-235b-a22b-thinking-2507": {
+"in_per_m": 0.11,
+"out_per_m": 0.6,
+"provider": "openrouter",
+"context": 262144
+},
+"openrouter/qwen/qwen3.6-plus": {
+"in_per_m": 0.325,
+"out_per_m": 1.95,
+"provider": "openrouter",
+"context": 1000000
+},
+"openrouter/qwen/qwen3.5-35b-a3b": {
+"in_per_m": 0.25,
+"out_per_m": 2.0,
+"provider": "openrouter",
+"context": 262144
+},
+"openrouter/qwen/qwen3.5-27b": {
+"in_per_m": 0.3,
+"out_per_m": 2.4,
+"provider": "openrouter",
+"context": 262144
+},
+"openrouter/qwen/qwen3.5-122b-a10b": {
+"in_per_m": 0.4,
+"out_per_m": 2.0,
+"provider": "openrouter",
+"context": 262144
+},
+"openrouter/qwen/qwen3.5-flash-02-23": {
+"in_per_m": 0.1,
+"out_per_m": 0.4,
+"provider": "openrouter",
+"context": 1000000
+},
+"openrouter/qwen/qwen3.5-plus-02-15": {
+"in_per_m": 0.4,
+"out_per_m": 2.4,
+"provider": "openrouter",
+"context": 1000000
+},
+"openrouter/qwen/qwen3.5-397b-a17b": {
+"in_per_m": 0.6,
+"out_per_m": 3.6,
+"provider": "openrouter",
+"context": 262144
+},
+"openrouter/switchpoint/router": {
+"in_per_m": 0.85,
+"out_per_m": 3.4,
+"provider": "openrouter",
+"context": 131072
+},
+"openrouter/undi95/remm-slerp-l2-13b": {
+"in_per_m": 1.875,
+"out_per_m": 1.875,
+"provider": "openrouter",
+"context": 6144
+},
+"openrouter/x-ai/grok-4": {
+"in_per_m": 3.0,
+"out_per_m": 15.0,
+"provider": "openrouter",
+"context": 256000
+},
+"openrouter/z-ai/glm-4.6": {
+"in_per_m": 0.4,
+"out_per_m": 1.75,
+"provider": "openrouter",
+"context": 202800
+},
+"openrouter/z-ai/glm-4.6:exacto": {
+"in_per_m": 0.45,
+"out_per_m": 1.9,
+"provider": "openrouter",
+"context": 202800
+},
+"openrouter/xiaomi/mimo-v2-flash": {
+"in_per_m": 0.1,
+"out_per_m": 0.3,
+"cache_read_per_m": 0.01,
+"provider": "openrouter",
+"context": 262144
+},
+"openrouter/xiaomi/mimo-v2.5-pro": {
+"in_per_m": 1.0,
+"out_per_m": 3.0,
+"cache_read_per_m": 0.2,
+"provider": "openrouter",
+"context": 1048576
+},
+"openrouter/xiaomi/mimo-v2.5": {
+"in_per_m": 0.4,
+"out_per_m": 2.0,
+"cache_read_per_m": 0.08,
+"provider": "openrouter",
+"context": 1048576
+},
+"openrouter/z-ai/glm-4.7": {
+"in_per_m": 0.4,
+"out_per_m": 1.5,
+"provider": "openrouter",
+"context": 202752
+},
+"openrouter/z-ai/glm-4.7-flash": {
+"in_per_m": 0.07,
+"out_per_m": 0.4,
+"provider": "openrouter",
+"context": 200000
+},
+"openrouter/z-ai/glm-5": {
+"in_per_m": 0.8,
+"out_per_m": 2.56,
+"provider": "openrouter",
+"context": 202752
+},
+"openrouter/z-ai/glm-5.1": {
+"in_per_m": 1.05,
+"out_per_m": 3.5,
+"cache_read_per_m": 0.525,
+"provider": "openrouter",
+"context": 202752
+},
+"openrouter/minimax/minimax-m2.1": {
+"in_per_m": 0.27,
+"out_per_m": 1.2,
+"provider": "openrouter",
+"context": 204000
+},
+"openrouter/minimax/minimax-m2.5": {
+"in_per_m": 0.3,
+"out_per_m": 1.1,
+"cache_read_per_m": 0.15,
+"provider": "openrouter",
+"context": 196608
+},
+"perplexity/codellama-34b-instruct": {
+"in_per_m": 0.35,
+"out_per_m": 1.4,
+"provider": "perplexity",
+"context": 16384
+},
+"perplexity/codellama-70b-instruct": {
+"in_per_m": 0.7,
+"out_per_m": 2.8,
+"provider": "perplexity",
+"context": 16384
+},
+"perplexity/llama-2-70b-chat": {
+"in_per_m": 0.7,
+"out_per_m": 2.8,
+"provider": "perplexity",
+"context": 4096
+},
+"perplexity/llama-3.1-70b-instruct": {
+"in_per_m": 1.0,
+"out_per_m": 1.0,
+"provider": "perplexity",
+"context": 131072
+},
+"perplexity/llama-3.1-8b-instruct": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "perplexity",
+"context": 131072
+},
+"perplexity/mistral-7b-instruct": {
+"in_per_m": 0.07,
+"out_per_m": 0.28,
+"provider": "perplexity",
+"context": 4096
+},
+"perplexity/mixtral-8x7b-instruct": {
+"in_per_m": 0.07,
+"out_per_m": 0.28,
+"provider": "perplexity",
+"context": 4096
+},
+"perplexity/pplx-70b-chat": {
+"in_per_m": 0.7,
+"out_per_m": 2.8,
+"provider": "perplexity",
+"context": 4096
+},
+"perplexity/pplx-70b-online": {
+"out_per_m": 2.8,
+"provider": "perplexity",
+"context": 4096
+},
+"perplexity/pplx-7b-chat": {
+"in_per_m": 0.07,
+"out_per_m": 0.28,
+"provider": "perplexity",
+"context": 8192
+},
+"perplexity/pplx-7b-online": {
+"out_per_m": 0.28,
+"provider": "perplexity",
+"context": 4096
+},
+"perplexity/sonar": {
+"in_per_m": 1.0,
+"out_per_m": 1.0,
+"provider": "perplexity",
+"context": 128000
+},
+"perplexity/sonar-deep-research": {
+"in_per_m": 2.0,
+"out_per_m": 8.0,
+"provider": "perplexity",
+"context": 128000
+},
+"perplexity/sonar-medium-chat": {
+"in_per_m": 0.6,
+"out_per_m": 1.8,
+"provider": "perplexity",
+"context": 16384
+},
+"perplexity/sonar-medium-online": {
+"out_per_m": 1.8,
+"provider": "perplexity",
+"context": 12000
+},
+"perplexity/sonar-pro": {
+"in_per_m": 3.0,
+"out_per_m": 15.0,
+"provider": "perplexity",
+"context": 200000
+},
+"perplexity/sonar-reasoning": {
+"in_per_m": 1.0,
+"out_per_m": 5.0,
+"provider": "perplexity",
+"context": 128000
+},
+"perplexity/sonar-reasoning-pro": {
+"in_per_m": 2.0,
+"out_per_m": 8.0,
+"provider": "perplexity",
+"context": 128000
+},
+"perplexity/sonar-small-chat": {
+"in_per_m": 0.07,
+"out_per_m": 0.28,
+"provider": "perplexity",
+"context": 16384
+},
+"perplexity/sonar-small-online": {
+"out_per_m": 0.28,
+"provider": "perplexity",
+"context": 12000
+},
+"together-ai-21.1b-41b": {
+"in_per_m": 0.8,
+"out_per_m": 0.8,
+"provider": "together_ai"
+},
+"together-ai-4.1b-8b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "together_ai"
+},
+"together-ai-41.1b-80b": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "together_ai"
+},
+"together-ai-8.1b-21b": {
+"in_per_m": 0.3,
+"out_per_m": 0.3,
+"provider": "together_ai"
+},
+"together-ai-81.1b-110b": {
+"in_per_m": 1.8,
+"out_per_m": 1.8,
+"provider": "together_ai"
+},
+"together-ai-up-to-4b": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "together_ai"
+},
+"together_ai/Qwen/Qwen3-235B-A22B-Instruct-2507-tput": {
+"in_per_m": 0.2,
+"out_per_m": 6.0,
+"provider": "together_ai",
+"context": 262000
+},
+"together_ai/Qwen/Qwen3-235B-A22B-Thinking-2507": {
+"in_per_m": 0.65,
+"out_per_m": 3.0,
+"provider": "together_ai",
+"context": 256000
+},
+"together_ai/Qwen/Qwen3-235B-A22B-fp8-tput": {
+"in_per_m": 0.2,
+"out_per_m": 0.6,
+"provider": "together_ai",
+"context": 40000
+},
+"together_ai/Qwen/Qwen3-Coder-480B-A35B-Instruct-FP8": {
+"in_per_m": 2.0,
+"out_per_m": 2.0,
+"provider": "together_ai",
+"context": 256000
+},
+"together_ai/deepseek-ai/DeepSeek-R1": {
+"in_per_m": 3.0,
+"out_per_m": 7.0,
+"provider": "together_ai",
+"context": 128000
+},
+"together_ai/deepseek-ai/DeepSeek-R1-0528-tput": {
+"in_per_m": 0.55,
+"out_per_m": 2.19,
+"provider": "together_ai",
+"context": 128000
+},
+"together_ai/deepseek-ai/DeepSeek-V3": {
+"in_per_m": 1.25,
+"out_per_m": 1.25,
+"provider": "together_ai",
+"context": 65536
+},
+"together_ai/deepseek-ai/DeepSeek-V3.1": {
+"in_per_m": 0.6,
+"out_per_m": 1.7,
+"provider": "together_ai",
+"context": 128000
+},
+"together_ai/meta-llama/Llama-3.3-70B-Instruct-Turbo": {
+"in_per_m": 0.88,
+"out_per_m": 0.88,
+"provider": "together_ai"
+},
+"together_ai/meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8": {
+"in_per_m": 0.27,
+"out_per_m": 0.85,
+"provider": "together_ai"
+},
+"together_ai/meta-llama/Llama-4-Scout-17B-16E-Instruct": {
+"in_per_m": 0.18,
+"out_per_m": 0.59,
+"provider": "together_ai"
+},
+"together_ai/meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo": {
+"in_per_m": 3.5,
+"out_per_m": 3.5,
+"provider": "together_ai"
+},
+"together_ai/meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo": {
+"in_per_m": 0.88,
+"out_per_m": 0.88,
+"provider": "together_ai"
+},
+"together_ai/meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo": {
+"in_per_m": 0.18,
+"out_per_m": 0.18,
+"provider": "together_ai"
+},
+"together_ai/mistralai/Mixtral-8x7B-Instruct-v0.1": {
+"in_per_m": 0.6,
+"out_per_m": 0.6,
+"provider": "together_ai"
+},
+"together_ai/moonshotai/Kimi-K2-Instruct": {
+"in_per_m": 1.0,
+"out_per_m": 3.0,
+"provider": "together_ai"
+},
+"together_ai/openai/gpt-oss-120b": {
+"in_per_m": 0.15,
+"out_per_m": 0.6,
+"provider": "together_ai",
+"context": 131072
+},
+"together_ai/openai/gpt-oss-20b": {
+"in_per_m": 0.05,
+"out_per_m": 0.2,
+"provider": "together_ai",
+"context": 128000
+},
+"together_ai/zai-org/GLM-4.5-Air-FP8": {
+"in_per_m": 0.2,
+"out_per_m": 1.1,
+"provider": "together_ai",
+"context": 128000
+},
+"together_ai/zai-org/GLM-4.6": {
+"in_per_m": 0.6,
+"out_per_m": 2.2,
+"provider": "together_ai",
+"context": 200000
+},
+"together_ai/zai-org/GLM-4.7": {
+"in_per_m": 0.45,
+"out_per_m": 2.0,
+"provider": "together_ai",
+"context": 200000
+},
+"together_ai/moonshotai/Kimi-K2.5": {
+"in_per_m": 0.5,
+"out_per_m": 2.8,
+"provider": "together_ai",
+"context": 256000
+},
+"together_ai/moonshotai/Kimi-K2-Instruct-0905": {
+"in_per_m": 1.0,
+"out_per_m": 3.0,
+"provider": "together_ai",
+"context": 262144
+},
+"together_ai/Qwen/Qwen3-Next-80B-A3B-Instruct": {
+"in_per_m": 0.15,
+"out_per_m": 1.5,
+"provider": "together_ai",
+"context": 262144
+},
+"together_ai/Qwen/Qwen3-Next-80B-A3B-Thinking": {
+"in_per_m": 0.15,
+"out_per_m": 1.5,
+"provider": "together_ai",
+"context": 262144
+},
+"together_ai/Qwen/Qwen3.5-397B-A17B": {
+"in_per_m": 0.6,
+"out_per_m": 3.6,
+"provider": "together_ai",
+"context": 262144
+},
+"xai/grok-2": {
+"in_per_m": 2.0,
+"out_per_m": 10.0,
+"provider": "xai",
+"context": 131072
+},
+"xai/grok-2-1212": {
+"in_per_m": 2.0,
+"out_per_m": 10.0,
+"provider": "xai",
+"context": 131072
+},
+"xai/grok-2-latest": {
+"in_per_m": 2.0,
+"out_per_m": 10.0,
+"provider": "xai",
+"context": 131072
+},
+"xai/grok-2-vision": {
+"in_per_m": 2.0,
+"out_per_m": 10.0,
+"provider": "xai",
+"context": 32768
+},
+"xai/grok-2-vision-1212": {
+"in_per_m": 2.0,
+"out_per_m": 10.0,
+"provider": "xai",
+"context": 32768
+},
+"xai/grok-2-vision-latest": {
+"in_per_m": 2.0,
+"out_per_m": 10.0,
+"provider": "xai",
+"context": 32768
+},
+"xai/grok-3": {
+"in_per_m": 3.0,
+"out_per_m": 15.0,
+"cache_read_per_m": 0.75,
+"provider": "xai",
+"context": 131072
+},
+"xai/grok-3-beta": {
+"in_per_m": 3.0,
+"out_per_m": 15.0,
+"cache_read_per_m": 0.75,
+"provider": "xai",
+"context": 131072
+},
+"xai/grok-3-fast-beta": {
+"in_per_m": 5.0,
+"out_per_m": 25.0,
+"cache_read_per_m": 1.25,
+"provider": "xai",
+"context": 131072
+},
+"xai/grok-3-fast-latest": {
+"in_per_m": 5.0,
+"out_per_m": 25.0,
+"cache_read_per_m": 1.25,
+"provider": "xai",
+"context": 131072
+},
+"xai/grok-3-latest": {
+"in_per_m": 3.0,
+"out_per_m": 15.0,
+"cache_read_per_m": 0.75,
+"provider": "xai",
+"context": 131072
+},
+"xai/grok-3-mini": {
+"in_per_m": 0.3,
+"out_per_m": 0.5,
+"cache_read_per_m": 0.075,
+"provider": "xai",
+"context": 131072
+},
+"xai/grok-3-mini-beta": {
+"in_per_m": 0.3,
+"out_per_m": 0.5,
+"cache_read_per_m": 0.075,
+"provider": "xai",
+"context": 131072
+},
+"xai/grok-3-mini-fast": {
+"in_per_m": 0.6,
+"out_per_m": 4.0,
+"cache_read_per_m": 0.15,
+"provider": "xai",
+"context": 131072
+},
+"xai/grok-3-mini-fast-beta": {
+"in_per_m": 0.6,
+"out_per_m": 4.0,
+"cache_read_per_m": 0.15,
+"provider": "xai",
+"context": 131072
+},
+"xai/grok-3-mini-fast-latest": {
+"in_per_m": 0.6,
+"out_per_m": 4.0,
+"cache_read_per_m": 0.15,
+"provider": "xai",
+"context": 131072
+},
+"xai/grok-3-mini-latest": {
+"in_per_m": 0.3,
+"out_per_m": 0.5,
+"cache_read_per_m": 0.075,
+"provider": "xai",
+"context": 131072
+},
+"xai/grok-4": {
+"in_per_m": 3.0,
+"out_per_m": 15.0,
+"provider": "xai",
+"context": 256000
+},
+"xai/grok-4-fast-reasoning": {
+"in_per_m": 0.2,
+"out_per_m": 0.5,
+"cache_read_per_m": 0.05,
+"provider": "xai",
+"context": 2000000.0
+},
+"xai/grok-4-fast-non-reasoning": {
+"in_per_m": 0.2,
+"out_per_m": 0.5,
+"cache_read_per_m": 0.05,
+"provider": "xai",
+"context": 2000000.0
+},
+"xai/grok-4-0709": {
+"in_per_m": 3.0,
+"out_per_m": 15.0,
+"provider": "xai",
+"context": 256000
+},
+"xai/grok-4-latest": {
+"in_per_m": 3.0,
+"out_per_m": 15.0,
+"provider": "xai",
+"context": 256000
+},
+"xai/grok-4-1-fast": {
+"in_per_m": 0.2,
+"out_per_m": 0.5,
+"cache_read_per_m": 0.05,
+"provider": "xai",
+"context": 2000000.0
+},
+"xai/grok-4-1-fast-reasoning": {
+"in_per_m": 0.2,
+"out_per_m": 0.5,
+"cache_read_per_m": 0.05,
+"provider": "xai",
+"context": 2000000.0
+},
+"xai/grok-4-1-fast-reasoning-latest": {
+"in_per_m": 0.2,
+"out_per_m": 0.5,
+"cache_read_per_m": 0.05,
+"provider": "xai",
+"context": 2000000.0
+},
+"xai/grok-4-1-fast-non-reasoning": {
+"in_per_m": 0.2,
+"out_per_m": 0.5,
+"cache_read_per_m": 0.05,
+"provider": "xai",
+"context": 2000000.0
+},
+"xai/grok-4-1-fast-non-reasoning-latest": {
+"in_per_m": 0.2,
+"out_per_m": 0.5,
+"cache_read_per_m": 0.05,
+"provider": "xai",
+"context": 2000000.0
+},
+"xai/grok-4.20-multi-agent-beta-0309": {
+"in_per_m": 2.0,
+"out_per_m": 6.0,
+"cache_read_per_m": 0.2,
+"provider": "xai",
+"context": 2000000
+},
+"xai/grok-4.20-beta-0309-reasoning": {
+"in_per_m": 2.0,
+"out_per_m": 6.0,
+"cache_read_per_m": 0.2,
+"provider": "xai",
+"context": 2000000
+},
+"xai/grok-4.20-0309-reasoning": {
+"in_per_m": 2.0,
+"out_per_m": 6.0,
+"cache_read_per_m": 0.2,
+"provider": "xai",
+"context": 2000000
+},
+"xai/grok-4.20-beta-0309-non-reasoning": {
+"in_per_m": 2.0,
+"out_per_m": 6.0,
+"cache_read_per_m": 0.2,
+"provider": "xai",
+"context": 2000000
+},
+"xai/grok-4.3": {
+"in_per_m": 1.25,
+"out_per_m": 2.5,
+"cache_read_per_m": 0.2,
+"provider": "xai",
+"context": 1000000
+},
+"xai/grok-4.3-latest": {
+"in_per_m": 1.25,
+"out_per_m": 2.5,
+"cache_read_per_m": 0.2,
+"provider": "xai",
+"context": 1000000
+},
+"xai/grok-4.5": {
+"in_per_m": 2.0,
+"out_per_m": 6.0,
+"cache_read_per_m": 0.5,
+"provider": "xai",
+"context": 500000
+},
+"xai/grok-4.5-latest": {
+"in_per_m": 2.0,
+"out_per_m": 6.0,
+"cache_read_per_m": 0.5,
+"provider": "xai",
+"context": 500000
+},
+"xai/grok-beta": {
+"in_per_m": 5.0,
+"out_per_m": 15.0,
+"provider": "xai",
+"context": 131072
+},
+"xai/grok-code-fast": {
+"in_per_m": 0.2,
+"out_per_m": 1.5,
+"cache_read_per_m": 0.02,
+"provider": "xai",
+"context": 256000
+},
+"xai/grok-code-fast-1": {
+"in_per_m": 0.2,
+"out_per_m": 1.5,
+"cache_read_per_m": 0.02,
+"provider": "xai",
+"context": 256000
+},
+"xai/grok-code-fast-1-0825": {
+"in_per_m": 0.2,
+"out_per_m": 1.5,
+"cache_read_per_m": 0.02,
+"provider": "xai",
+"context": 256000
+},
+"xai/grok-vision-beta": {
+"in_per_m": 5.0,
+"out_per_m": 15.0,
+"provider": "xai",
+"context": 8192
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-coder-480b-a35b-instruct": {
+"in_per_m": 0.45,
+"out_per_m": 1.8,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/accounts/fireworks/models/chronos-hermes-13b-v2": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/code-llama-13b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/code-llama-13b-instruct": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/code-llama-13b-python": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/code-llama-34b": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/code-llama-34b-instruct": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/code-llama-34b-python": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/code-llama-70b": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/code-llama-70b-instruct": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/code-llama-70b-python": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/code-llama-7b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/code-llama-7b-instruct": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/code-llama-7b-python": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/code-qwen-1p5-7b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 65536
+},
+"fireworks_ai/accounts/fireworks/models/codegemma-2b": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 8192
+},
+"fireworks_ai/accounts/fireworks/models/codegemma-7b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 8192
+},
+"fireworks_ai/accounts/fireworks/models/cogito-671b-v2-p1": {
+"in_per_m": 1.2,
+"out_per_m": 1.2,
+"provider": "fireworks_ai",
+"context": 163840
+},
+"fireworks_ai/accounts/fireworks/models/cogito-v1-preview-llama-3b": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/cogito-v1-preview-llama-70b": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/cogito-v1-preview-llama-8b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/cogito-v1-preview-qwen-14b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/cogito-v1-preview-qwen-32b": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/dbrx-instruct": {
+"in_per_m": 1.2,
+"out_per_m": 1.2,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-coder-1b-base": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-coder-33b-instruct": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-coder-7b-base": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-coder-7b-base-v1p5": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-coder-7b-instruct-v1p5": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-coder-v2-lite-base": {
+"in_per_m": 0.5,
+"out_per_m": 0.5,
+"provider": "fireworks_ai",
+"context": 163840
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-coder-v2-lite-instruct": {
+"in_per_m": 0.5,
+"out_per_m": 0.5,
+"provider": "fireworks_ai",
+"context": 163840
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-prover-v2": {
+"in_per_m": 1.2,
+"out_per_m": 1.2,
+"provider": "fireworks_ai",
+"context": 163840
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-r1-0528-distill-qwen3-8b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-r1-distill-llama-70b": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-r1-distill-llama-8b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-r1-distill-qwen-14b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-r1-distill-qwen-1p5b": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-r1-distill-qwen-32b": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-r1-distill-qwen-7b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-v2-lite-chat": {
+"in_per_m": 0.5,
+"out_per_m": 0.5,
+"provider": "fireworks_ai",
+"context": 163840
+},
+"fireworks_ai/accounts/fireworks/models/deepseek-v2p5": {
+"in_per_m": 1.2,
+"out_per_m": 1.2,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/devstral-small-2505": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/dobby-mini-unhinged-plus-llama-3-1-8b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/dobby-unhinged-llama-3-3-70b-new": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/dolphin-2-9-2-qwen2-72b": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/dolphin-2p6-mixtral-8x7b": {
+"in_per_m": 0.5,
+"out_per_m": 0.5,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/ernie-4p5-21b-a3b-pt": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/ernie-4p5-300b-a47b-pt": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/fare-20b": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/firefunction-v1": {
+"in_per_m": 0.5,
+"out_per_m": 0.5,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/firellava-13b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/firesearch-ocr-v6": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 8192
+},
+"fireworks_ai/accounts/fireworks/models/flux-1-dev": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/flux-1-dev-controlnet-union": {
+"in_per_m": 0.001,
+"out_per_m": 0.001,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/flux-1-schnell": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/gemma-2b-it": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 8192
+},
+"fireworks_ai/accounts/fireworks/models/gemma-3-27b-it": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/gemma-7b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 8192
+},
+"fireworks_ai/accounts/fireworks/models/gemma-7b-it": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 8192
+},
+"fireworks_ai/accounts/fireworks/models/gemma2-9b-it": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 8192
+},
+"fireworks_ai/accounts/fireworks/models/glm-4p5v": {
+"in_per_m": 1.2,
+"out_per_m": 1.2,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/gpt-oss-safeguard-120b": {
+"in_per_m": 1.2,
+"out_per_m": 1.2,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/gpt-oss-safeguard-20b": {
+"in_per_m": 0.5,
+"out_per_m": 0.5,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/hermes-2-pro-mistral-7b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/internvl3-38b": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/internvl3-78b": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/internvl3-8b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/kat-coder": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/accounts/fireworks/models/kat-dev-32b": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/kat-dev-72b-exp": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/llama-guard-2-8b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 8192
+},
+"fireworks_ai/accounts/fireworks/models/llama-guard-3-1b": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/llama-guard-3-8b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/llama-v2-13b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/llama-v2-13b-chat": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/llama-v2-70b": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/llama-v2-70b-chat": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 2048
+},
+"fireworks_ai/accounts/fireworks/models/llama-v2-7b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/llama-v2-7b-chat": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/llama-v3-70b-instruct": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 8192
+},
+"fireworks_ai/accounts/fireworks/models/llama-v3-70b-instruct-hf": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 8192
+},
+"fireworks_ai/accounts/fireworks/models/llama-v3-8b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 8192
+},
+"fireworks_ai/accounts/fireworks/models/llama-v3-8b-instruct-hf": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 8192
+},
+"fireworks_ai/accounts/fireworks/models/llama-v3p1-405b-instruct-long": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/llama-v3p1-70b-instruct": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/llama-v3p1-70b-instruct-1b": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/llama-v3p1-nemotron-70b-instruct": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/llama-v3p2-1b": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/llama-v3p2-3b": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/llama-v3p3-70b-instruct": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/llamaguard-7b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/llava-yi-34b": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/minimax-m1-80k": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/minimax-m2": {
+"in_per_m": 0.3,
+"out_per_m": 1.2,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/ministral-3-14b-instruct-2512": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 256000
+},
+"fireworks_ai/accounts/fireworks/models/ministral-3-3b-instruct-2512": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 256000
+},
+"fireworks_ai/accounts/fireworks/models/ministral-3-8b-instruct-2512": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 256000
+},
+"fireworks_ai/accounts/fireworks/models/mistral-7b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/mistral-7b-instruct-4k": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/mistral-7b-instruct-v0p2": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/mistral-7b-instruct-v3": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/mistral-7b-v0p2": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/mistral-large-3-fp8": {
+"in_per_m": 1.2,
+"out_per_m": 1.2,
+"provider": "fireworks_ai",
+"context": 256000
+},
+"fireworks_ai/accounts/fireworks/models/mistral-nemo-base-2407": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 128000
+},
+"fireworks_ai/accounts/fireworks/models/mistral-nemo-instruct-2407": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 128000
+},
+"fireworks_ai/accounts/fireworks/models/mistral-small-24b-instruct-2501": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/mixtral-8x22b": {
+"in_per_m": 1.2,
+"out_per_m": 1.2,
+"provider": "fireworks_ai",
+"context": 65536
+},
+"fireworks_ai/accounts/fireworks/models/mixtral-8x22b-instruct": {
+"in_per_m": 1.2,
+"out_per_m": 1.2,
+"provider": "fireworks_ai",
+"context": 65536
+},
+"fireworks_ai/accounts/fireworks/models/mixtral-8x7b": {
+"in_per_m": 0.5,
+"out_per_m": 0.5,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/mixtral-8x7b-instruct": {
+"in_per_m": 0.5,
+"out_per_m": 0.5,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/mixtral-8x7b-instruct-hf": {
+"in_per_m": 0.5,
+"out_per_m": 0.5,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/mythomax-l2-13b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/nemotron-nano-v2-12b-vl": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/nous-capybara-7b-v1p9": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/nous-hermes-2-mixtral-8x7b-dpo": {
+"in_per_m": 0.5,
+"out_per_m": 0.5,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/nous-hermes-2-yi-34b": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/nous-hermes-llama2-13b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/nous-hermes-llama2-70b": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/nous-hermes-llama2-7b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/nvidia-nemotron-nano-12b-v2": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/nvidia-nemotron-nano-9b-v2": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/openchat-3p5-0106-7b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 8192
+},
+"fireworks_ai/accounts/fireworks/models/openhermes-2-mistral-7b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/openhermes-2p5-mistral-7b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/openorca-7b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/phi-2-3b": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 2048
+},
+"fireworks_ai/accounts/fireworks/models/phi-3-mini-128k-instruct": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/phi-3-vision-128k-instruct": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 32064
+},
+"fireworks_ai/accounts/fireworks/models/phind-code-llama-34b-python-v1": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/phind-code-llama-34b-v1": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/phind-code-llama-34b-v2": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/pythia-12b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 2048
+},
+"fireworks_ai/accounts/fireworks/models/qwen-qwq-32b-preview": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen-v2p5-14b-instruct": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen-v2p5-7b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/qwen1p5-72b-chat": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen2-7b-instruct": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen2-vl-2b-instruct": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen2-vl-72b-instruct": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen2-vl-7b-instruct": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-0p5b-instruct": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-14b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-1p5b-instruct": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-32b": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-32b-instruct": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-72b": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-72b-instruct": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-7b-instruct": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-coder-0p5b": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-coder-0p5b-instruct": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-coder-14b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-coder-14b-instruct": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-coder-1p5b": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-coder-1p5b-instruct": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-coder-32b": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-coder-32b-instruct-128k": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-coder-32b-instruct-32k-rope": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-coder-32b-instruct-64k": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 65536
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-coder-3b": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-coder-3b-instruct": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-coder-7b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-coder-7b-instruct": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-math-72b-instruct": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-vl-32b-instruct": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 128000
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-vl-3b-instruct": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 128000
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-vl-72b-instruct": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 128000
+},
+"fireworks_ai/accounts/fireworks/models/qwen2p5-vl-7b-instruct": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 128000
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-0p6b": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 40960
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-14b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 40960
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-1p7b": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-1p7b-fp8-draft": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-1p7b-fp8-draft-131072": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-1p7b-fp8-draft-40960": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 40960
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-235b-a22b": {
+"in_per_m": 0.22,
+"out_per_m": 0.88,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-235b-a22b-instruct-2507": {
+"in_per_m": 0.22,
+"out_per_m": 0.88,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-235b-a22b-thinking-2507": {
+"in_per_m": 0.22,
+"out_per_m": 0.88,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-30b-a3b": {
+"in_per_m": 0.15,
+"out_per_m": 0.6,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-30b-a3b-instruct-2507": {
+"in_per_m": 0.5,
+"out_per_m": 0.5,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-30b-a3b-thinking-2507": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-32b": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-4b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 40960
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-4b-instruct-2507": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-8b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 40960
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-coder-30b-a3b-instruct": {
+"in_per_m": 0.15,
+"out_per_m": 0.6,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-coder-480b-instruct-bf16": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-next-80b-a3b-instruct": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-next-80b-a3b-thinking": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-vl-235b-a22b-instruct": {
+"in_per_m": 0.22,
+"out_per_m": 0.88,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-vl-235b-a22b-thinking": {
+"in_per_m": 0.22,
+"out_per_m": 0.88,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-vl-30b-a3b-instruct": {
+"in_per_m": 0.15,
+"out_per_m": 0.6,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-vl-30b-a3b-thinking": {
+"in_per_m": 0.15,
+"out_per_m": 0.6,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-vl-32b-instruct": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/qwen3-vl-8b-instruct": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/qwen3p7-plus": {
+"in_per_m": 0.4,
+"out_per_m": 1.6,
+"cache_read_per_m": 0.08,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/accounts/fireworks/models/qwq-32b": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 131072
+},
+"fireworks_ai/accounts/fireworks/models/rolm-ocr": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 128000
+},
+"fireworks_ai/accounts/fireworks/models/snorkel-mistral-7b-pairrm-dpo": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/stablecode-3b": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/starcoder-16b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 8192
+},
+"fireworks_ai/accounts/fireworks/models/starcoder-7b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 8192
+},
+"fireworks_ai/accounts/fireworks/models/starcoder2-15b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/starcoder2-3b": {
+"in_per_m": 0.1,
+"out_per_m": 0.1,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/starcoder2-7b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 16384
+},
+"fireworks_ai/accounts/fireworks/models/toppy-m-7b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/models/yi-34b": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/yi-34b-200k-capybara": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 200000
+},
+"fireworks_ai/accounts/fireworks/models/yi-34b-chat": {
+"in_per_m": 0.9,
+"out_per_m": 0.9,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/yi-6b": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 4096
+},
+"fireworks_ai/accounts/fireworks/models/zephyr-7b-beta": {
+"in_per_m": 0.2,
+"out_per_m": 0.2,
+"provider": "fireworks_ai",
+"context": 32768
+},
+"fireworks_ai/accounts/fireworks/routers/glm-5p1-fast": {
+"in_per_m": 2.8,
+"out_per_m": 8.8,
+"cache_read_per_m": 0.52,
+"provider": "fireworks_ai",
+"context": 202800
+},
+"fireworks_ai/accounts/fireworks/routers/kimi-k2p6-fast": {
+"in_per_m": 2.0,
+"out_per_m": 8.0,
+"cache_read_per_m": 0.3,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"fireworks_ai/accounts/fireworks/routers/kimi-k2p7-code-fast": {
+"in_per_m": 1.9,
+"out_per_m": 8.0,
+"cache_read_per_m": 0.38,
+"provider": "fireworks_ai",
+"context": 262144
+},
+"gpt-5-search-api": {
+"in_per_m": 1.25,
+"out_per_m": 10.0,
+"cache_read_per_m": 0.125,
+"provider": "openai",
+"context": 272000
+},
+"gpt-5-search-api-2025-10-14": {
+"in_per_m": 1.25,
+"out_per_m": 10.0,
+"cache_read_per_m": 0.125,
+"provider": "openai",
+"context": 272000
+},
+"gpt-realtime-mini-2025-10-06": {
+"in_per_m": 0.6,
+"out_per_m": 2.4,
+"cache_read_per_m": 0.06,
+"provider": "openai",
+"context": 128000
+},
+"gpt-realtime-mini-2025-12-15": {
+"in_per_m": 0.6,
+"out_per_m": 2.4,
+"cache_read_per_m": 0.06,
+"provider": "openai",
+"context": 128000
+},
+"gemini/gemini-2.0-flash-lite-001": {
+"in_per_m": 0.075,
+"out_per_m": 0.3,
+"cache_read_per_m": 0.01875,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini-2.5-flash-native-audio-latest": {
+"in_per_m": 0.3,
+"out_per_m": 2.5,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini-2.5-flash-native-audio-preview-09-2025": {
+"in_per_m": 0.3,
+"out_per_m": 2.5,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini-2.5-flash-native-audio-preview-12-2025": {
+"in_per_m": 0.3,
+"out_per_m": 2.5,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini-3.1-flash-live-preview": {
+"in_per_m": 0.75,
+"out_per_m": 4.5,
+"provider": "gemini",
+"context": 131072
+},
+"gemini/gemini-2.5-flash-native-audio-latest": {
+"in_per_m": 0.3,
+"out_per_m": 2.5,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-2.5-flash-native-audio-preview-09-2025": {
+"in_per_m": 0.3,
+"out_per_m": 2.5,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-2.5-flash-native-audio-preview-12-2025": {
+"in_per_m": 0.3,
+"out_per_m": 2.5,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-3.1-flash-live-preview": {
+"in_per_m": 0.75,
+"out_per_m": 4.5,
+"provider": "gemini",
+"context": 131072
+},
+"gemini-flash-latest": {
+"in_per_m": 0.3,
+"out_per_m": 2.5,
+"cache_read_per_m": 0.03,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini-flash-lite-latest": {
+"in_per_m": 0.1,
+"out_per_m": 0.4,
+"cache_read_per_m": 0.01,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini-pro-latest": {
+"in_per_m": 1.25,
+"out_per_m": 10.0,
+"cache_read_per_m": 0.125,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini/gemini-pro-latest": {
+"in_per_m": 1.25,
+"out_per_m": 10.0,
+"cache_read_per_m": 0.125,
+"provider": "gemini",
+"context": 1048576
+},
+"gemini-exp-1206": {
+"in_per_m": 0.3,
+"out_per_m": 2.5,
+"cache_read_per_m": 0.03,
+"provider": "gemini",
+"context": 1048576
+},
+"deepseek-v4-flash": {
+"in_per_m": 0.14,
+"out_per_m": 0.28,
+"cache_read_per_m": 0.0028,
+"provider": "deepseek",
+"context": 1000000
+},
+"deepseek-v4-pro": {
+"in_per_m": 0.435,
+"out_per_m": 0.87,
+"cache_read_per_m": 0.003625,
+"provider": "deepseek",
+"context": 1000000
+},
+"deepseek/deepseek-v4-flash": {
+"in_per_m": 0.14,
+"out_per_m": 0.28,
+"cache_read_per_m": 0.0028,
+"provider": "deepseek",
+"context": 1000000
+},
+"deepseek/deepseek-v4-pro": {
+"in_per_m": 0.435,
+"out_per_m": 0.87,
+"cache_read_per_m": 0.003625,
+"provider": "deepseek",
+"context": 1000000
+}
+}
+}

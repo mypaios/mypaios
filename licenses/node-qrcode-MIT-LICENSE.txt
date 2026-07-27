@@ -1,0 +1,68 @@
+node-qrcode — https://github.com/soldair/node-qrcode
+Vendored at: static/lib/qrcode.min.js
+
+MIT License
+
+Copyright (c) 2012 Ryan Day
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+--------------------------------------------------------------------------
+Provenance caveat (version not assertable)
+--------------------------------------------------------------------------
+static/lib/qrcode.min.js (24,853 bytes,
+sha256 0935de514006b84fe54404b4a98fb3b5cc45478d9efa64d75e19719025663c19)
+is an esbuild IIFE bundle of node-qrcode's browser entry point. It matches NO
+published node-qrcode artifact: 1.4.x ships a browserify build of a different
+shape and size, 1.5.0-1.5.1 ship an unminified build/qrcode.js, and 1.5.2+
+ship no browser bundle at all. It IS node-qrcode (its exact internals are
+present: getSymbolSize, getSymbolTotalCodewords, getBCHDigit, toSJIS, the
+version-capacity table, the L/M/Q/H bit map, BitBuffer, BitMatrix), but it was
+built outside the project and its upstream version cannot be asserted. It
+arrived with the upstream Odysseus fork and should be re-vendored from a
+pinned release.
+
+--------------------------------------------------------------------------
+dijkstrajs (bundled) — MIT License
+https://github.com/tcort/dijkstrajs
+
+node-qrcode uses dijkstrajs for optimal-segment routing; it is statically
+included in the bundle above (confirmed by the symbols
+single_source_shortest_paths, find_path and PriorityQueue) and its notice was
+removed by minification. Reproduced verbatim from upstream LICENSE.md:
+
+
+Dijkstra path-finding functions. Adapted from the Dijkstar Python project.
+
+Copyright (C) 2008
+  Wyatt Baldwin <self@wyattbaldwin.com>
+  All rights reserved
+
+Licensed under the MIT license.
+
+  http://www.opensource.org/licenses/mit-license.php
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+

@@ -1,0 +1,45 @@
+# MyPaiOS systemd template (Linux).
+#
+# 1. Replace every /path/to/mypaios below with your clone's absolute path,
+#    and YOURUSER with the (non-root) account that owns it.
+# 2. Copy to:  /etc/systemd/system/mypaios.service
+# 3. Enable:   sudo systemctl daemon-reload && sudo systemctl enable --now mypaios
+#    Logs:     journalctl -u mypaios -f
+#
+# Setup expected before first start (see deploy/README.md):
+#   python3 -m venv venv && ./venv/bin/pip install -r requirements.txt
+#   plus the ChromaDB choice described in deploy/README.md (embedded vs http).
+
+[Unit]
+Description=MyPaiOS — My Personal AI OS (web UI)
+Documentation=https://github.com/mypaios/mypaios
+After=network.target
+
+[Service]
+Type=simple
+User=YOURUSER
+WorkingDirectory=/path/to/mypaios
+
+# Bind to loopback ON PURPOSE. MyPaiOS is a personal, single-machine app;
+# 127.0.0.1 keeps it reachable only from this host. To use it from other
+# devices, do NOT change this to 0.0.0.0 — put a reverse proxy with HTTPS
+# in front (Caddy/nginx/Tailscale Serve), proxy to 127.0.0.1:7860, and set
+# SECURE_COOKIES=true in .env. Example nginx location block is in
+# deploy/README.md.
+ExecStart=/path/to/mypaios/venv/bin/python -m uvicorn app:app --host 127.0.0.1 --port 7860
+
+Restart=always
+RestartSec=3
+
+# Optional: systemd can also inject .env ("-" = ignore if missing). The app
+# already loads ./.env from WorkingDirectory itself via python-dotenv, so
+# this is only useful for vars that must exist before Python starts.
+EnvironmentFile=-/path/to/mypaios/.env
+
+# Light hardening. (Deliberately not ProtectHome=true — the personal-docs
+# indexer and Obsidian integration read files under the user's home.)
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

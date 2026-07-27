@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>MyPaiOS</title>
+<style>
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: #2E333D;
+    color: #EDF3F7;
+    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
+    -webkit-user-select: none; user-select: none;
+  }
+  .ring {
+    width: 38px; height: 38px;
+    border: 3px solid rgba(255,255,255,0.15);
+    border-top-color: #FF5758;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .mark { font-size: 30px; font-weight: 800; letter-spacing: 0.3px; }
+  .mark span {
+    background: linear-gradient(135deg, #FF5758, #FF8d8e);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .sub { color: #9fb2c2; font-size: 13px; }
+  .pi-tile {
+    width: 88px; height: 88px; border-radius: 21px;
+    background: linear-gradient(160deg, #353b46, #14171d);
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 12px 34px rgba(0,0,0,0.45);
+    display: flex; align-items: center; justify-content: center;
+  }
+</style>
+</head>
+<body>
+  <div class="pi-tile">
+    <svg width="54" height="54" viewBox="0 0 32 32" aria-hidden="true">
+      <rect x="4.8" y="9.6" width="22.4" height="3.2" rx="1.6" fill="#FF5758"/>
+      <rect x="8.5" y="11.8" width="3.5" height="11.9" rx="1.6" fill="#FF5758"/>
+      <rect x="20" y="11.8" width="3.5" height="11.9" rx="1.6" fill="#FF5758"/>
+    </svg>
+  </div>
+  <div class="mark">Pi<span>AOS</span></div>
+  <div class="ring"></div>
+  <div class="sub">Starting your Personal AI Operating System…</div>
+</body>
+</html>

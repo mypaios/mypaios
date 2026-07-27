@@ -1,0 +1,32 @@
+{
+  "name": "piaos-desktop",
+  "productName": "MyPaiOS",
+  "version": "1.0.0",
+  "description": "MyPaiOS — My Personal AI OS (desktop shell)",
+  "author": "Vishal Pawar",
+  "license": "MIT",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder",
+    "dist:mac": "electron-builder --mac dmg",
+    "dist:win": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.mypaios.app",
+    "productName": "MyPaiOS",
+    "directories": { "output": "dist" },
+    "files": ["main.js", "preload.js", "loading.html", "assets/**/*"],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": ["dmg"],
+      "icon": "assets/icon.icns"
+    },
+    "win": { "target": ["nsis"], "icon": "assets/icon.png" },
+    "linux": { "target": ["AppImage"], "category": "Utility" }
+  }
+}

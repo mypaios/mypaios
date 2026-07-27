@@ -1,0 +1,173 @@
+NOTICE — MyPaiOS
+================
+
+MyPaiOS ("My Personal AI OS")
+Copyright (c) 2026 Vishal Pawar (MyPaiOS modifications and additions)
+https://github.com/mypaios/mypaios
+
+MyPaiOS is licensed under the MIT License (see LICENSE). This file summarises
+the third-party notices MyPaiOS is obliged to pass on. ACKNOWLEDGMENTS.md is the
+detailed record — what each item is, where it is used, and its license — and the
+full license texts live in licenses/. Naming a project, product, model or
+company in this repository does not imply it endorses or is affiliated with
+MyPaiOS.
+
+Fork provenance
+---------------
+MyPaiOS is a fork of Odysseus (Copyright (c) 2025 Odysseus Contributors).
+
+- Forked at the MIT-licensed snapshot, upstream commit 8354948 (2026-06-05).
+- Upstream Odysseus relicensed to AGPL-3.0-or-later on 2026-06-09,
+  AFTER the fork point.
+- No post-fork upstream code is included in MyPaiOS. Everything inherited
+  from Odysseus in this repository comes from the MIT snapshot and remains
+  under the MIT License (see LICENSE).
+- MOST OF THIS CODEBASE IS ODYSSEUS'S WORK: 877 of 1030 files are inherited
+  (626 of them byte-identical to upstream), only 31 of 929 commits are
+  post-fork, and roughly 6% of the source lines are MyPaiOS's. See
+  ACKNOWLEDGMENTS.md for the measured breakdown and for what MyPaiOS added.
+- The demo screenshots and screen recordings in docs/ were authored by the
+  Odysseus contributors and arrived with the MIT snapshot (upstream commit
+  e5c99a5); docs/paios.jpg is upstream's docs/odysseus.jpg, renamed. They
+  still display upstream Odysseus branding. Copyright (c) 2025 Odysseus
+  Contributors, MIT License.
+
+Naming note: internal identifiers (element ids/classes, localStorage keys
+"paios-*", "X-PAIOS-*" HTTP headers, "PAIOS_*" environment variables, Python
+module names, and script paths such as scripts/paios-*) intentionally retain
+the historical "paios" spelling so existing installs keep working. They refer
+to this project, MyPaiOS.
+
+Third-party code adapted into this repository
+---------------------------------------------
+Portions of MyPaiOS were adapted from the following open-source projects.
+Original authors retain copyright over the adapted portions. Full license
+texts are kept in the licenses/ directory; details and file locations are in
+ACKNOWLEDGMENTS.md. Every adaptation below was made UPSTREAM IN ODYSSEUS,
+before the MyPaiOS fork point; MyPaiOS inherited them and expanded their
+attribution.
+
+- opencode — https://github.com/anomalyco/opencode
+  (originally opencode-ai/opencode) — MIT License, Copyright (c) 2025 opencode.
+  Upstream Odysseus declared this project "adapted for agent-loop /
+  tool-execution patterns and UI concepts"; that declaration is preserved.
+  Specifically identified: the GitHub Copilot provider logic (src/copilot.py)
+  is a Python port of opencode's Copilot implementation.
+
+- llmfit by Alex Jones — https://github.com/AlexsJones/llmfit — MIT License.
+  Hardware detection, quant-aware model-fit scoring, and the model catalog
+  behind the Cookbook feature (services/hwfit/).
+
+- Tongyi DeepResearch by Alibaba-NLP / Tongyi Lab —
+  https://github.com/Alibaba-NLP/DeepResearch — Apache License 2.0.
+  Upstream Odysseus declared this project adapted for its Deep Research
+  feature (services/research/, src/research_handler.py,
+  routes/research_routes.py, services/search/); that declaration is preserved.
+  Specifically identified: the goal-based content-extraction prompt
+  (src/goal_based_extractor.py) is taken near-verbatim from DeepResearch's
+  inference/prompt.py. Modified files carry change notices per Apache-2.0
+  §4(b).
+
+- talon by Mailgun Technologies, Inc. — https://github.com/mailgun/talon —
+  Apache License 2.0. The multilingual email quote-detection patterns in
+  static/js/emailLibrary/utils.js are adapted from talon's quotation-parsing
+  word lists and separator patterns, re-expressed as JavaScript regex source
+  and extended with additional locales. Change notice per Apache-2.0 §4(b).
+  Full text in licenses/talon-Apache-2.0.txt.
+
+- litellm by BerriAI — https://github.com/BerriAI/litellm — MIT License,
+  Copyright (c) 2023 Berri AI. A filtered snapshot of litellm's community
+  model-price database is bundled as services/pricing/litellm_snapshot.json
+  (721 models, fetched 2026-07-18). Only the MIT-licensed portion of the
+  repository is used; the separately-licensed enterprise/ directory is not.
+
+Bundled third-party assets
+--------------------------
+- Icons: the interface is drawn with inline SVG icons from Feather Icons
+  (https://github.com/feathericons/feather) — MIT License, Copyright (c)
+  2013-2023 Cole Bemis — and from Lucide (https://lucide.dev) — ISC License,
+  Copyright (c) 2026 Lucide Icons and Contributors. Lucide is an independent
+  obligation, not one the Feather notice absorbs: a number of the Lucide icons
+  in use have no Feather counterpart. License texts in
+  licenses/feather-MIT-LICENSE.txt and licenses/lucide-ISC-LICENSE.txt (the
+  latter reproduced in full, so the Cole Bemis MIT block it contains for
+  Feather-derived icons travels with it).
+
+- Emoji artwork: OpenMoji (https://openmoji.org/) — CC BY-SA 4.0. Fetched at
+  runtime by routes/emoji_routes.py (openmoji@15.0.0, the "black" line-art
+  set), cached in data/emoji_cache/ and re-served same-origin; not committed to
+  this repository. Served unmodified — colour is applied at render time via a
+  CSS mask. Required credit: "All emojis designed by OpenMoji - the open-source
+  emoji and icon project. License: CC BY-SA 4.0"
+  (https://creativecommons.org/licenses/by-sa/4.0/). Full text in
+  licenses/OpenMoji-CC-BY-SA-4.0.txt.
+
+- Provider logo SVGs in static/js/providers.js: two marks (DeepSeek, Qwen) are
+  from LobeHub Icons (https://github.com/lobehub/lobe-icons) — MIT License,
+  Copyright (c) 2023 LobeHub; seven (Anthropic, Google Gemini, Meta, Mistral
+  AI, X, Perplexity, NVIDIA) are from Simple Icons (https://simpleicons.org) —
+  CC0-1.0; the rest are original to this project. Those licenses cover the SVG
+  renderings only, never the underlying marks. See the Trademarks note below.
+
+- Front-end libraries vendored in static/lib/ — highlight.js 11.9.0, SheetJS
+  xlsx 0.20.3, docx 8.5.0, mammoth.js 1.8.0, html2pdf.js ~0.10.2, node-qrcode —
+  and in static/libs/artifacts/ — React 18.3.1, ReactDOM 18.3.1,
+  @babel/standalone 7.26.4. Several of these are bundles that statically
+  include further third-party packages whose notices minification stripped:
+  notably JSZip 3.10.1 (MIT OR GPL-3.0-or-later, used under MIT), pako
+  (MIT AND Zlib), jsPDF, html2canvas, canvg, DOMPurify 2.3.0 (MPL-2.0 OR
+  Apache-2.0, used under Apache-2.0), core-js, tslib (0BSD), underscore,
+  bluebird, @xmldom/xmldom, dijkstrajs, and a custom Modernizr build. Every one
+  is enumerated with its license in ACKNOWLEDGMENTS.md, and the full texts are
+  in licenses/ — including licenses/html2pdf-bundle-LICENSE.txt, the upstream
+  aggregate notice that html2pdf.bundle.min.js points at.
+
+- Fonts bundled in static/fonts/: Fira Code 6.002 and Inter 4.001, both under
+  the SIL Open Font License 1.1 — license texts in licenses/. Both ship
+  unmodified under their original names and declare no Reserved Font Name.
+  CORRECTION: earlier revisions of this file credited "GohuFont (WTFPL)" for
+  static/fonts/custom/GohuFont.ttf. That was false — the file's own name table
+  reads family "Untitled1", copyright "(c) 2025, Unknown", 3 glyphs, and it
+  carries no license grant. The credit and licenses/GohuFont-WTFPL.txt have
+  been removed. See ACKNOWLEDGMENTS.md.
+
+Trademarks
+----------
+MyPaiOS is an independent project, not affiliated with, sponsored by, or
+endorsed by any model or service vendor, and not affiliated with Kwaai pAI-OS
+(paios.org), aurintex paiOS, or PayOS. Vendor names, logos and marks appearing
+in this software — including OpenAI/ChatGPT/Codex, Anthropic/Claude, Google/
+Gemini/Gemma, Meta/Llama, Mistral AI, Alibaba/Qwen, DeepSeek, xAI/Grok, Cohere,
+Perplexity, Nous Research/Hermes, Microsoft/Phi/Visual Studio Code, GitHub/
+GitHub Copilot, Zhipu/GLM, MiniMax, Moonshot/Kimi, NVIDIA, IBM/Docling, Black
+Forest Labs/FLUX, Stability AI/Stable Diffusion, Lightricks/LTX-Video, Tencent/
+Hunyuan, Hugging Face, Ollama, OpenRouter, Groq, Together AI, Fireworks AI,
+Telegram, Obsidian, SearXNG, DuckDuckGo, and Python — are the property of their
+respective owners and are used nominatively to identify their products and
+services. "Odysseus" and its sailboat logo are the upstream project's marks.
+See ACKNOWLEDGMENTS.md.
+
+Runtime dependencies and interoperated services (not distributed here)
+-----------------------------------------------------------------------
+Python and npm packages installed by you from PyPI/npm (e.g. FastAPI,
+faster-whisper, Docling, kokoro-onnx, OpenCV, mflux/MLX, Playwright), model
+weights downloaded on demand (e.g. Kokoro-82M, Whisper via SYSTRAN's
+CTranslate2 conversions, Z-Image-Turbo, the docling-models layout weights), and
+independently run services and binaries (e.g. Ollama, SearXNG, ChromaDB, ntfy,
+llama.cpp, ffmpeg/ffprobe, @playwright/mcp fetched via npx) are NOT distributed
+with this repository. They are credited, with their licenses, in
+ACKNOWLEDGMENTS.md.
+
+IMPORTANT: MyPaiOS is distributed as SOURCE and this repository contains no
+copyleft or proprietary third-party code. A BUILT ARTIFACT is different — a
+container image, a frozen bundle or a packaged desktop app contains whatever pip
+and npm put in it, including AGPL-3.0 (icalendar-searcher, required by caldav),
+LGPL-3.0, GPL-3.0 (phonemizer-fork and the libespeak-ng bundled by
+espeakng-loader, on the local-TTS path), LGPL-2.1 and MPL-2.0 components, plus
+Electron/Chromium/Node.js for desktop builds. See "Before publishing a binary
+artifact" in ACKNOWLEDGMENTS.md before publishing one.
+
+Model licenses are yours to comply with: MyPaiOS ships no model weights but
+downloads and recommends them on your behalf, and several — including the
+default local generalist hermes3:8b (Llama 3 Community License) — are not under
+permissive open-source licenses. See ACKNOWLEDGMENTS.md.
