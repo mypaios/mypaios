@@ -627,6 +627,16 @@ section.altbg#help{position:relative;z-index:12}
 #numbers .numbers-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:2.4rem}
 #numbers .numbers-tile{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:1.5rem 1.4rem 1.35rem;transition:border-color .25s ease,transform .25s ease}
 #numbers .numbers-tile:hover{border-color:var(--accent);transform:translateY(-2px)}
+#numerology .num4-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2rem}
+#numerology .num4-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem 1.3rem}
+#numerology .num4-fig{font-size:2.1rem;font-weight:900;color:var(--accent);font-variant-numeric:tabular-nums;letter-spacing:-.02em;margin-bottom:.5rem}
+#numerology .num4-term{font-size:.78rem;font-weight:700;letter-spacing:.04em;color:var(--head);margin-bottom:.55rem}
+#numerology .num4-card p{font-size:.85rem;color:var(--muted);line-height:1.62}
+#numerology .num4-card p em{color:var(--text);font-style:italic}
+#numerology .num4-note{margin-top:1.75rem;font-size:.85rem;color:var(--muted);line-height:1.7;max-width:760px}
+#numerology .num4-note b{color:var(--text)}
+@media(max-width:860px){#numerology .num4-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){#numerology .num4-grid{grid-template-columns:1fr}}
 #numbers .numbers-tick{width:22px;height:3px;border-radius:2px;background:var(--accent);margin-bottom:1rem}
 #numbers .numbers-num{font-size:2.7rem;font-weight:800;line-height:1.05;color:var(--head);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 #numbers .numbers-lbl{margin-top:.45rem;font-size:.85rem;color:var(--muted);line-height:1.45}
@@ -1913,6 +1923,11 @@ section.altbg#help{position:relative;z-index:12}
         <div class="numbers-num" data-target="15471">15,471</div>
         <div class="numbers-lbl">nodes in its own code knowledge-graph</div>
       </div>
+      <div class="numbers-tile rv" style="transition-delay:.3s">
+        <div class="numbers-tick"></div>
+        <div class="numbers-num" data-target="108">108</div>
+        <div class="numbers-lbl">features verified line-by-line against source</div>
+      </div>
     </div>
     <div class="numbers-wide rv" style="transition-delay:.1s">
       <svg class="numbers-wide-svg" viewBox="0 0 120 84" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -1944,6 +1959,40 @@ section.altbg#help{position:relative;z-index:12}
       <span class="numbers-pill"><span class="numbers-pill-dot"></span>No account</span>
       <span class="numbers-pill"><span class="numbers-pill-dot"></span>Single Python process</span>
     </div>
+    <p class="rv" style="transition-delay:.2s;margin-top:1rem;font-size:.88rem;color:var(--muted)">Not just a claim — <a href="feature-reference.html" target="_blank" style="color:var(--accent);font-weight:600">every one of those 108 features is cited against the exact file and line that implements it →</a></p>
+  </div>
+</section>
+
+<section id="numerology">
+  <div class="w">
+    <div class="sh rv">
+      <div class="ey">A NOTE ON THE VERSION NUMBER</div>
+      <h2 class="st">Why 1.13.51.108.</h2>
+      <p class="ss">The version number is an ordinary build tag — major.minor.patch.build, incremented commit by commit like any other piece of software. It wasn't chosen for what follows. But read as four numbers instead of one version string, each segment happens to land on a figure Hindu tradition has returned to for centuries, and that felt worth a moment's honesty rather than a marketing footnote.</p>
+    </div>
+    <div class="num4-grid">
+      <div class="num4-card rv">
+        <div class="num4-fig">1</div>
+        <div class="num4-term">Ekam — the One</div>
+        <p><em>"Ekam Sat Vipra Bahudha Vadanti"</em> — "Truth is one; the wise call it by many names" (Rig Veda 1.164.46). The Vedas' oldest articulation of unity within apparent multiplicity, later given its fullest philosophical form in the Upanishads' teaching that Brahman is "one, without a second" (Chandogya Upanishad 6.2.1).</p>
+      </div>
+      <div class="num4-card rv" style="transition-delay:.05s">
+        <div class="num4-fig">13</div>
+        <div class="num4-term">Trayodashi</div>
+        <p>The 13th day of every lunar fortnight — twice each month — is held sacred to Shiva. Pradosh Vrat is observed at <em>pradosh kaal</em>, the twilight window tradition holds to be his most benevolent hour.</p>
+      </div>
+      <div class="num4-card rv" style="transition-delay:.1s">
+        <div class="num4-fig">51</div>
+        <div class="num4-term">Shakti Peethas</div>
+        <p>51 is the most widely cited count of the Shakti Peethas — sites across the subcontinent where, in the Daksha Yajna legend, parts of the goddess Sati's body are said to have fallen. Other Puranas name 7, 18, 42, 64, or 108 instead; devotion, like scripture, rarely settles on one number.</p>
+      </div>
+      <div class="num4-card rv" style="transition-delay:.15s">
+        <div class="num4-fig">108</div>
+        <div class="num4-term">The number tradition repeats</div>
+        <p>108 beads on a japa mala. 108 Upanishads in the Muktika Upanishad's own canonical list. A deity's Ashtottara Shatanamavali — literally "108 names." 108 Divya Desams of Vaishnavism. 108 karanas of classical dance, linked to Shiva's cosmic dance. No single reason is agreed on for why — that plurality is itself part of the tradition.</p>
+      </div>
+    </div>
+    <p class="num4-note rv" style="transition-delay:.2s">None of this was engineered — it was noticed after the fact, the same week this project's dedication to <b>Swarajya</b> was written below. Some numbers, it turns out, were already carrying weight before anyone thought to look.</p>
   </div>
 </section>
 
