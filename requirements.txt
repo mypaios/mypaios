@@ -37,7 +37,7 @@ python-dateutil
 caldav
 cryptography
 bcrypt
-mcp
+mcp==1.27.2  # pinned: newer releases drop Server.list_tools() used by mcp_servers/*.py
 pyotp
 qrcode[pil]
 croniter
