@@ -106,7 +106,7 @@ markdown-it-py==4.2.0
 marko==2.2.3
 MarkupSafe==3.0.3
 matplotlib==3.10.9
-mcp==1.27.2
+mcp==1.28.1
 mdurl==0.1.2
 mflux==0.17.5
 mlx==0.31.2
