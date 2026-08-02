@@ -520,31 +520,6 @@ section.altbg#help{position:relative;z-index:12}
 #willitrun .hwfit-step p{font-size:.85rem}
 }
 
-/* table */
-#whyswitch .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px}
-#whyswitch .table-cmp{width:100%;min-width:700px;border-collapse:separate;border-spacing:0;background:var(--surf);border:1px solid var(--border);border-radius:14px;font-variant-numeric:tabular-nums}
-#whyswitch .table-cmp th,#whyswitch .table-cmp td{padding:.85rem 1rem;text-align:center;font-size:.9rem;color:var(--text);vertical-align:middle}
-#whyswitch .table-cmp thead th{padding:1rem;font-size:.92rem;font-weight:700;color:var(--head)}
-#whyswitch .table-cmp tbody th,#whyswitch .table-cmp tbody td{border-top:1px solid var(--border)}
-#whyswitch .table-feat{text-align:left;font-weight:500;color:var(--text);width:30%;position:sticky;left:0;z-index:1;background:var(--surf);border-right:1px solid var(--border)}
-#whyswitch .table-cmp thead .table-feat{border-top-left-radius:13px}
-#whyswitch .table-cmp tbody tr:last-child .table-feat{border-bottom-left-radius:13px}
-#whyswitch .table-pi{background:color-mix(in srgb,var(--accent) 7%,transparent);border-left:1px solid var(--accent);border-right:1px solid var(--accent);box-shadow:-10px 0 18px -12px var(--glow),10px 0 18px -12px var(--glow);color:var(--head);font-weight:600}
-#whyswitch .table-cmp thead th.table-pi{border-top:1px solid var(--accent);color:var(--accent);font-weight:800;letter-spacing:.01em}
-#whyswitch .table-cmp tbody tr:last-child td.table-pi{border-bottom:1px solid var(--accent)}
-#whyswitch .table-cmp tbody tr:hover td{background:color-mix(in srgb,var(--head) 4%,transparent)}
-#whyswitch .table-cmp tbody tr:hover td.table-pi{background:color-mix(in srgb,var(--accent) 12%,transparent)}
-#whyswitch .table-cmp tbody tr:hover .table-feat{background:color-mix(in srgb,var(--head) 4%,var(--surf))}
-#whyswitch .table-y{color:var(--good);font-weight:800;display:inline-block;margin-right:.4rem}
-#whyswitch .table-n{color:var(--muted);font-weight:700;display:inline-block;margin-right:.4rem}
-#whyswitch .table-v{color:var(--warn);font-weight:800;display:inline-block;margin-right:.4rem}
-#whyswitch .table-note{margin-top:.9rem;font-size:.78rem;color:var(--muted)}
-@media(max-width:640px){
-#whyswitch .table-cmp th,#whyswitch .table-cmp td{padding:.7rem .7rem;font-size:.82rem}
-#whyswitch .table-cmp thead th{padding:.8rem .7rem;font-size:.82rem}
-#whyswitch .table-feat{width:auto;min-width:150px;max-width:170px}
-}
-
 /* integrations */
 .integrations-grid{display:grid;grid-template-columns:1fr 1.12fr 1fr;grid-template-areas:"c1 hub c4" "c2 hub c5" "c3 hub c6";gap:14px;align-items:stretch;margin-top:2.6rem}
 
@@ -691,7 +666,6 @@ section.altbg#help{position:relative;z-index:12}
 #willitrun .ey{color:#14D4BE}
 #start .ey{color:#38BAF5}
 #privacy .ey{color:#F040B5}
-#whyswitch .ey{color:#F5A623}
 #connect .ey{color:#14D4BE}
 #help .ey{color:#38BAF5}
 #architecture .ey{color:#9066F5}
@@ -1579,81 +1553,6 @@ section.altbg#help{position:relative;z-index:12}
         <div class="pvpt"><div class="pvpt-ico">📖</div><div><h4>Open source, fully auditable</h4><p>Every line is on GitHub, MIT-licensed, with all third-party notices carried. Read it, fork it, modify it — no black boxes.</p></div></div>
       </div>
     </div>
-  </div>
-</section>
-
-<section id="whyswitch">
-  <div class="w">
-    <div class="sh rv">
-      <div class="ey">Local vs cloud</div>
-      <h2 class="st">Same questions.<br>Different answers.</h2>
-      <p class="ss">What changes when inference moves off someone else's datacenter and onto your machine. No benchmarks, no cherry-picking — just the terms.</p>
-    </div>
-    <div class="table-scroll rv" style="transition-delay:.1s">
-      <table class="table-cmp" aria-label="Feature comparison: MyPaiOS versus ChatGPT, Claude, and Gemini">
-        <thead>
-          <tr>
-            <th scope="col" class="table-feat"></th>
-            <th scope="col" class="table-pi">MyPaiOS</th>
-            <th scope="col">ChatGPT</th>
-            <th scope="col">Claude</th>
-            <th scope="col">Gemini</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row" class="table-feat">Your data leaves your machine</th>
-            <td class="table-pi"><span class="table-y" aria-hidden="true">&#10003;</span>No</td>
-            <td><span class="table-n" aria-hidden="true">&#10005;</span>Yes</td>
-            <td><span class="table-n" aria-hidden="true">&#10005;</span>Yes</td>
-            <td><span class="table-n" aria-hidden="true">&#10005;</span>Yes</td>
-          </tr>
-          <tr>
-            <th scope="row" class="table-feat">Works offline</th>
-            <td class="table-pi"><span class="table-y" aria-hidden="true">&#10003;</span>Yes</td>
-            <td><span class="table-n" aria-hidden="true">&#10005;</span>No</td>
-            <td><span class="table-n" aria-hidden="true">&#10005;</span>No</td>
-            <td><span class="table-n" aria-hidden="true">&#10005;</span>No</td>
-          </tr>
-          <tr>
-            <th scope="row" class="table-feat">Choose any model</th>
-            <td class="table-pi"><span class="table-y" aria-hidden="true">&#10003;</span>35+ and growing</td>
-            <td><span class="table-n" aria-hidden="true">&#10005;</span>Their models only</td>
-            <td><span class="table-n" aria-hidden="true">&#10005;</span>Their models only</td>
-            <td><span class="table-n" aria-hidden="true">&#10005;</span>Their models only</td>
-          </tr>
-          <tr>
-            <th scope="row" class="table-feat">Rate limits</th>
-            <td class="table-pi"><span class="table-y" aria-hidden="true">&#10003;</span>None</td>
-            <td><span class="table-n" aria-hidden="true">&#10005;</span>Yes</td>
-            <td><span class="table-n" aria-hidden="true">&#10005;</span>Yes</td>
-            <td><span class="table-n" aria-hidden="true">&#10005;</span>Yes</td>
-          </tr>
-          <tr>
-            <th scope="row" class="table-feat">Account required</th>
-            <td class="table-pi"><span class="table-y" aria-hidden="true">&#10003;</span>No</td>
-            <td><span class="table-n" aria-hidden="true">&#10005;</span>Yes</td>
-            <td><span class="table-n" aria-hidden="true">&#10005;</span>Yes</td>
-            <td><span class="table-n" aria-hidden="true">&#10005;</span>Yes</td>
-          </tr>
-          <tr>
-            <th scope="row" class="table-feat">Your chats train someone's model</th>
-            <td class="table-pi"><span class="table-y" aria-hidden="true">&#10003;</span>Never</td>
-            <td><span class="table-v" aria-hidden="true">~</span>Opt-out varies</td>
-            <td><span class="table-v" aria-hidden="true">~</span>Opt-out varies</td>
-            <td><span class="table-v" aria-hidden="true">~</span>Opt-out varies</td>
-          </tr>
-          <tr>
-            <th scope="row" class="table-feat">Open source</th>
-            <td class="table-pi"><span class="table-y" aria-hidden="true">&#10003;</span>MIT</td>
-            <td><span class="table-n" aria-hidden="true">&#10005;</span>No</td>
-            <td><span class="table-n" aria-hidden="true">&#10005;</span>No</td>
-            <td><span class="table-n" aria-hidden="true">&#10005;</span>No</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="table-note rv" style="transition-delay:.2s">Cloud rows describe consumer plans as of mid-2026; enterprise terms differ.</p>
   </div>
 </section>
 
@@ -2573,7 +2472,7 @@ showHelpContent(0);
     {c:'#F040B5',a2:'#E01D9E',glow:'rgba(240,64,181,0.15)'},
     {c:'#F5A623',a2:'#E08B10',glow:'rgba(245,166,35,0.15)'}
   ];
-  const secIds=['demo','models','arena','everything','daywithpi','willitrun','start','privacy','whyswitch','connect','help','architecture','numbers','faq','opensource','community'];
+  const secIds=['demo','models','arena','everything','daywithpi','willitrun','start','privacy','connect','help','architecture','numbers','faq','opensource','community'];
   const eyes=secIds.map(id=>document.querySelector('#'+id+' .ey')).filter(Boolean);
   let offset=0, auto=true;
   if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) auto=false;

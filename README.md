@@ -31,18 +31,6 @@ who built sovereignty from first principles. Your machine, your models, your dat
 |:---:|:---:|:---:|:---:|:---:|
 | **1,041**<br><sub>files in the repo</sub> | **62**<br><sub>API route modules</sub> | **90**<br><sub>core engine modules</sub> | **35+**<br><sub>open-source models</sub> | **108**<br><sub>features verified against source</sub> |
 
-### MyPaiOS vs. cloud AI
-
-|  | MyPaiOS | ChatGPT | Claude | Gemini |
-|---|:---:|:---:|:---:|:---:|
-| Your data leaves your machine | ✅ No | ❌ Yes | ❌ Yes | ❌ Yes |
-| Works offline | ✅ Yes | ❌ No | ❌ No | ❌ No |
-| Choose any model | ✅ 35+ and growing | ❌ Their models only | ❌ Their models only | ❌ Their models only |
-| Rate limits | ✅ None | ❌ Yes | ❌ Yes | ❌ Yes |
-| Open source | ✅ MIT | ❌ No | ❌ No | ❌ No |
-
-<sub>Cloud rows describe consumer plans as of mid-2026; enterprise terms differ.</sub>
-
 ## Features
   - **Chat** -- chat with any local model or API; adding them is super simple.<br>　<sub>vLLM · llama.cpp · Ollama · OpenRouter · OpenAI · GitHub Copilot</sub>
   - **Agent** -- hand Pi tools and let it run the whole task itself.<br>　<sub>built on [opencode](https://github.com/anomalyco/opencode) · MCP · web · files · shell · skills · memory</sub>
