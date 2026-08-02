@@ -200,7 +200,7 @@ scipy==1.17.1
 segments==2.4.0
 semchunk==3.2.5
 sentencepiece==0.2.1
-setuptools==81.0.0
+setuptools==83.0.0
 shapely==2.1.2
 shellingham==1.5.4
 six==1.17.0
