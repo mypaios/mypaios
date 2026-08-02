@@ -520,34 +520,6 @@ section.altbg#help{position:relative;z-index:12}
 #willitrun .hwfit-step p{font-size:.85rem}
 }
 
-/* cost */
-#cost .cost-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:1.75rem;align-items:stretch;margin-top:2.5rem}
-#cost .cost-left{display:flex;flex-direction:column}
-#cost .cost-sub{display:flex;justify-content:space-between;align-items:center;gap:1rem;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:1rem 1.35rem}
-#cost .cost-sub-name{color:var(--head);font-weight:600;font-size:1rem}
-#cost .cost-sub-yr{color:var(--muted);font-size:.8rem;margin-top:.2rem;font-variant-numeric:tabular-nums}
-#cost .cost-sub-price{color:var(--text);font-weight:700;font-size:1.15rem;font-variant-numeric:tabular-nums;white-space:nowrap}
-#cost .cost-sub-price span{color:var(--muted);font-weight:500;font-size:.8rem}
-#cost .cost-op{color:var(--muted);text-align:center;font-size:1.05rem;line-height:1;padding:.45rem 0;user-select:none}
-#cost .cost-total{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:1.3rem 1.35rem;display:flex;justify-content:space-between;align-items:center;gap:1rem}
-#cost .cost-total-label{color:var(--muted);font-size:.85rem;line-height:1.4}
-#cost .cost-total-num{color:var(--head);font-weight:800;font-size:2.3rem;letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
-#cost .cost-zero-card{height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:var(--panel);border:1px solid var(--a2);border-radius:14px;padding:2.5rem 1.5rem;box-shadow:0 10px 60px -18px var(--glow)}
-#cost .cost-zero-brand{color:var(--muted);font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
-#cost .cost-zero{color:var(--accent);font-weight:800;font-size:clamp(4.5rem,9vw,6.5rem);line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums;margin:.8rem 0 .9rem}
-#cost .cost-zero-sub{color:var(--text);font-size:.95rem}
-#cost .cost-zero-note{color:var(--muted);font-size:.85rem;margin-top:.55rem}
-#cost .cost-ticker{margin-top:1.75rem;background:var(--code-bg);border:1px solid var(--border);border-radius:var(--r);padding:.85rem 1.15rem;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.82rem;line-height:1.6;color:var(--muted);font-variant-numeric:tabular-nums}
-#cost .cost-ticker-num{color:var(--accent);font-weight:700;white-space:nowrap}
-@media(max-width:640px){
-#cost .cost-grid{grid-template-columns:1fr;gap:1.25rem;margin-top:1.75rem}
-#cost .cost-total-num{font-size:1.85rem}
-#cost .cost-zero{font-size:4rem}
-#cost .cost-zero-card{padding:2rem 1.25rem}
-#cost .cost-sub{padding:.85rem 1.1rem}
-#cost .cost-ticker{font-size:.72rem}
-}
-
 /* table */
 #whyswitch .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:6px}
 #whyswitch .table-cmp{width:100%;min-width:700px;border-collapse:separate;border-spacing:0;background:var(--surf);border:1px solid var(--border);border-radius:14px;font-variant-numeric:tabular-nums}
@@ -566,13 +538,11 @@ section.altbg#help{position:relative;z-index:12}
 #whyswitch .table-y{color:var(--good);font-weight:800;display:inline-block;margin-right:.4rem}
 #whyswitch .table-n{color:var(--muted);font-weight:700;display:inline-block;margin-right:.4rem}
 #whyswitch .table-v{color:var(--warn);font-weight:800;display:inline-block;margin-right:.4rem}
-#whyswitch .table-cost{font-weight:800;font-size:1rem}
 #whyswitch .table-note{margin-top:.9rem;font-size:.78rem;color:var(--muted)}
 @media(max-width:640px){
 #whyswitch .table-cmp th,#whyswitch .table-cmp td{padding:.7rem .7rem;font-size:.82rem}
 #whyswitch .table-cmp thead th{padding:.8rem .7rem;font-size:.82rem}
 #whyswitch .table-feat{width:auto;min-width:150px;max-width:170px}
-#whyswitch .table-cost{font-size:.9rem}
 }
 
 /* integrations */
@@ -720,7 +690,6 @@ section.altbg#help{position:relative;z-index:12}
 #daywithpi .ey{color:#F5A623}
 #willitrun .ey{color:#14D4BE}
 #start .ey{color:#38BAF5}
-#cost .ey{color:#9066F5}
 #privacy .ey{color:#F040B5}
 #whyswitch .ey{color:#F5A623}
 #connect .ey{color:#14D4BE}
@@ -801,12 +770,6 @@ section.altbg#help{position:relative;z-index:12}
     <div class="st-big">Close the tab. The job <em>keeps running.</em></div>
     <div class="st-sub">Coding agent, multi-agent crews, deep research — all server-side on your box.</div>
     <div class="st-chips"><span class="st-chip">Detached jobs</span><span class="st-chip">Reattach anytime</span><span class="st-chip">Multi-agent crews</span><span class="st-chip">Runs while you sleep</span></div>
-  </div>
-  <div class="st-slide" style="--st-c:#14D4BE">
-    <div class="st-kick">The math</div>
-    <div class="st-big"><em>$0.</em> Forever. MIT.</div>
-    <div class="st-sub">Cloud AI subscriptions: $3,600 over five years. This: free on hardware you already own.</div>
-    <div class="st-chips"><span class="st-chip"><s>ChatGPT Plus $240/yr</s></span><span class="st-chip"><s>Claude Pro $240/yr</s></span><span class="st-chip"><s>Gemini $240/yr</s></span><span class="st-chip hot">MyPaiOS $0 forever</span></div>
   </div>
   <div class="st-slide" style="--st-c:#38BAF5">
     <div class="st-kick">Private by construction</div>
@@ -949,7 +912,7 @@ section.altbg#help{position:relative;z-index:12}
 <!-- ── STATS ── -->
 <div class="stats rv">
   <div class="stat"><div class="snum">35<span>+</span></div><div class="slbl">Compatible models</div></div>
-  <div class="stat"><div class="snum"><span>$</span>0</div><div class="slbl">Monthly subscription</div></div>
+  <div class="stat"><div class="snum">0</div><div class="slbl">External API calls by default</div></div>
   <div class="stat"><div class="snum">100<span>%</span></div><div class="slbl">Data stays local</div></div>
   <div class="stat"><div class="snum">9<span>+</span></div><div class="slbl">Built-in capabilities</div></div>
 </div>
@@ -1115,7 +1078,7 @@ section.altbg#help{position:relative;z-index:12}
         <div class="demo-block" id="db-image">
           <div class="demo-blabel">🎨 Image Generation</div>
           <div class="demo-btitle">Flux.1-Schnell running locally via MLX on Apple Silicon</div>
-          <div class="demo-bdesc">No Midjourney subscription. No upload queue. Text-to-image in ~3 seconds on your own GPU — completely private, completely free after setup.</div>
+          <div class="demo-bdesc">No cloud upload queue. Text-to-image in ~3 seconds on your own GPU — completely private, completely offline.</div>
           <div class="demo-viewport-block">
             <div class="dimg">
               <div class="dimg-prompt">
@@ -1580,57 +1543,6 @@ section.altbg#help{position:relative;z-index:12}
   </div>
 </section>
 
-<section id="cost" class="altbg">
-  <div class="w">
-    <div class="sh rv">
-      <div class="ey">The math</div>
-      <h2 class="st">$3,600 over five years.<br>Or $0.</h2>
-      <p class="ss">ChatGPT Plus, Claude Pro, Gemini Advanced — $20 a month each. One is $240 a year, $1,200 over five years. All three, $3,600. MyPaiOS costs nothing, and you already own the hardware.</p>
-    </div>
-    <div class="cost-grid">
-      <div class="cost-left rv">
-        <div class="cost-sub">
-          <div>
-            <div class="cost-sub-name">ChatGPT Plus</div>
-            <div class="cost-sub-yr">$240 / yr &middot; $1,200 / 5 yrs</div>
-          </div>
-          <div class="cost-sub-price">$20<span>/mo</span></div>
-        </div>
-        <div class="cost-op">+</div>
-        <div class="cost-sub">
-          <div>
-            <div class="cost-sub-name">Claude Pro</div>
-            <div class="cost-sub-yr">$240 / yr &middot; $1,200 / 5 yrs</div>
-          </div>
-          <div class="cost-sub-price">$20<span>/mo</span></div>
-        </div>
-        <div class="cost-op">+</div>
-        <div class="cost-sub">
-          <div>
-            <div class="cost-sub-name">Gemini Advanced</div>
-            <div class="cost-sub-yr">$240 / yr &middot; $1,200 / 5 yrs</div>
-          </div>
-          <div class="cost-sub-price">$20<span>/mo</span></div>
-        </div>
-        <div class="cost-op">=</div>
-        <div class="cost-total">
-          <div class="cost-total-label">All three, over five years</div>
-          <div class="cost-total-num" id="cost-total-num">$3,600</div>
-        </div>
-      </div>
-      <div class="cost-right rv" style="transition-delay:.1s">
-        <div class="cost-zero-card">
-          <div class="cost-zero-brand">MyPaiOS</div>
-          <div class="cost-zero">$0</div>
-          <div class="cost-zero-sub">forever &middot; MIT license &middot; no premium tier</div>
-          <div class="cost-zero-note">Runs on the hardware you already own.</div>
-        </div>
-      </div>
-    </div>
-    <div class="cost-ticker rv" style="transition-delay:.2s">Counting from the moment you loaded this page: cloud subscriptions would have cost you <span class="cost-ticker-num" id="cost-tick">$0.000000</span></div>
-  </div>
-</section>
-
 <!-- ── PRIVACY ── -->
 <section class="altbg" id="privacy">
   <div class="w">
@@ -1702,13 +1614,6 @@ section.altbg#help{position:relative;z-index:12}
             <td><span class="table-n" aria-hidden="true">&#10005;</span>No</td>
             <td><span class="table-n" aria-hidden="true">&#10005;</span>No</td>
             <td><span class="table-n" aria-hidden="true">&#10005;</span>No</td>
-          </tr>
-          <tr>
-            <th scope="row" class="table-feat">Monthly cost</th>
-            <td class="table-pi table-cost">$0</td>
-            <td class="table-cost">$20</td>
-            <td class="table-cost">$20</td>
-            <td class="table-cost">$20</td>
           </tr>
           <tr>
             <th scope="row" class="table-feat">Choose any model</th>
@@ -2068,7 +1973,7 @@ section.altbg#help{position:relative;z-index:12}
   <div class="w">
     <div class="sh rv star-hd">
       <div class="ey">One ask</div>
-      <h2 class="st">If this replaced a $20 subscription,<br>it costs one star.</h2>
+      <h2 class="st">If this earned its keep,<br>it costs one star.</h2>
       <p class="ss">Stars are how open source travels. They are the only currency this project asks for &mdash; no account, no invoice, nothing tracked. One click, if it earned it.</p>
     </div>
     <div class="star-cta rv" style="transition-delay:.1s">
@@ -2587,40 +2492,6 @@ showHelpContent(0);
   io.observe(card);
 })();
 
-/* cost */
-(function(){
-  var tick = document.getElementById('cost-tick');
-  if (tick) {
-    var t0 = Date.now();
-    var ratePerSec = 60 / 2592000; /* $60/mo across 3 subs, 30-day month in seconds */
-    setInterval(function(){
-      var d = (Date.now() - t0) / 1000 * ratePerSec;
-      tick.textContent = '$' + d.toFixed(6);
-    }, 50);
-  }
-  var total = document.getElementById('cost-total-num');
-  if (total && 'IntersectionObserver' in window) {
-    var played = false;
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){
-        if (!e.isIntersecting || played) return;
-        played = true;
-        io.disconnect();
-        var start = null, dur = 1400, target = 3600;
-        var step = function(ts){
-          if (start === null) start = ts;
-          var p = Math.min((ts - start) / dur, 1);
-          var eased = 1 - Math.pow(1 - p, 3);
-          total.textContent = '$' + Math.round(eased * target).toLocaleString('en-US');
-          if (p < 1) requestAnimationFrame(step);
-        };
-        requestAnimationFrame(step);
-      });
-    }, { threshold: 0.4 });
-    io.observe(total);
-  }
-})();
-
 /* numbers */
 (function(){
   var nums = document.querySelectorAll('#numbers .numbers-num[data-target]');
@@ -2702,7 +2573,7 @@ showHelpContent(0);
     {c:'#F040B5',a2:'#E01D9E',glow:'rgba(240,64,181,0.15)'},
     {c:'#F5A623',a2:'#E08B10',glow:'rgba(245,166,35,0.15)'}
   ];
-  const secIds=['demo','models','arena','everything','daywithpi','willitrun','start','cost','privacy','whyswitch','connect','help','architecture','numbers','faq','opensource','community'];
+  const secIds=['demo','models','arena','everything','daywithpi','willitrun','start','privacy','whyswitch','connect','help','architecture','numbers','faq','opensource','community'];
   const eyes=secIds.map(id=>document.querySelector('#'+id+' .ey')).filter(Boolean);
   let offset=0, auto=true;
   if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) auto=false;

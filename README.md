@@ -29,7 +29,7 @@ who built sovereignty from first principles. Your machine, your models, your dat
 
 |  |  |  |  |  |
 |:---:|:---:|:---:|:---:|:---:|
-| **1,041**<br><sub>files in the repo</sub> | **62**<br><sub>API route modules</sub> | **90**<br><sub>core engine modules</sub> | **35+**<br><sub>open-source models</sub> | **$0**<br><sub>forever · MIT</sub> |
+| **1,041**<br><sub>files in the repo</sub> | **62**<br><sub>API route modules</sub> | **90**<br><sub>core engine modules</sub> | **35+**<br><sub>open-source models</sub> | **108**<br><sub>features verified against source</sub> |
 
 ### MyPaiOS vs. cloud AI
 
@@ -37,14 +37,11 @@ who built sovereignty from first principles. Your machine, your models, your dat
 |---|:---:|:---:|:---:|:---:|
 | Your data leaves your machine | ✅ No | ❌ Yes | ❌ Yes | ❌ Yes |
 | Works offline | ✅ Yes | ❌ No | ❌ No | ❌ No |
-| Monthly cost | ✅ $0 | $20 | $20 | $20 |
 | Choose any model | ✅ 35+ and growing | ❌ Their models only | ❌ Their models only | ❌ Their models only |
 | Rate limits | ✅ None | ❌ Yes | ❌ Yes | ❌ Yes |
 | Open source | ✅ MIT | ❌ No | ❌ No | ❌ No |
 
 <sub>Cloud rows describe consumer plans as of mid-2026; enterprise terms differ.</sub>
-
-> **The math:** ChatGPT Plus + Claude Pro + Gemini Advanced ≈ $60/mo → **$3,600 over five years**. MyPaiOS: **$0**, forever — and you already own the hardware.
 
 ## Features
   - **Chat** -- chat with any local model or API; adding them is super simple.<br>　<sub>vLLM · llama.cpp · Ollama · OpenRouter · OpenAI · GitHub Copilot</sub>
