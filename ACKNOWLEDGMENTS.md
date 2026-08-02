@@ -1077,17 +1077,17 @@ attribution record:
    attribution for it has been removed from this file, `NOTICE` and `licenses/`,
    but the 1.4 KB placeholder itself is still on disk and would appear in the
    Theme panel's Font dropdown as a broken 3-glyph font.
-3. **`docs/` inherited demo media (13 remaining files, ~17 MB) should
-   eventually be deleted.** The clips are upstream Odysseus recordings showing
-   upstream's name, logo and tagline. **Partially resolved**: neither the
-   README nor `docs/index.html` links or embeds any of them any more (both now
-   use MyPaiOS's own screenshots and an original animated banner), so the
-   branding-confusion risk on the visible site is gone. The remaining 13 files
-   are unreferenced and sit on disk pending re-recording or deletion.
-   `docs/gallery.webm` — which showed a real, identifiable person with a dog
-   and a personally-named file ("Maya & Eggy / IMG_7774") with no documented
-   likeness release — has been **deleted** (not just unlinked), 2026-07-31,
-   before this repo went public.
+3. ~~`docs/` inherited demo media should eventually be deleted.~~ **Resolved,
+   2026-08-01.** The 14 upstream Odysseus recordings (showing upstream's name,
+   logo, tagline, and — in `gallery.webm`'s case — a real identifiable person
+   with no documented likeness release) have all been deleted: `gallery.webm`
+   on 2026-07-31 once its privacy issue was found, and the remaining 13
+   (`chat.*`, `compare.*`, `document.*`, `notes.*`, `research.*`, `bg.webm`,
+   `theme.webm`) on 2026-08-01 once a repo self-test
+   (`test_docs_no_orphan_images.py`) confirmed they were fully unreferenced
+   after the README/`docs/index.html` rewrite. `docs/paios.jpg` is kept —
+   `desktop-electron/README.md` still documents it as the source of the
+   placeholder app-icon files.
 4. **Two provenance claims in source comments cannot be resolved.**
    `services/video/analyzer.py` attributes its tuning constants to "the
    claude-real-video / video-caption ablation recipes", which could not be
