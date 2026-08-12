@@ -1221,15 +1221,11 @@ body.bg-pattern-sparkles {
     .section-header-flex {
       display: flex; align-items: center; gap: 6px;
       padding: 8px 10px; margin: 5px 0; border-radius: 6px;
-      background: color-mix(in srgb, var(--sidebar-bg, var(--panel)) 93%, #000); cursor: pointer;
+      background: color-mix(in srgb, var(--sidebar-bg, var(--panel)) 93%, #000);
       border: 1px solid color-mix(in srgb, var(--sidebar-bg, var(--panel)) 88%, #000);
       transition: background 0.08s, border-color 0.08s;
       height: 29px;
       box-sizing: border-box;
-    }
-    .section-header-flex:hover {
-      background: color-mix(in srgb, var(--sidebar-bg, var(--panel)) 87%, #000);
-      border-color: color-mix(in srgb, var(--sidebar-bg, var(--panel)) 80%, #000);
     }
     .section-header-flex::after { content: none; }
     .section-header-flex h4::before { content: none; }
@@ -1237,7 +1233,7 @@ body.bg-pattern-sparkles {
     /* Section title text — same font as .list-item .grow */
     .section-header-flex h4,
     .section-header-flex .section-title {
-      flex: 1; cursor: pointer; user-select: none;
+      flex: 1; user-select: none;
       display: flex; align-items: center; gap: 6px;
       margin: 0; padding: 0; border: none;
       font-size: 10px; font-weight: 400; font-family: inherit;
@@ -1432,71 +1428,15 @@ body.bg-pattern-sparkles {
       #sessions-section .chats-manage-btn:active { opacity: 1; }
     }
 
-    /* Collapse chevron */
-    .section-collapse-btn {
-      all: unset;
-      cursor: pointer; display: inline-flex; align-items: center; padding: 0 2px; border-radius: 4px;
-    }
-    .section-collapse-btn:hover { background: color-mix(in srgb, var(--fg) 8%, transparent); }
-    .section-collapse-chevron { display: inline-flex; opacity: 0.3; transition: transform 0.2s, opacity 0.15s; }
-    .section-collapse-btn:hover .section-collapse-chevron { opacity: 0.6; }
-    .section.collapsed .section-collapse-chevron { transform: rotate(-90deg); opacity: 0.5; }
-    .section.collapsed .section-collapse-btn { display: inline-flex !important; }
-
-    /* Collapsed state */
-    .section.collapsed > *:not(h4):not(.section-title):not(.section-header-flex) { display: none !important; }
-    .section.collapsed .section-header-flex { margin-bottom: 0; }
-    .section.collapsed .section-header-btn { display: none; }
-    .section.collapsed { cursor: pointer; }
-
-    /* Domino expand: every time a section goes from .collapsed → open
-       (toggleCollapse in section-management.js adds .section-just-expanded
-       for ~700ms), the .list-item children cascade in one after another,
-       same feel as the chat input's tools menu. Each row springs in
-       from a tiny offset below + scaled-down, staggered by nth-child. */
-    .section.section-just-expanded :is(.list-item, .models-row) {
-      animation: section-domino-in 0.36s cubic-bezier(0.22, 1.61, 0.36, 1) backwards;
-    }
-    .section.section-just-expanded :is(.list-item, .models-row):nth-child(1)  { animation-delay: 0.04s; }
-    .section.section-just-expanded :is(.list-item, .models-row):nth-child(2)  { animation-delay: 0.08s; }
-    .section.section-just-expanded :is(.list-item, .models-row):nth-child(3)  { animation-delay: 0.12s; }
-    .section.section-just-expanded :is(.list-item, .models-row):nth-child(4)  { animation-delay: 0.16s; }
-    .section.section-just-expanded :is(.list-item, .models-row):nth-child(5)  { animation-delay: 0.20s; }
-    .section.section-just-expanded :is(.list-item, .models-row):nth-child(6)  { animation-delay: 0.24s; }
-    .section.section-just-expanded :is(.list-item, .models-row):nth-child(7)  { animation-delay: 0.28s; }
-    .section.section-just-expanded :is(.list-item, .models-row):nth-child(8)  { animation-delay: 0.32s; }
-    .section.section-just-expanded :is(.list-item, .models-row):nth-child(9)  { animation-delay: 0.36s; }
-    .section.section-just-expanded :is(.list-item, .models-row):nth-child(10) { animation-delay: 0.40s; }
-    .section.section-just-expanded :is(.list-item, .models-row):nth-child(11) { animation-delay: 0.44s; }
-    .section.section-just-expanded :is(.list-item, .models-row):nth-child(12) { animation-delay: 0.48s; }
+    /* Sidebar sections are static, always-expanded groups — no collapse
+       chevron, no .collapsed state, no expand/collapse domino cascade. The
+       section-domino-in/-out keyframes are still used elsewhere (gallery
+       grid, tasks list "just opened" cascades) — keep those definitions. */
     @keyframes section-domino-in {
       0%   { opacity: 0; transform: translateY(8px) translateX(-4px) scale(0.92); }
       60%  { opacity: 1; }
       100% { opacity: 1; transform: translateY(0)   translateX(0)    scale(1); }
     }
-
-    /* Domino collapse: when toggleCollapse goes open → closed, JS adds
-       .section-just-collapsing for ~530ms before flipping in .collapsed.
-       During that window the items fade/slide DOWN one after another so
-       you see them peel off instead of vanishing as a block. Uses
-       nth-last-child so the BOTTOM item leaves first and the cascade
-       rolls upward — mirrors the "stacked deck" feeling of the open
-       animation reversed. */
-    .section.section-just-collapsing :is(.list-item, .models-row) {
-      animation: section-domino-out 0.22s ease-in forwards;
-    }
-    .section.section-just-collapsing :is(.list-item, .models-row):nth-last-child(1)  { animation-delay: 0.00s; }
-    .section.section-just-collapsing :is(.list-item, .models-row):nth-last-child(2)  { animation-delay: 0.025s; }
-    .section.section-just-collapsing :is(.list-item, .models-row):nth-last-child(3)  { animation-delay: 0.05s; }
-    .section.section-just-collapsing :is(.list-item, .models-row):nth-last-child(4)  { animation-delay: 0.075s; }
-    .section.section-just-collapsing :is(.list-item, .models-row):nth-last-child(5)  { animation-delay: 0.10s; }
-    .section.section-just-collapsing :is(.list-item, .models-row):nth-last-child(6)  { animation-delay: 0.125s; }
-    .section.section-just-collapsing :is(.list-item, .models-row):nth-last-child(7)  { animation-delay: 0.15s; }
-    .section.section-just-collapsing :is(.list-item, .models-row):nth-last-child(8)  { animation-delay: 0.175s; }
-    .section.section-just-collapsing :is(.list-item, .models-row):nth-last-child(9)  { animation-delay: 0.20s; }
-    .section.section-just-collapsing :is(.list-item, .models-row):nth-last-child(10) { animation-delay: 0.225s; }
-    .section.section-just-collapsing :is(.list-item, .models-row):nth-last-child(11) { animation-delay: 0.25s; }
-    .section.section-just-collapsing :is(.list-item, .models-row):nth-last-child(12) { animation-delay: 0.275s; }
     @keyframes section-domino-out {
       0%   { opacity: 1; transform: translateY(0)   translateX(0)   scale(1); }
       100% { opacity: 0; transform: translateY(6px) translateX(-3px) scale(0.94); }
@@ -28890,9 +28830,6 @@ body.doc-find-active mark.doc-find-mark.current {
   vertical-align: middle; margin-right: 4px;
 }
 @keyframes email-spin { to { transform: rotate(360deg); } }
-
-/* Email section doesn't collapse — hide the auto-injected chevron */
-#email-section .section-collapse-btn { display: none !important; }
 
 /* Compose + button: show on section hover, spin on button hover */
 #email-compose-btn {
