@@ -795,12 +795,23 @@ app.include_router(setup_companion_routes())
 # ========= ROUTES (kept in app.py) =========
 
 def _serve_html_with_nonce(request: Request, file_path: str) -> HTMLResponse:
-    """Read an HTML file and inject the CSP nonce into inline <script> tags."""
+    """Read an HTML file and inject the CSP nonce into inline <script> tags.
+
+    No Cache-Control header here previously meant Chromium fell back to
+    heuristic caching for the entry document — unlike /static/*.js/.css,
+    which already gets a deliberate `no-cache` revalidation fix (see
+    _RevalidatingStatic) for this exact reason. A browser tab reloaded often
+    mostly got away with it; the Electron desktop shell's long-lived,
+    never-cleared profile could keep serving a stale index.html indefinitely
+    across restarts, so UI fixes that shipped fine never appeared in the app.
+    `no-store` (not `no-cache`) because this is a same-machine localhost
+    fetch — there's no real latency to save by revalidating.
+    """
     with open(file_path, "r", encoding="utf-8") as f:
         html = f.read()
     nonce = getattr(request.state, "csp_nonce", "")
     html = html.replace("{{CSP_NONCE}}", nonce)
-    return HTMLResponse(html)
+    return HTMLResponse(html, headers={"Cache-Control": "no-store"})
 
 @app.get("/")
 async def serve_index(request: Request):

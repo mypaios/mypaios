@@ -150,13 +150,21 @@ async function boot() {
     logMain('boot: server ready?', ok);
     if (!mainWindow) return;
     if (ok) {
-      mainWindow.webContents.session.clearStorageData({
-        storages: ['serviceworkers', 'cachestorage']
-      }).then(() => {
+      // clearStorageData(['serviceworkers','cachestorage']) does NOT touch
+      // the HTTP disk cache — that's a separate store, cleared only via
+      // session.clearCache(). Without this, a stale cached index.html/JS/CSS
+      // (from before a fix shipped) could keep being served from this
+      // profile's cache indefinitely across restarts, even after the
+      // backend starts sending correct Cache-Control headers.
+      const session = mainWindow.webContents.session;
+      Promise.all([
+        session.clearStorageData({ storages: ['serviceworkers', 'cachestorage'] }),
+        session.clearCache(),
+      ]).then(() => {
         mainWindow.loadURL(APP_URL);
         logMain('boot: loaded', APP_URL);
       }).catch((err) => {
-        logMain('boot: error clearing storage', err);
+        logMain('boot: error clearing storage/cache', err);
         mainWindow.loadURL(APP_URL);
       });
     } else {

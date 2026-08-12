@@ -38,6 +38,19 @@ New" changelog.
 - The full ChatGPT/Claude/Gemini side-by-side comparison table, on both the
   homepage and README.
 
+### Fixed
+- **Stale UI in the Electron desktop shell.** The `/` route serving the app's
+  HTML had no `Cache-Control` header at all, so Chromium fell back to
+  heuristic caching for the entry document — unlike `/static/*.js/.css`,
+  which already had a deliberate `no-cache` fix for this exact class of bug.
+  A browser tab reloaded often mostly got away with it; the desktop shell's
+  long-lived, never-cleared profile could keep serving a stale `index.html`
+  indefinitely across restarts, so UI fixes that shipped fine never actually
+  appeared in the app. Added `Cache-Control: no-store` to the HTML response,
+  and the shell now also calls `session.clearCache()` on boot (previously it
+  only cleared service-workers/cache-storage, which doesn't touch the HTTP
+  disk cache) so existing installs pick up the fix immediately.
+
 ### Security
 - Resolved all 106 open Dependabot alerts. Bumped `mcp` (pinned to `1.28.1`
   specifically — the earliest release with the WebSocket Host/Origin
