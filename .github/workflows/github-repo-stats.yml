@@ -25,13 +25,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: run-ghrs
+        # TEMP TEST: using GITHUB_TOKEN instead of a manual PAT, to see
+        # whether the traffic API + data-branch push actually need the
+        # elevated classic-PAT scope the README assumes, or whether the
+        # default token (which already has contents:write on this repo)
+        # is sufficient. Revert to a GHRS_GITHUB_API_TOKEN secret if this
+        # step fails with a 403/404 on the traffic endpoints.
+        #
         # Docker-container action: clones/updates the github-repo-stats data
         # branch itself, writes the report under
         # $GITHUB_WORKSPACE/<run-id>/<owner>/<repo>/latest-report/, and
         # commits+pushes it to that branch before this step returns.
         uses: jgehrcke/github-repo-stats@v1.4.2
         with:
-          ghtoken: ${{ secrets.GHRS_GITHUB_API_TOKEN }}
+          ghtoken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: locate generated report
         id: report
