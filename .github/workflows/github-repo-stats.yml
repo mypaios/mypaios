@@ -1,0 +1,74 @@
+name: github-repo-stats
+
+on:
+  schedule:
+    # Near end-of-day UTC so the day's traffic-API data is as complete as
+    # possible before midnight UTC rolls it over; :37 (not :00) to avoid
+    # queueing behind every other workflow scheduled on the hour.
+    - cron: "37 23 * * *"
+  workflow_dispatch:
+
+# Least privilege: the stats step authenticates via its own PAT
+# (GHRS_GITHUB_API_TOKEN secret) and never uses GITHUB_TOKEN. contents:write
+# is only exercised by the docs/stats sync step below, pushing to main.
+permissions:
+  contents: write
+
+# Avoid overlapping runs racing to push the same branch/main.
+concurrency:
+  group: github-repo-stats
+  cancel-in-progress: false
+
+jobs:
+  j1:
+    name: github-repo-stats
+    runs-on: ubuntu-latest
+    steps:
+      - name: run-ghrs
+        # Docker-container action: clones/updates the github-repo-stats data
+        # branch itself, writes the report under
+        # $GITHUB_WORKSPACE/<run-id>/<owner>/<repo>/latest-report/, and
+        # commits+pushes it to that branch before this step returns.
+        uses: jgehrcke/github-repo-stats@v1.4.2
+        with:
+          ghtoken: ${{ secrets.GHRS_GITHUB_API_TOKEN }}
+
+      - name: locate generated report
+        id: report
+        run: |
+          set -euo pipefail
+          dir="$(find . -maxdepth 5 -type d -name latest-report | head -n1)"
+          if [ -z "$dir" ]; then
+            echo "::error::latest-report directory not found on disk"
+            exit 1
+          fi
+          echo "dir=$dir" >> "$GITHUB_OUTPUT"
+
+      - name: checkout main for Pages sync
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
+        with:
+          ref: main
+          path: site
+
+      - name: sync report into docs/stats
+        run: |
+          set -euo pipefail
+          rm -rf site/docs/stats
+          mkdir -p site/docs/stats
+          cp "${{ steps.report.outputs.dir }}/report.html" site/docs/stats/index.html
+          cp "${{ steps.report.outputs.dir }}/report.pdf" site/docs/stats/report.pdf
+          cp -r "${{ steps.report.outputs.dir }}/resources" site/docs/stats/resources
+
+      - name: commit and push docs/stats
+        working-directory: site
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/stats
+          if git diff --cached --quiet; then
+            echo "no report changes to publish"
+            exit 0
+          fi
+          git commit -m "docs(stats): publish daily github-repo-stats report [skip ci]"
+          git push origin main
