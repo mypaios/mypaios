@@ -1,11 +1,16 @@
 name: github-repo-stats
 
 on:
-  schedule:
-    # Near end-of-day UTC so the day's traffic-API data is as complete as
-    # possible before midnight UTC rolls it over; :37 (not :00) to avoid
-    # queueing behind every other workflow scheduled on the hour.
-    - cron: "37 23 * * *"
+  # Cron is paused (see below) until GHRS_GITHUB_API_TOKEN exists as a repo
+  # secret -- every scheduled run fails at the same fetch.py auth check
+  # otherwise, generating a nightly failure-email for nothing. Re-add:
+  #   schedule:
+  #     # Near end-of-day UTC so the day's traffic-API data is as complete
+  #     # as possible before midnight UTC rolls it over; :37 (not :00) to
+  #     # avoid queueing behind every other workflow scheduled on the hour.
+  #     - cron: "37 23 * * *"
+  # once the secret is confirmed present, then trigger once via
+  # workflow_dispatch to verify a real end-to-end run succeeds.
   workflow_dispatch:
 
 # Least privilege: the stats step authenticates via its own PAT
