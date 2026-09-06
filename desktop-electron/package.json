@@ -13,8 +13,8 @@
     "dist:win": "electron-builder --win nsis"
   },
   "devDependencies": {
-    "electron": "^43.4.0",
-    "electron-builder": "^26.15.7"
+    "electron": "^44.1.1",
+    "electron-builder": "^26.16.0"
   },
   "build": {
     "appId": "com.mypaios.app",
