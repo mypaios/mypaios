@@ -12,7 +12,7 @@
 # resolve to different builds on Linux/Windows — expect pip to pick the
 # platform-appropriate wheel for the same version, or relax the pin if none
 # exists for your platform.
-accelerate==1.13.0
+accelerate==1.15.0
 aiohappyeyeballs==2.6.2
 aiohttp==3.14.3
 aiosignal==1.4.0
