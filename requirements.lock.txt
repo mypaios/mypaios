@@ -205,7 +205,7 @@ shapely==2.1.2
 shellingham==1.5.4
 six==1.17.0
 soundfile==0.14.0
-soupsieve==2.8.4
+soupsieve==2.9
 SQLAlchemy==2.0.50
 sse-starlette==3.4.4
 starlette==1.6.0
