@@ -19,7 +19,7 @@ aiosignal==1.4.0
 annotated-doc==0.0.4
 annotated-types==0.7.0
 antlr4-python3-runtime==4.9.3
-anyio==4.13.0
+anyio==4.14.2
 attrs==26.1.0
 av==17.0.1
 babel==2.18.0
