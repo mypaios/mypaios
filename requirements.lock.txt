@@ -48,7 +48,7 @@ docling==2.97.0
 docling-core==2.79.0
 docling-ibm-models==3.13.3
 docling-parse==6.2.0
-docling-slim==2.97.0
+docling-slim==2.139.0
 docutils==0.23
 duckduckgo_search==8.1.1
 durationpy==0.10
